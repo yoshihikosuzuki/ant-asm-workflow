@@ -62,8 +62,7 @@ For each species, we assume the following directory structure to generate differ
 
 ## Using template directory
 
-We have a ready-made template directory, `template/`, containing some shell scripts to run several tools. The contents in the template directory look like the following:
-
+To automatically generate the directory structure above and to provide scripts to run several tools, we have a ready-made template directory `template/`. The contents in the template directory look like the following:
 
 ```
 template/
