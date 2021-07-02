@@ -6,18 +6,22 @@
 #SBATCH -N 1
 #SBATCH -c 128
 #SBATCH --mem=500G
-#SBATCH -t 24:00:00
+#SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-ASM=
+ASM=scaffolds.fasta
+LINEAGE="hymenoptera_odb10"
+DOWNLOAD_PATH="$HOME/busco_downloads"
 N_THREADS=128
 
-_ASM=$(basename ${ASM} .gz)
-OUT_PREFIX=${_ASM%.*}
+OUT_PREFIX=$(basename ${ASM} .gz)
+OUT_PREFIX=${OUT_PREFIX%.*}
 OUT_DIR=${OUT_PREFIX}.busco
 
 ml BUSCO
-## Metaeuk
-busco --download_path $HOME/busco_downloads -c ${N_THREADS} -m genome -l hymenoptera_odb10 -i ${ASM} -o ${OUT_DIR}
-## Augustus
-busco --download_path $HOME/busco_downloads -c ${N_THREADS} -m genome -l hymenoptera_odb10 --augustus -i ${ASM} -o ${OUT_DIR}.augustus
+
+## Case 1. Using Metaeuk for gene annotation
+#busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}
+
+## Case 2. Using Augustus for gene annotation
+busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${OUT_DIR}_augustus

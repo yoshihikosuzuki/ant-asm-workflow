@@ -4,19 +4,20 @@
 #SBATCH -p compute
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 128
+#SBATCH -c 1
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-SCAF=
-PB_BAM=
-HIC_READS_1=
-HIC_READS_2=
-N_THREADS=128
+SCAF=contigs.fasta
+READS=hifi.fastq
+
+# NOTE: Assuming the specific directory structure for input BAM file
+_REF=$(basename ${SCAF} .gz)
+_READS=$(basename ${READS} .gz)
+PB_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
 
 OUT_PREFIX=${SCAF%.*}
-SCAF_SPLIT=${OUT_PREFIX}.split.fasta
 BED_SCAF=${OUT_PREFIX}.bed
 BED_SCAF_GAP=${OUT_PREFIX}.gaps.bed
 BED_SCAF_ACC=${OUT_PREFIX}.acc.bed
@@ -26,15 +27,11 @@ PB_SAM=${PB_BAM/.bam/.sam}
 PB_PAF=${PB_BAM/.bam/.paf}
 BED_PB=${OUT_PREFIX}.pb.bed
 BED_PB_OK=${OUT_PREFIX}.pb.reliable.bed
-HIC_BAM=${OUT_PREFIX}.hic.bam
-HIC_LINKS=${OUT_PREFIX}.hic.links.mat
-BED_HIC=${OUT_PREFIX}.hic.bed
-BED_HIC_OK=${OUT_PREFIX}.hic.reliable.bed
 
-ml asset bedtools samtools minimap2
+ml asset bedtools samtools
 
 # Contiguous regions and gaps
-samtools faix ${SCAF}
+#samtools faix ${SCAF}
 awk '{print $1"\t0\t"$2}' ${SCAF}.fai >${BED_SCAF}
 detgaps ${SCAF} >${BED_SCAF_GAP}
 
@@ -49,24 +46,14 @@ bed_to_support() {
 }
 
 # PacBio
-samtools view -@${N_THREADS} -h ${PB_BAM} -o ${PB_SAM}
+samtools view -h ${PB_BAM} -o ${PB_SAM}
 paftools.js sam2paf ${PB_SAM} >${PB_PAF}
 ast_pb -m3 ${PB_PAF} >${BED_PB}
 bed_to_support ${BED_PB}
 
-# Hi-C
-split_fa ${SCAF} >${SCAF_SPLIT}
-samtools faidx ${SCAF_SPLIT}
-bwa index ${SCAF_SPLIT}
-bwa mem -t${N_THREADS} -5SP -B8 ${SCAF_SPLIT} ${HIC_READS_1} ${HIC_READS_2} |
-    samtools view -@${N_THREADS} -b -o ${HIC_BAM}
-col_conts ${HIC_BAM} >${HIC_LINKS}
-ast_hic2 ${SCAF_SPLIT}.fai ${HIC_LINKS} >${BED_HIC}
-bed_to_support ${BED_HIC}
-
 # Reliable block
-acc ${BED_SCAF_GAP} ${BED_PB_OK} ${BED_HIC_OK} |
-    awk '$4>=2' |
+acc ${BED_SCAF_GAP} ${BED_PB_OK} |
+    awk '$4>=1' |
     bedtools merge -i - >${BED_SCAF_ACC}
 bedtools subtract -a ${BED_SCAF} -b ${BED_SCAF_ACC} |
     bedtools merge -d 100 -i - >${BED_SCAF_NG}

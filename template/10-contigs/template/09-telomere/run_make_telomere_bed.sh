@@ -8,14 +8,9 @@
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
 
+IN_FASTA=contigs.fasta
 TELOMERE_MOTIF="TTAGGG"
 
-IN_FASTAS=(   # <fasta_file> per line
+ml TRF #make_telomere_bed
 
-)
-
-ml TRF
-
-for IN_FASTA in "${IN_FASTAS[@]}"; do
-    make_telomere_bed ${IN_FASTA} ${TELOMERE_MOTIF}
-done
+make_telomere_bed ${IN_FASTA} ${TELOMERE_MOTIF}

@@ -9,11 +9,16 @@
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-SCAF=
-PB_BAM=
-HIC_READS_1=
-HIC_READS_2=
+SCAF=scaffolds.fasta
+READS=hifi.fastq
+HIC_READS_1=omnic_R1_001.fastq
+HIC_READS_2=omnic_R2_001.fastq
 N_THREADS=128
+
+# NOTE: Assuming the specific directory structure for input BAM file
+_REF=$(basename ${SCAF} .gz)
+_READS=$(basename ${READS} .gz)
+PB_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
 
 OUT_PREFIX=${SCAF%.*}
 SCAF_SPLIT=${OUT_PREFIX}.split.fasta
@@ -31,10 +36,10 @@ HIC_LINKS=${OUT_PREFIX}.hic.links.mat
 BED_HIC=${OUT_PREFIX}.hic.bed
 BED_HIC_OK=${OUT_PREFIX}.hic.reliable.bed
 
-ml asset bedtools samtools minimap2
+ml asset bedtools samtools
 
 # Contiguous regions and gaps
-samtools faix ${SCAF}
+#samtools faix ${SCAF}
 awk '{print $1"\t0\t"$2}' ${SCAF}.fai >${BED_SCAF}
 detgaps ${SCAF} >${BED_SCAF_GAP}
 

@@ -9,45 +9,23 @@
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
+READS=hifi.fastq
+CONTIGS=contigs.fasta
+
+# NOTE: The value of `K` should be determined by the following command:
+#GENOME_SIZE=300000000
+#best_k.sh ${GENOME_SIZE}
+K=19
+
 N_THREADS=128
 N_MEMORY=500
 
+READS_MERYL=${READS}.meryl
+_READS=$(basename ${READS} .gz)
+_CONTIGS=$(basename ${CONTIGS} .gz)
+OUT_PREFIX=${_CONTIGS%.*}.${_READS%.*}.merqury
+
 ml merqury
 
-#GENOME_SIZE=
-#best_k.sh ${GENOME_SIZE}
-K=
-
-## Trio assembly
-
-CHILD_READS=
-MAT_READS=
-PAT_READS=
-MAT_CONTIGS=
-PAT_CONTIGS=
-OUT_PREFIX=
-
-meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${CHILD_READS}.meryl ${CHILD_READS}
-meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${MAT_READS}.meryl ${MAT_READS}
-meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${PAT_READS}.meryl ${PAT_READS}
-$MERQURY/trio/hapmers.sh ${MAT_READS}.meryl ${PAT_READS}.meryl ${CHILD_READS}.meryl
-merqury.sh ${CHILD_READS}.meryl ${MAT_READS}.hapmer.meryl ${PAT_READS}.hapmer.meryl ${MAT_CONTIGS} ${PAT_CONTIGS} ${OUT_PREFIX}
-
-## Merged assembly
-
-READS=
-CONTIGS=
-OUT_PREFIX=
-
-meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS}.meryl ${READS}
-merqury.sh ${READS}.meryl ${CONTIGS} ${OUT_PREFIX}
-
-## Haplotype-resolved assembly
-
-READS=
-PRIMARY_CONTIGS=
-ALTERNATE_CONTIGS=
-OUT_PREFIX=
-
-meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS}.meryl ${READS}
-merqury.sh ${READS}.meryl ${PRIMARY_CONTIGS} ${ALTERNATE_CONTIGS} ${OUT_PREFIX}
+meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
+merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}

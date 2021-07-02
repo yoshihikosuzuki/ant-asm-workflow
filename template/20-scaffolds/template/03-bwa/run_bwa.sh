@@ -8,15 +8,19 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 
-REF_FASTA=
-QUERY_FASTA=
-OUT_BAM=
-
+SCAF=scaffolds.fasta
+HIC_READS_1=omnic_R1_001.fastq
+HIC_READS_2=omnic_R2_001.fastq
 N_THREADS=128
+
+_SCAF=$(basename ${SCAF} .gz)
+_READS=$(basename ${HIC_READS_1} .gz)
+_READS=${_READS%_R*}
+OUT_BAM=${_SCAF%.*}.${_READS%.*}.sorted.bam
 
 ml samtools bwa
 
-bwa index ${IN_REF}
-bwa mem -t${N_THREADS} ${IN_REF} ${QUERY_FASTA} |
+#bwa index ${SCAF}
+bwa mem -t${N_THREADS} -5SP -B8 ${SCAF} ${HIC_READS_1} ${HIC_READS_2} |
     samtools sort -@${N_THREADS} -o ${OUT_BAM}
 samtools index -@${N_THREADS} ${OUT_BAM}

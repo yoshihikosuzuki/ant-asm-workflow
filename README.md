@@ -8,6 +8,8 @@ Scripts and template working directory for genome assembly with HiFi + Omni-C. C
 
 ## Directory structure
 
+**WARN: The structure of the directories and the names of the files MUST be exactly the same as described below. DO NOT change them unless you know how everything works.**
+
 For each species, we assume the following directory structure to generate different types of assemblies:
 
 ```
@@ -65,7 +67,7 @@ Short description about the role of each directory:
 
 ## Using template directory
 
-To automatically generate the directory structure above and to provide scripts to run several tools, we have a ready-made template directory named `template/`. The contents in the template directory are the following:
+To automatically generate the directory structure above and to provide scripts to run several tools, we have a ready-made template directory named `template/`. The contents in the template directory (except symlinks) are the following:
 
 ```
 template/
@@ -89,7 +91,8 @@ template/
 │   │   └── run_peregrine.sh
 │   └── template-purge-dups
 │       ├── run_purge_dups_plot.sh
-│       └── run_purge_dups.sh
+│       ├── run_purge_dups.sh
+│       └── run_winnowmap.sh
 ├── 10-contigs
 │   └── template
 │       ├── 01-busco
@@ -142,6 +145,8 @@ template/
 The workflow is not (and will never be) fully automatic for many reasons. You need to do the followings step-by-step.
 
 NOTE: Variables and parameters written in the scripts should be modified as necessary.
+
+NOTE: Each directory containing shell script(s) has symlinks to input data files. Confirm all the symlinks are valid (i.e. pointing to files that indeed exist) before running the scripts.
 
 ### 0. Copy the template directory and scripts
 
@@ -223,7 +228,7 @@ WARN: One subdirectory must be for only a single scaffolding task. That is, you 
 cd 11-scaf/
 cp -r template-ZZZ/ YYY-ZZZ &&   # NOTE: ZZZ = {3ddna, salsa}, YYY = directory name in 10-contigs/ (i.e. hifiasm, hifiasm-pd, hicanu, etc.)
     cd YYY-ZZZ &&
-    ln -sf ../../10-contigs/YYY/contigs.fasta . &&
+    ln -sf ../../10-contigs/YYY/contigs.fasta* . &&   # NOTE: Do not forget * !!!
     ./run_ZZZ.sh &&
     cd ..
 cd ..

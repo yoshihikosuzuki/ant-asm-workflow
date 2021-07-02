@@ -9,11 +9,9 @@
 #SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc || exit 1
 
-CONTIGS=
-READS_1=
-READS_2=
-# Can be empty for RE-free protocol
-ENZYME_NAME=
+CONTIGS=contigs.fasta
+READS_1=omnic_R1_001.fastq
+READS_2=omnic_R2_001.fastq
 N_THREADS=128
 
 OUT_PREFIX=${CONTIGS%.*}.
@@ -22,30 +20,22 @@ ml bwa 3d-dna
 
 # Make ./scripts/
 juicer_copy_scripts_dir
-# Remove ./aligned/
+# Remove ./aligned/ that already exists
 rm -rf aligned
 # Make ./fastq/
 mkdir -p fastq && cd fastq && ln -sf ../${READS_1} ../${READS_2} . && cd ..
 # Make ./references/
-mkdir -p references && cd references && ln -sf ../${CONTIGS} . && cd ..
+mkdir -p references && cd references && ln -sf ../${CONTIGS}* . && cd ..
 
 CONTIGS=references/${CONTIGS##*/}
-bwa index ${CONTIGS}
+#bwa index ${CONTIGS}
 
 # Generate .assembly and .chrom_sizes files
 3d-dna-fasta2assembly ${CONTIGS} >${CONTIGS%.*}.assembly
 awk 'NF == 3 {print substr($1,2) "\t" $3}' ${CONTIGS%.*}.assembly >${CONTIGS%.*}.chrom_sizes
 
 # Generate .hic file
-if [ -z "${ENZYME_NAME}" ]; then
-    JUICER_S_OPT=""
-else
-    mkdir -p restriction_sites && cd restriction_sites &&
-        generate_site_positions.py ${ENZYME_NAME} ${OUT_PREFIX} ../${CONTIGS} &&
-        cd ..
-    JUICER_S_OPT="-s ${ENZYME_NAME}"
-fi
-./scripts/juicer.sh -t ${N_THREADS} -S early -z ${CONTIGS} -p ${CONTIGS%.*}.chrom_sizes -g ${OUT_PREFIX} ${JUICER_S_OPT}
+./scripts/juicer.sh -t ${N_THREADS} -S early -z ${CONTIGS} -p ${CONTIGS%.*}.chrom_sizes -g ${OUT_PREFIX}
 mkdir -p hic && cd hic &&
     3d-dna-run-assembly-visualizer ../${CONTIGS%.*}.assembly ../aligned/merged_nodups.txt
 cd ..

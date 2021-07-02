@@ -4,18 +4,22 @@
 #SBATCH -p compute
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 128
+#SBATCH -c 1
 #SBATCH --mem=500G
-#SBATCH -t 10:00:00
+#SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-REF=
-IN_BAM=
-IN_VCF=
+REF=scaffolds.fasta
+READS=hifi.fastq
 MIN_QUAL=30
 MIN_DEPTH=5
 MAX_DEPTH=200
-N_THREADS=128
+
+# NOTE: Assuming the specific directory structure for input BAM and VCF files
+_REF=$(basename ${REF} .gz)
+_READS=$(basename ${READS} .gz)
+IN_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
+IN_VCF=../05-deepvariant/${_REF%.*}.${_READS%.*}.deepvariant.vcf
 
 OUT_PREFIX=${IN_VCF%.vcf}
 OUT_NORM_VCF=${OUT_PREFIX}.norm.vcf
