@@ -18,8 +18,7 @@ For each species, we assume the following directory structure to generate differ
 │   │
 │   └── omnic/
 │        ├── omnic_R1_001.fastq
-│        ├── omnic_R2_001.fastq
-│        └── omnic.fasta
+│        └── omnic_R2_001.fastq
 │
 ├── 01-asm/
 │   ├── <assembly-1>/
@@ -45,7 +44,7 @@ For each species, we assume the following directory structure to generate differ
 - `00-data/`
   - Input read datasets (Use symlinks), which must be:
     - a single FASTQ file named `hifi.fastq` for HiFi; and
-    - two FASTQ files named `omnic_R1_001.fastq` and `omnic_R2_001.fastq` and one FASTA file named `omnic.fasta` that is a concatenate of the two FASTQ files (used for GenomeScope), for Omni-C.
+    - two FASTQ files named `omnic_R1_001.fastq` and `omnic_R2_001.fastq` for Omni-C.
   - GenomeScope+Smudgeplot and FASTK+GeneScope are performed for each of them.
 - `01-asm/`
   - In each subdirectory, we perform a contig assembly task (e.g. hifiasm, HiCanu) using symlinks to `00-data/`.
@@ -85,6 +84,7 @@ template/
 │   ├── peregrine
 │   │   └── run_peregrine.sh
 │   └── template-purge-dups
+│       ├── run_purge_dups_plot.sh
 │       └── run_purge_dups.sh
 ├── 10-contigs
 │   └── template
@@ -151,20 +151,22 @@ cd 00-data/hifi/ &&
 cd 00-data/omnic/ &&
     ln -sf /path/to/<your-omnic-reads>_R1_001.fastq ./omnic_R1_001.fastq &&
     ln -sf /path/to/<your-omnic-reads>_R2_001.fastq ./omnic_R2_001.fastq &&
-    ln -sf /path/to/<your-merged-omnic-reads>.fasta ./omnic.fasta &&
     cd ../..
 ```
 
 ### 1. Run GenomeScope and GeneScope
 
 ```bash
-# NOTE: You can also use `sbatch` to submit the script
 cd 00-data/
 cd hifi/ &&
-    ./run_hifi.sh &&
+    ./run_fastk.sh &&   # NOTE: You can also use `sbatch` to submit the script. Run these scripts in this order while modifying variables if necessary.
+    ./run_genescope.sh &&
+    ./run_genomescope.sh &&
     cd ..
 cd omnic/ &&
-    ./run_omnic.sh &&
+    ./run_fastk.sh &&
+    ./run_genescope.sh &&
+    ./run_genomescope.sh &&
     cd ..
 cd ..
 ```
@@ -230,6 +232,5 @@ cd ..
 
 ## Yoshi TODO memo
 
-- Update SALSA to v2.3
 - Write run_genescope.sh
 - Create make_centromere_bed

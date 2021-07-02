@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J FASTK
+#SBATCH -J fastk
 #SBATCH -o fastk.log
 #SBATCH -p compute
 #SBATCH -n 1
@@ -8,34 +8,16 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 
-K=
+IN_FNAMES="omnic_R1_001.fastq omnic_R2_001.fastq"
+K=21
 N_THREAD=16
 N_MEMORY=16
+TMP_DIR=tmp
+
+OUT_PREFIX=omnic.fastk
 
 ml FASTK
-mkdir -p tmp
+mkdir -p ${TMP_DIR}
 
-# Single dataset
-
-IN_FNAMES=(   # <source_fname> per line
-
-)
-
-for IN_FNAME in "${IN_FNAMES[@]}"; do
-    OUT_PREFIX=${IN_FNAME%.*}.fastk
-    FastK -k${K} -T${N_THREAD} -M${N_MEMORY} -v -t1 -p -Ptmp -N${OUT_PREFIX} ${IN_FNAME}
-    Tabex ${OUT_PREFIX} CHECK
-done
-
-# Relative profile
-
-IN_FNAMES=(   # "<source_fname> <table_prefix>" per line
-
-)
-
-for INPUTS in "${IN_FNAMES[@]}"; do
-    ARRAY=($INPUTS)
-    IN_FNAME=${ARRAY[0]}
-    IN_TABLE_PREFIX=${ARRAY[1]}
-    FastK -k${K} -T${N_THREAD} -M${N_MEMORY} -v -p:${IN_TABLE_PREFIX} -Ptmp -N${IN_FNAME%.*}.${IN_TABLE_PREFIX} ${IN_FNAME}
-done
+FastK -k${K} -T${N_THREAD} -M${N_MEMORY} -v -t1 -p -P${TMP_DIR} -N${OUT_PREFIX} ${IN_FNAMES}
+Tabex ${OUT_PREFIX} CHECK
