@@ -200,7 +200,7 @@ cd ..
 
 ### 3. Evaluate contigs
 
-WARN: Only one contig FASTA file to be assessed must be placed for each subdirectory. For example, if you wish to evaluate both `*.p_ctg.fasta` and `p_utg.fasta` generated from the same sample with hifiasm, then you need to make a distinct directory for each of them.
+WARN: Only one contig FASTA file to be assessed must be placed under each subdirectory. That is, for example, if you wish to evaluate both `*.p_ctg.fasta` and `p_utg.fasta` generated from the same sample with hifiasm, then you need to make a distinct directory for each of them.
 
 ```bash
 cd 10-contigs/
@@ -217,7 +217,7 @@ cd ..
 
 ### 4. Run scaffolding tools
 
-WARN: One subdirectory must be for a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/salsa/` and `hifiasm/3ddna`. Instead, you need to make `hifiasm-salsa` and `hifiasm-3ddna` right under `11-scaf/`.
+WARN: One subdirectory must be for only a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/salsa/` and `hifiasm/3ddna`. Instead, you need to make `hifiasm-salsa` and `hifiasm-3ddna` right under `11-scaf/`.
 
 ```bash
 cd 11-scaf/
@@ -231,7 +231,7 @@ cd ..
 
 ### 5. Evaluate scaffolds
 
-WARN: One scaffold FASTA per subdirectory.
+WARN: One scaffold FASTA per subdirectory, just like above.
 
 ```bash
 cd 20-scaffolds/
