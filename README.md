@@ -139,7 +139,7 @@ template/
 
 ## How to use
 
-The workflow is not (and will not be) fully automatic for many reasons. You need to do the followings step-by-step.
+The workflow is not (and will never be) fully automatic for many reasons. You need to do the followings step-by-step.
 
 NOTE: Variables and parameters written in the scripts should be modified as necessary.
 
@@ -179,7 +179,7 @@ cd ..
 
 ### 2. Run assemblers (and purge_dups)
 
-WARN: Single purge_dups task is performed (not in the directory you ran hifiasm/HiCanu but) in a single, new subdirectory right under `01-asm/`.
+WARN: Single purge_dups task is performed (not in the directory you ran hifiasm/HiCanu but) in a separated, new subdirectory right under `01-asm/`, as follows.
 
 ```bash
 cd 01-asm/
