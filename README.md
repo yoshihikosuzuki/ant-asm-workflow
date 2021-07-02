@@ -171,7 +171,7 @@ cd 00-data/omnic/ &&
 cd 00-data/
 cd hifi/ &&
     ./run_fastk.sh &&   # NOTE: You can also use `sbatch` to submit the script.
-    ./run_genescope.sh &&
+    ./run_genescope.sh &&   # NOTE: GeneScope depends on FASTK. Do NOT run this script until run_fastk.sh finishes.
     ./run_genomescope.sh &&
     cd ..
 cd omnic/ &&
@@ -254,3 +254,4 @@ cd ..
 ## Yoshi TODO memo
 
 - Create make_centromere_bed
+- Clarify the dependency among the scripts

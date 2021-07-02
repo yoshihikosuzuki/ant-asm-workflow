@@ -4,9 +4,10 @@
 #SBATCH -p compute
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 16
+#SBATCH -c 1
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 FASTK_PREFIX=omnic.fastk
 K=21
@@ -17,4 +18,4 @@ OUT_PREFIX=${FASTK_PREFIX%.fastk}.genescope
 
 ml FASTK genomescope/fastk
 
-Histex -G ${FASTK_PREFIX} -h${HIST_MAX} | GeneScopeFK -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}
+Histex -G ${FASTK_PREFIX} -h${HIST_MAX} | GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}
