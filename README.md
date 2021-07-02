@@ -251,9 +251,9 @@ cp -r templete/ ZZZ &&   # NOTE: ZZZ is an arbitrary name representing an assemb
 cd ..
 ```
 
-## Showing dependencies of the files with a visual flow of the commands above
+## Visual dependencies among the files and commands above
 
-NOTE: Based on the dependencies, you can simultaneously run multiple scripts that are independent of each other.
+NOTE: Based on these flow charts, you can simultaneously run multiple scripts that are independent of each other.
 
 ### 1. Assembly and scaffolding
 
