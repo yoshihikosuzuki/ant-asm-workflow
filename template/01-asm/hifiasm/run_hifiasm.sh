@@ -7,20 +7,17 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-IN_FASTX=
-HIC_READS_1=
-HIC_READS_2=
+IN_FASTX=hifi.fastq
 N_THREADS=128
 
 OUT_PREFIX=${IN_FASTX%.gz}
-OUT_PREFIX=${OUT_PREFIX%.*}
+OUT_PREFIX=${OUT_PREFIX%.*}.hifiasm
 
 ml hifiasm
-## Normal mode
+
 hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} ${IN_FASTX}
-## Hi-C mode
-hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} --h1 ${HIC_READS_1} --h2 ${HIC_READS_2} ${IN_FASTX}
 
 ml gfatools
 for DATA in *tg.gfa; do

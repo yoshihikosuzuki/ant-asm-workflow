@@ -6,12 +6,14 @@
 #SBATCH -N 1
 #SBATCH -c 128
 #SBATCH --mem=500G
-#SBATCH -t 24:00:00
+#SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-IN_FASTX=
+IN_FASTX=hifi.fastq
 N_THREAD=128
+TMP_DIR=tmp
 
 ml pbipa
-mkdir -p tmp
-ipa local --input-fn ${IN_FASTX} --nthreads ${N_THREAD} --tmp-dir tmp --verbose
+
+mkdir -p ${TMP_DIR}
+ipa local --input-fn ${IN_FASTX} --nthreads ${N_THREAD} --tmp-dir ${TMP_DIR} --verbose
