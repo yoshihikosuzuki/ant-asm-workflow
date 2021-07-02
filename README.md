@@ -177,14 +177,16 @@ cd omnic/ &&
 cd ..
 ```
 
-### 2. Run assemblers (without or with purge_dups)
+### 2. Run assemblers (and purge_dups)
+
+WARN: Single purge_dups task is performed (not in the directory you ran hifiasm/HiCanu but) in a single, new subdirectory right under `01-asm/`.
 
 ```bash
 cd 01-asm/
 cd XXX/ &&   # NOTE: XXX = hifiasm, hicanu, etc.
     ./run_XXX.sh &&
     cd ..
-# To run purge_dups, do the followings (WARN: Only one purging task per subdirectory)
+# To run purge_dups, do the followings
 cp -r template-purge-dups/ XXX-pd &&   # NOTE: XXX = hifiasm, hicanu, etc.
     cd XXX-pd &&
     ln -sf ../XXX/<contig-fasta-file> ./contigs.fasta &&   # NOTE: <contig-fasta-file> depends on the assembler
