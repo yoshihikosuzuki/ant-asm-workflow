@@ -209,9 +209,9 @@ WARN: Only one contig FASTA file to be assessed must be placed under each subdir
 
 ```bash
 cd 10-contigs/
-cp -r templete/ YYY &&   # NOTE: YYY = name of directory made in step 2.1 (i.e. hifiasm, hifiasm-pd, hicanu, etc.)
+cp -r templete/ YYY &&   # NOTE: YYY is an arbitrary name representing an assembly generated in 01-asm/ (i.e. hifiasm, hifiasm-p_ctg, hicanu-pd, etc.)
     cd YYY &&
-    ln -sf ../../01-asm/YYY/<contig-fasta-file> ./contigs.fasta &&   # NOTE: <contig-fasta-file> = "purged.fa" for those after purge_dups
+    ln -sf ../../01-asm/path/to/<contig-fasta-file> ./contigs.fasta &&   # NOTE: <contig-fasta-file> = "purged.fa" for those after purge_dups
     ./make_index.sh &&
     cd 01-busco/ && ./run_busco.sh && cd .. &&
     cd 02-merqury/ && ./run_merqury.sh && cd .. &&
@@ -226,7 +226,7 @@ WARN: One subdirectory must be for only a single scaffolding task. That is, you 
 
 ```bash
 cd 11-scaf/
-cp -r template-ZZZ/ YYY-ZZZ &&   # NOTE: ZZZ = {3ddna, salsa}, YYY = directory name in 10-contigs/ (i.e. hifiasm, hifiasm-pd, hicanu, etc.)
+cp -r template-ZZZ/ YYY-ZZZ &&   # NOTE: ZZZ = {3ddna, salsa}, YYY = a directory name in 10-contigs/
     cd YYY-ZZZ &&
     ln -sf ../../10-contigs/YYY/contigs.fasta* . &&   # NOTE: Do not forget * !!!
     ./run_ZZZ.sh &&
@@ -240,9 +240,9 @@ WARN: One scaffold FASTA per subdirectory, just like above.
 
 ```bash
 cd 20-scaffolds/
-cp -r templete/ WWW &&   # NOTE: WWW = directory name in 11-scaf/ (i.e. hifiasm-salsa, hifiasm-pd-3ddna, etc.)
+cp -r templete/ WWW &&   # NOTE: WWW is an arbitrary name representing an assembly generated in 11-scaf/ (i.e. hifiasm-salsa, hifiasm-pd-3ddna, etc.)
     cd WWW &&
-    ln -sf ../../11-scaf/WWW/<scaf-fasta-file> ./scaffolds.fasta &&   # NOTE: <scaf-fasta-file> depends on the scaffolding tool
+    ln -sf ../../11-scaf/path/to/<scaf-fasta-file> ./scaffolds.fasta &&   # NOTE: <scaf-fasta-file> depends on the scaffolding tool
     ./make_index.sh &&
     cd 01-busco/ && ./run_busco.sh && cd .. &&
     cd 02-merqury/ && ./run_merqury.sh && cd .. &&
