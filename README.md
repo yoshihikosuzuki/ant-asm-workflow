@@ -144,7 +144,7 @@ template/
 
 The workflow is not (and will never be) fully automatic for many reasons. You need to do the followings step-by-step.
 
-NOTE: Variables and parameters written in the scripts should be modified as necessary.
+NOTE: Variables and parameters written in the scripts should be modified as necessary (These are usually mentioned in the comments between the commands below).
 
 NOTE: Each directory containing shell script(s) has symlinks to input data files. Confirm all the symlinks are valid (i.e. pointing to files that indeed exist) before running the scripts.
 
@@ -188,7 +188,7 @@ WARN: Single purge_dups task is performed (not in the directory you ran hifiasm/
 
 ```bash
 cd 01-asm/
-cd XXX/ &&   # NOTE: XXX = hifiasm, hicanu, etc.
+cd XXX/ &&   # NOTE: XXX = hifiasm, hicanu, etc. If you wish to try different parameters with the same assembler, then make a new directory.
     ./run_XXX.sh &&
     cd ..
 # To run purge_dups, do the followings
@@ -226,10 +226,10 @@ WARN: One subdirectory must be for only a single scaffolding task. That is, you 
 
 ```bash
 cd 11-scaf/
-cp -r template-ZZZ/ YYY-ZZZ &&   # NOTE: ZZZ = {3ddna, salsa}, YYY = a directory name in 10-contigs/
-    cd YYY-ZZZ &&
+cp -r template-WWW/ YYY-WWW &&   # NOTE: WWW = {3ddna, salsa}, YYY = a directory name in 10-contigs/
+    cd YYY-WWW &&
     ln -sf ../../10-contigs/YYY/contigs.fasta* . &&   # NOTE: Do not forget * !!!
-    ./run_ZZZ.sh &&
+    ./run_WWW.sh &&
     cd ..
 cd ..
 ```
@@ -240,8 +240,8 @@ WARN: One scaffold FASTA per subdirectory, just like above.
 
 ```bash
 cd 20-scaffolds/
-cp -r templete/ WWW &&   # NOTE: WWW is an arbitrary name representing an assembly generated in 11-scaf/ (i.e. hifiasm-salsa, hifiasm-pd-3ddna, etc.)
-    cd WWW &&
+cp -r templete/ ZZZ &&   # NOTE: ZZZ is an arbitrary name representing an assembly generated in 11-scaf/ (i.e. hifiasm-salsa, hifiasm-pd-3ddna, etc.)
+    cd ZZZ &&
     ln -sf ../../11-scaf/path/to/<scaf-fasta-file> ./scaffolds.fasta &&   # NOTE: <scaf-fasta-file> depends on the scaffolding tool
     ./make_index.sh &&
     cd 01-busco/ && ./run_busco.sh && cd .. &&
@@ -251,7 +251,22 @@ cp -r templete/ WWW &&   # NOTE: WWW is an arbitrary name representing an assemb
 cd ..
 ```
 
+## Showing dependencies of the files with a visual flow of the commands above
+
+NOTE: Based on the dependencies, you can simultaneously run multiple scripts that are independent of each other.
+
+### 1. Assembly and scaffolding
+
+![](asset/dependency-asm-light.png)
+
+### 2. Contig assembly evaluation
+
+![](asset/dependency-eval-contig-light.png)
+
+### 3. Scafold assembly evaluation
+
+![](asset/dependency-eval-scaf-light.png)
+
 ## Yoshi TODO memo
 
 - Create make_centromere_bed
-- Clarify the dependency among the scripts
