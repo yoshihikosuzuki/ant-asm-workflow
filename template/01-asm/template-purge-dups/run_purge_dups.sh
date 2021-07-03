@@ -9,10 +9,15 @@
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
+# According to `calcuts` command:
+#     -l    INT      lower bound for read depth
+#     -m    INT      transition between haploid and diploid
+#     -u    INT      upper bound for read depth
 L=
 M=
 U=
 
+CONTIGS=contigs.fasta
 PAF_CONTIGS=contigs.paf
 CUTOFFS=cutoffs
 

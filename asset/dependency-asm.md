@@ -23,7 +23,6 @@ end
 CONTIG("01-asm/XXX/.../<any-contigs>.fasta")
 subgraph purge_dups
 CONTIG_PD_SYM("01-asm/XXX-pd/contigs.fasta")
-CONTIG_PAF(contig.hifi.sorted.bam)
 PD_PLOT(PB.hist.png)
 CONTIG_PD(purged.fa)
 end
@@ -54,8 +53,7 @@ HIFI -->|run_hifiasm.sh, etc.| CONTIG
 CONTIG -->|ln -s| CONTIG_SYM
 
 CONTIG -->|ln -s| CONTIG_PD_SYM
-CONTIG_PD_SYM -->|run_winnowmap.sh| CONTIG_PAF
-CONTIG_PAF -->|run_purge_dups_plot.sh| PD_PLOT
+CONTIG_PD_SYM -->|run_purge_dups_plot.sh| PD_PLOT
 PD_PLOT -->|run_purge_dups.sh| CONTIG_PD
 CONTIG_PD -->|ln -s| CONTIG_SYM
 
