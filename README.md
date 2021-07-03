@@ -14,6 +14,8 @@ Below we
 
 **IMPORTANT: The structure of the directories and the names of the files MUST be exactly the same as described below (except e.g. `/path/to/...`, `XXX`, and those surrounded by `<` `>`). DO NOT change them unless you know how everything works.**
 
+**WARNING: Some values hard-coded in scripts in the template directory are specific to ants (e.g BUSCO's lineage is `hymenoptera_odb10` and telomeric motif sequence is `TTAGG`, not `TTAGGG`). Change them as necessary if you wish to use it for different creatures.**
+
 ## Directory structure
 
 For each species, we assume the following directory structure to generate different types of assemblies:
