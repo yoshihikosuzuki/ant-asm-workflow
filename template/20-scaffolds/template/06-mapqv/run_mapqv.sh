@@ -38,7 +38,7 @@ info echo "Total num. bases in mappable regions = $NUM_BP"
 # Filter variants
 bcftools norm -f ${REF} ${IN_VCF} -Ov > ${OUT_NORM_VCF}
 bcftools view -i "QUAL>${MIN_QUAL} && ${MIN_DEPTH}<DP && DP<${MAX_DEPTH} && (GT=\"AA\" || GT=\"Aa\")" -Ov ${OUT_NORM_VCF} >${OUT_VCF}
-bcftools view -v snps -Ov ${OUT_VCF} >${OUT_SNV_VCF}s -i "QUAL>${MIN_QUAL} && DP>${MIN_DEPTH} && DP<${MAX_DEPTH} && (GT=\"AA\" || GT=\"Aa\")" -Ov ${IN_VCF} >${OUT_SNV_VCF}
+bcftools view -v snps -Ov ${OUT_VCF} >${OUT_SNV_VCF}
 
 calc_stats() {
     VCF=$1
@@ -47,10 +47,10 @@ calc_stats() {
         awk -F "\t" '{print $4"\t"$5}' |
         awk '{lenA=length($1); lenB=length($2); if (lenA < lenB) {sum+=lenB-lenA} else if (lenA > lenB) { sum+=lenA-lenB } else {sum+=lenA}} END {print sum}' >${VCF}.numvar
     NUM_VAR=$(cat ${VCF}.numvar)
-    info echo "Total num. bases subject to change: $NUM_VAR"
+    #info echo "Total num. bases subject to change: $NUM_VAR"
     # Calculate QV
     QV=$(echo "$NUM_VAR $NUM_BP" | awk '{print (-10*log($1/$2)/log(10))}')
-    info echo "mapping QV = $QV"
+    info echo -e "mapping QV (${VCF}) = $QV"
 }
 
 # Calculate QV
