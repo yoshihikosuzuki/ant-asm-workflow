@@ -292,7 +292,7 @@ Based on these flow charts, you can simultaneously run multiple scripts in paral
 
 ![](asset/dependency-eval-scaf-light.png)
 
-## Example of practical procedures
+## Example of the overall flow
 
 1. Run the followings in parallel:
    1. For each of the HiFi dataset and Omni-C dataset, run GeneScope and GenomeScope in parallel.
