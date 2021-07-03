@@ -9,7 +9,7 @@
 #SBATCH -t 24:00:00
 
 IN_FASTA=contigs.fasta
-TELOMERE_MOTIF="TTAGGG"
+TELOMERE_MOTIF="TTAGG"
 
 ml TRF #make_telomere_bed
 
