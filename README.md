@@ -296,15 +296,17 @@ Based on these flow charts, you can simultaneously run multiple scripts in paral
 2. Check GeneScope plot, GenomeScope plot, and Smudgeplot as QC of HiFi/Omni-C reads.
 3. Run purge_dups for each of the contig assemblies in parallel.
 4. Assess the quality of each contig assembly in parallel:
-   1. Run BUSCO, Merqury, winnowmap, and make_telomere_bed in parallel.
-   2. After winnowmap finishes, run DeepVariant and asset in parallel.
-   3. After DeepVariant finishes, run mapqv.
-5. For each contig assembly, check assembly stats (such as contig N50), BUSCO score, Merqury QV, mapQV, and reliable block N50, and pick up some contig assemblies that have the highest qualities.
+   1. Run make_index, BUSCO, Merqury, and make_telomere_bed in parallel.
+   2. After make_index finishes, run winnowmap.
+   3. After winnowmap finishes, run DeepVariant and asset in parallel.
+   4. After DeepVariant finishes, run mapqv.
+5. For each contig assembly, check assembly stats (such as contig N50), BUSCO score, Merqury QV, mapping QV, and reliable block N50, and pick up some contig assemblies that have the highest qualities.
 6. For each of the high-quality contig assemblies, run scaffolding tools (with SALSA, 3D-DNA, etc.) in parallel.
 7. Assess the quality of each scaffold assembly in parallel:
-   1. Run BUSCO, Merqury, winnowmap, bwa, and make_telomere_bed in parallel.
-   2. After winnowmap finishes, run DeepVariant and asset in parallel.
-   3. After DeepVariant finishes, run mapqv.
+   1. Run make_index, BUSCO, Merqury, and make_telomere_bed in parallel.
+   2. After make_index finishes, run winnowmap, bwa in parallel.
+   3. After winnowmap finishes, run DeepVariant and asset in parallel.
+   4. After DeepVariant finishes, run mapqv.
 
 ## Yoshi TODO memo
 
