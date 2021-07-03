@@ -13,7 +13,6 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 CONTIGS=contigs.fasta
 READS=hifi.fastq
-K=15
 N_THREADS=128
 
 # NOTE: Do not overload `meryl` after this
@@ -21,6 +20,7 @@ ml samtools winnowmap purge_dups
 
 ## Contig vs read
 
+K=15
 REF=${CONTIGS}
 _REF=$(basename ${REF} .gz)
 _READS=$(basename ${READS} .gz)
@@ -40,6 +40,7 @@ CONTIGS_SPLIT=${CONTIGS_PREFIX}.split.fa
 
 split_fa ${CONTIGS} >${CONTIGS_SPLIT}
 
+K=19
 REF=${CONTIGS_SPLIT}
 QUERY=${CONTIGS_SPLIT}
 _REF=$(basename ${REF} .gz)

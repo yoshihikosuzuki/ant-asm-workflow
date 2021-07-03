@@ -211,7 +211,7 @@ WARN: Only one contig FASTA file to be assessed must be placed under each subdir
 cd 10-contigs/
 cp -r templete/ YYY &&   # NOTE: YYY is an arbitrary name representing an assembly generated in 01-asm/ (i.e. hifiasm, hifiasm-p_ctg, hicanu-pd, etc.)
     cd YYY &&
-    ln -sf ../../01-asm/path/to/<contig-fasta-file> ./contigs.fasta &&   # NOTE: <contig-fasta-file> = "purged.fa" for those after purge_dups
+    ln -sf ../../01-asm/path/to/<contig-fasta-file> ./contigs.fasta &&   # NOTE: <contig-fasta-file> = "purged.fa" for those after purge_dups; otherwise, same as that in step 2
     ./make_index.sh &&
     cd 01-busco/ && ./run_busco.sh && cd .. &&
     cd 02-merqury/ && ./run_merqury.sh && cd .. &&
@@ -222,7 +222,7 @@ cd ..
 
 ### 4. Run scaffolding tools
 
-WARN: One subdirectory must be for only a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/salsa/` and `hifiasm/3ddna`. Instead, you need to make `hifiasm-salsa` and `hifiasm-3ddna` right under `11-scaf/`.
+WARN: One subdirectory must be for only a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/salsa/` nor `hifiasm/3ddna`. Instead, you need to make `hifiasm-salsa` and `hifiasm-3ddna` right under `11-scaf/`.
 
 ```bash
 cd 11-scaf/
