@@ -23,13 +23,13 @@ WINNOWMAP("*.hifi.sorted.bam/.bai")
 CONTIG --> WINNOWMAP
 HIFI -->|run_winnowmap.sh| WINNOWMAP
 
+ASSET(*.reliable.bed)
+WINNOWMAP -->|run_asset.sh| ASSET
+
 DEEPVARIANT(*.vcf)
 WINNOWMAP-->|run_deepvariant.sh| DEEPVARIANT
 
 MAPQV(mapping QV)
 DEEPVARIANT -->|run_mapqv.sh| MAPQV
-
-ASSET(*.reliable.bed)
-WINNOWMAP -->|run_asset.sh| ASSET
 
 ```
