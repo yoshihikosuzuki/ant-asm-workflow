@@ -9,8 +9,9 @@ Scripts and template working directory for genome assembly with HiFi + Omni-C. C
 Below we
 
 1. introduce the overall structure of the working directory for assembly, scaffolding, and evaluation that we propose,
-2. provide information on the template of the working directory with ready-made scripts (`template/` of this repository), and
-3. describe how to work with the template.
+2. provide information on the template of the working directory with ready-made scripts (`template/` of this repository),
+3. describe how to work with the template, and 
+4. show an example flow of the steps to do.
 
 **IMPORTANT: The structure of the directories and the names of the files MUST be exactly the same as described below (except e.g. `/path/to/...`, `XXX`, and those surrounded by `<` `>`). DO NOT change them unless you know how everything works.**
 
