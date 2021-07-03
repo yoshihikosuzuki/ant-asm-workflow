@@ -24,3 +24,13 @@ ml samtools bwa
 bwa mem -t${N_THREADS} -5SP -B8 ${SCAF} ${HIC_READS_1} ${HIC_READS_2} |
     samtools sort -@${N_THREADS} -o ${OUT_BAM}
 samtools index -@${N_THREADS} ${OUT_BAM}
+
+# Coverage
+BIN_SIZE=1000
+N_THREADS=4
+OUT_PREFIX=${OUT_BAM}
+
+ml mosdepth
+
+mosdepth -t${N_THREADS} -b ${BIN_SIZE} -n -x ${OUT_PREFIX} ${OUT_BAM}
+zcat ${OUT_PREFIX}.regions.bed.gz > ${OUT_PREFIX}.regions.bedgraph

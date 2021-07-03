@@ -26,13 +26,10 @@ HIFI -->|run_winnowmap.sh| WINNOWMAP
 DEEPVARIANT(*.vcf)
 WINNOWMAP-->|run_deepvariant.sh| DEEPVARIANT
 
-MAPQV(mapqv)
+MAPQV(mapping QV)
 DEEPVARIANT -->|run_mapqv.sh| MAPQV
 
 ASSET(*.reliable.bed)
 WINNOWMAP -->|run_asset.sh| ASSET
-
-MOSDEPTH(*.hifi.bedgraph)
-WINNOWMAP -->|run_mosdepth.sh| MOSDEPTH
 
 ```

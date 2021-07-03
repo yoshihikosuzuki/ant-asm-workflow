@@ -131,8 +131,6 @@ template/
 │       │   └── run_mapqv.sh
 │       ├── 07-asset
 │       │   └── run_asset.sh
-│       ├── 08-mosdepth
-│       │   └── run_mosdepth.sh
 │       ├── 09-telomere
 │       │   └── run_make_telomere_bed.sh
 │       └── make_index.sh
@@ -157,8 +155,6 @@ template/
         │   └── run_mapqv.sh
         ├── 07-asset
         │   └── run_asset.sh
-        ├── 08-mosdepth
-        │   └── run_mosdepth.sh
         ├── 09-telomere
         │   └── run_make_telomere_bed.sh
         └── make_index.sh
@@ -301,15 +297,14 @@ Based on these flow charts, you can simultaneously run multiple scripts in paral
 3. Run purge_dups for each of the contig assemblies in parallel.
 4. Assess the quality of each contig assembly in parallel:
    1. Run BUSCO, Merqury, winnowmap, and make_telomere_bed in parallel.
-   2. After winnowmap finishes, run DeepVariant, asset, and mosdepth in parallel.
+   2. After winnowmap finishes, run DeepVariant and asset in parallel.
    3. After DeepVariant finishes, run mapqv.
 5. For each contig assembly, check assembly stats (such as contig N50), BUSCO score, Merqury QV, mapQV, and reliable block N50, and pick up some contig assemblies that have the highest qualities.
 6. For each of the high-quality contig assemblies, run scaffolding tools (with SALSA, 3D-DNA, etc.) in parallel.
 7. Assess the quality of each scaffold assembly in parallel:
    1. Run BUSCO, Merqury, winnowmap, bwa, and make_telomere_bed in parallel.
    2. After winnowmap finishes, run DeepVariant and asset in parallel.
-   3. After winnowmap and bwa finish, run mosdepth.
-   4. After DeepVariant finishes, run mapqv.
+   3. After DeepVariant finishes, run mapqv.
 
 ## Yoshi TODO memo
 

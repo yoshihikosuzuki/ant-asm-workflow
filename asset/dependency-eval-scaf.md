@@ -13,11 +13,13 @@ SCAF -->|run_busco.sh| BUSCO
 TELOMERE(*.telomere.bed)
 SCAF -->|run_telomere_bed.sh| TELOMERE
 
-
 HIFI[(00-data/hifi/hifi.fastq)]
-MERQURY(*.merqury.*)
-SCAF -->|run_merqury.sh| MERQURY
-HIFI --> MERQURY
+
+OMNI[(00-data/omnic/omnic_R*_001.fastq)]
+
+BWA("*.omnic.sorted.bam/.bai")
+SCAF -->|run_bwa.sh| BWA
+OMNI --> BWA
 
 ASSET(*.reliable.bed)
 WINNOWMAP -->|run_asset.sh| ASSET
@@ -32,15 +34,5 @@ WINNOWMAP-->|run_deepvariant.sh| DEEPVARIANT
 
 MAPQV(mapqv)
 DEEPVARIANT -->|run_mapqv.sh| MAPQV
-
-OMNI[(00-data/omnic/omnic_R*_001.fastq)]
-
-BWA("*.omnic.sorted.bam/.bai")
-SCAF -->|run_bwa.sh| BWA
-OMNI --> BWA
-
-MOSDEPTH("*.hifi.bedgraph<br>*.omnic.bedgraph")
-WINNOWMAP --> MOSDEPTH
-BWA -->|run_mosdepth.sh| MOSDEPTH
 
 ```

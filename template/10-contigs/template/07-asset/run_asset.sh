@@ -11,11 +11,7 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 SCAF=contigs.fasta
 READS=hifi.fastq
-
-# NOTE: Assuming the specific directory structure for input BAM file
-_REF=$(basename ${SCAF} .gz)
-_READS=$(basename ${READS} .gz)
-PB_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
+PB_BAM=contigs.hifi.winnowmap.sorted.bam
 
 OUT_PREFIX=${SCAF%.*}
 BED_SCAF=${OUT_PREFIX}.bed

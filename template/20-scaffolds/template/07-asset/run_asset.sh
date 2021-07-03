@@ -13,12 +13,8 @@ SCAF=scaffolds.fasta
 READS=hifi.fastq
 HIC_READS_1=omnic_R1_001.fastq
 HIC_READS_2=omnic_R2_001.fastq
+PB_BAM=scaffolds.hifi.winnowmap.sorted.bam
 N_THREADS=128
-
-# NOTE: Assuming the specific directory structure for input BAM file
-_REF=$(basename ${SCAF} .gz)
-_READS=$(basename ${READS} .gz)
-PB_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
 
 OUT_PREFIX=${SCAF%.*}
 SCAF_SPLIT=${OUT_PREFIX}.split.fasta

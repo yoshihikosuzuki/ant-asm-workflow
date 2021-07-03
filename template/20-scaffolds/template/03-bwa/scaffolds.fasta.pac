@@ -1,0 +1,1 @@
+../scaffolds.fasta.pac

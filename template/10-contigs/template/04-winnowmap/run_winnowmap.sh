@@ -35,3 +35,13 @@ meryl print greater-than distinct=0.9998 ${OUT_MERYL} >${OUT_REP}
 winnowmap -t${N_THREADS} -ax ${TYPE} --secondary=no --eqx -Y -W ${OUT_REP} ${REF} ${READS} |
     samtools sort -@${N_THREADS} -o ${OUT_BAM}
 samtools index -@${N_THREADS} ${OUT_BAM}
+
+# Coverage
+BIN_SIZE=1000
+N_THREADS=4
+OUT_PREFIX=${OUT_BAM}
+
+ml mosdepth
+
+mosdepth -t${N_THREADS} -b ${BIN_SIZE} -n -x ${OUT_PREFIX} ${OUT_BAM}
+zcat ${OUT_PREFIX}.regions.bed.gz > ${OUT_PREFIX}.regions.bedgraph

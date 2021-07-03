@@ -11,14 +11,8 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 REF=contigs.fasta
 READS=hifi.fastq
+IN_SORTED_BAM=contigs.hifi.winnowmap.sorted.bam
 N_THREADS=128
-
-# NOTE: Assuming the specific directory structure for input BAM file
-_REF=$(basename ${REF} .gz)
-_READS=$(basename ${READS} .gz)
-OUT_PREFIX=${_REF%.*}.${_READS%.*}.winnowmap
-OUT_BAM=${OUT_PREFIX}.sorted.bam
-IN_SORTED_BAM=../04-winnowmap/${OUT_BAM}
 
 OUT_PREFIX=${_REF%.*}.${_READS%.*}.deepvariant
 OUT_VCF=${OUT_PREFIX}.vcf

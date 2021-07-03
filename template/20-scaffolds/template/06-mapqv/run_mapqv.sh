@@ -11,15 +11,11 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 REF=scaffolds.fasta
 READS=hifi.fastq
+IN_BAM=scaffolds.hifi.winnowmap.sorted.bam
+IN_VCF=scaffolds.hifi.deepvariant.vcf
 MIN_QUAL=30
 MIN_DEPTH=5
 MAX_DEPTH=200
-
-# NOTE: Assuming the specific directory structure for input BAM and VCF files
-_REF=$(basename ${REF} .gz)
-_READS=$(basename ${READS} .gz)
-IN_BAM=../04-winnowmap/${_REF%.*}.${_READS%.*}.winnowmap.sorted.bam
-IN_VCF=../05-deepvariant/${_REF%.*}.${_READS%.*}.deepvariant.vcf
 
 OUT_PREFIX=${IN_VCF%.vcf}
 OUT_NORM_VCF=${OUT_PREFIX}.norm.vcf
