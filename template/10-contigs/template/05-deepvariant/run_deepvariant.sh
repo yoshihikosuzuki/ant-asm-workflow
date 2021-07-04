@@ -14,7 +14,7 @@ READS=hifi.fastq
 IN_SORTED_BAM=contigs.hifi.winnowmap.sorted.bam
 N_THREADS=128
 
-OUT_PREFIX=${_REF%.*}.${_READS%.*}.deepvariant
+OUT_PREFIX=${REF%.*}.${READS%.*}.deepvariant
 OUT_VCF=${OUT_PREFIX}.vcf
 
 #ml samtools

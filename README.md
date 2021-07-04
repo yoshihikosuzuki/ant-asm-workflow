@@ -310,5 +310,5 @@ Based on these flow charts, you can simultaneously run multiple scripts in paral
 
 ## Yoshi TODO memo
 
-- contact matrix visualization
+- Generate .mcool (after scaffolding or after bwa?)
 - Create make_centromere_bed
