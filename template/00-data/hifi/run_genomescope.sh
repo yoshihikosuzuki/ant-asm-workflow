@@ -7,6 +7,7 @@
 #SBATCH -c 16
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 IN_FASTX=hifi.fastq
 

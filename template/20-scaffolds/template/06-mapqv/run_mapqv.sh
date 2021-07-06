@@ -46,9 +46,10 @@ calc_stats() {
     #info echo "Total num. bases subject to change: $NUM_VAR"
     # Calculate QV
     QV=$(echo "$NUM_VAR $NUM_BP" | awk '{print (-10*log($1/$2)/log(10))}')
-    info echo -e "mapping QV (${VCF}) = $QV"
+    echo -e "mapping QV (${VCF}) = $QV" >> mapping.qv
 }
 
 # Calculate QV
+touch mapping.qv
 calc_stats ${OUT_VCF}
 calc_stats ${OUT_SNV_VCF}

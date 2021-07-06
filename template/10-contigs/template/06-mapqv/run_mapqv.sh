@@ -29,7 +29,7 @@ samtools view -F 0x100 -u ${IN_BAM} |
     bedtools genomecov -ibam - -split >${IN_BAM}.genomecov
 awk -v l=${MIN_DEPTH} -v h=${MAX_DEPTH} '{if ($1=="genome" && $2>l && $2<h) {numbp += $3}} END {print numbp}' ${IN_BAM}.genomecov >${IN_BAM}.numbp
 NUM_BP=$(cat ${IN_BAM}.numbp)
-info echo "Total num. bases in mappable regions = $NUM_BP"
+#echo "Total num. bases in mappable regions = $NUM_BP"
 
 # Filter variants
 bcftools norm -f ${REF} ${IN_VCF} -Ov > ${OUT_NORM_VCF}
@@ -46,9 +46,10 @@ calc_stats() {
     #info echo "Total num. bases subject to change: $NUM_VAR"
     # Calculate QV
     QV=$(echo "$NUM_VAR $NUM_BP" | awk '{print (-10*log($1/$2)/log(10))}')
-    info echo -e "mapping QV (${VCF}) = $QV"
+    echo -e "mapping QV (${VCF}) = $QV" >> mapping.qv
 }
 
 # Calculate QV
+touch mapping.qv
 calc_stats ${OUT_VCF}
 calc_stats ${OUT_SNV_VCF}

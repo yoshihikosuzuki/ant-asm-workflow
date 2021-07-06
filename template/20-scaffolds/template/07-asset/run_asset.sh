@@ -72,9 +72,11 @@ acc ${BED_SCAF_GAP} ${BED_PB_OK} ${BED_HIC_OK} |
 bedtools subtract -a ${BED_SCAF} -b ${BED_SCAF_ACC} |
     bedtools merge -d 100 -i - >${BED_SCAF_NG}
 bedtools subtract -a ${BED_SCAF} -b ${BED_SCAF_NG} >${BED_SCAF_OK}
-info echo -n "Reliable block N50 length = "
+
+touch reliable_blocks.n50
+echo -n "Reliable block N50 length = " >reliable_blocks.n50
 awk '{print $3 - $2}' ${BED_SCAF_OK} |
     sort -nr |
     awk '{ sum += $0; print $0, sum }' |
     tac |
-    awk 'NR==1 { halftot=$2/2 } lastsize>halftot && $2<halftot { print $1 } { lastsize=$2 }'
+    awk 'NR==1 { halftot=$2/2 } lastsize>halftot && $2<halftot { print $1 } { lastsize=$2 }' >>reliable_blocks.n50

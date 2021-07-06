@@ -14,3 +14,7 @@ TELOMERE_MOTIF="TTAGG"
 ml TRF #make_telomere_bed
 
 make_telomere_bed ${IN_FASTA} ${TELOMERE_MOTIF}
+
+# NOTE: If TRF freezes, run the followings instead:
+#rm -f *.trf
+#make_telomere_bed -s ${IN_FASTA} ${TELOMERE_MOTIF}
