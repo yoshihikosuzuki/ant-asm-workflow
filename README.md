@@ -168,8 +168,6 @@ That is, you need to run the followings step-by-step although most of the steps 
 
 **IMPORTANT: In the commnds below, you need to replace each name surrounded by `<` `>` (e.g. path to an input data file, name of an assembly) with something up to you. On the other hand, however, you must NOT change the names of the other files/directories.**
 
-**WARNING: Each directory containing shell script(s) has symlinks to input data files. Confirm all the symlinks are valid (i.e. pointing to files that indeed exist) before running the scripts.**
-
 **NOTE: Variables and parameters written in the scripts can be (and should be) modified as necessary (Mandatory changes are mentioned in the comments between the commands below). We strongly recommend reading through each script before running to know what it actually does.**
 
 **NOTE: `&&` at the end of a line below means "execute the next command if the previous command finishes successfully." You do not have to add it if you are running each line interactively in a shell.**
@@ -259,7 +257,7 @@ For each contig assembly, after `run_all.sh` finishes, check assembly stats (suc
     - `01-busco/busco.log`: BUSCO result
     - `02-merqury/`: Merqury result
       - `contigs.hifi.merqury.qv`: K-mer based QV
-      - `contigs.hifi.merqury.contigs.spectra-cn.fl.png`: Copy-number spectrum
+      - `contigs.hifi.merqury.contigs.spectra-cn.fl.png`: Copy-number spectrum plot
     - `06-mapqv/mapping.qv`: Mapping based QV
     - `07-asset/reliable_blocks.n50`: Reliable block N50 length
 
@@ -295,14 +293,14 @@ cd 20-scaffolds/ &&
 cd ..
 ```
 
-For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (such as scaffold N50), BUSCO score, Merqury QV, mapping QV, and reliable block N50. Along with these quantitative qualty metrics, by looking at the Omni-C contact matrix ana .bed files, pick up the best scaffold assembly and proceed to manual curation using the .bed files as a guide.
+For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (such as scaffold N50), BUSCO score, Merqury QV, mapping QV, and reliable block N50. Along with these quantitative qualty metrics, by looking at the Omni-C contact matrix and .bed files, choose the best scaffold assembly and proceed to manual curation using the .bed files as a guide.
 
 - Important output files for quality metrics:
   - `20-scaffolds/<scaf-name>/`
     - `01-busco/busco.log`: BUSCO result
     - `02-merqury/`: Merqury result
       - `scaffolds.hifi.merqury.qv`: K-mer based QV
-      - `scaffolds.hifi.merqury.contigs.spectra-cn.fl.png`: Copy-number spectrum
+      - `scaffolds.hifi.merqury.contigs.spectra-cn.fl.png`: Copy-number spectrum plot
     - `06-mapqv/mapping.qv`: Mapping based QV
     - `07-asset/reliable_blocks.n50`: Reliable block N50 length
 - Important output files for manual curation:
@@ -317,7 +315,7 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
       - `references/contigs.assembly`: For Juicebox with the initial contact matrix
       - `scaffolding/`
         - `contigs.final.hic`: Omni-C contact matrix for Juicebox
-        - `contigs.FINAL.assembly`: Index file for Juicebox
+        - `contigs.final.assembly`: Index file for Juicebox
   - `20-scaffolds/<scaf-name>/`
     - `scaffolds.fasta.fai`: Index file for e.g. IGV
     - `02-merqury/scaffolds_only.bed`: K-mers that appear only in scaffolds (potential misassemblies)
@@ -334,7 +332,7 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
       - `scaffolds.pb.unreliable.bed`: Regions not supported by HiFi reads
     - `09-telomere/scaffolds.telomere.bed`: Long tandem arrays of telomeric motifs
 
-## [Suppl. Info] Visual dependencies among the files and commands in the workflow
+## Visual dependencies among the files and commands in the workflow
 
 ### 1. Assembly and scaffolding
 
@@ -347,9 +345,3 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 ### 3. Scafold assembly evaluation
 
 ![](assets/dependency-eval-scaf-light.png)
-
-## Yoshi TODO memo
-
-- Generate .mcool (after scaffolding or after bwa?)
-- Create make_centromere_bed
-- .gz input?
