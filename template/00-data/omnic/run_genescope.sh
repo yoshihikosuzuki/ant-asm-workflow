@@ -16,6 +16,6 @@ HIST_MAX=1000
 
 OUT_PREFIX=${FASTK_PREFIX%.fastk}.genescope
 
-ml FASTK genomescope/fastk
+ml Other/genescope
 
 Histex -G ${FASTK_PREFIX} -h${HIST_MAX} | GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}

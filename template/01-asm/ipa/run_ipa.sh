@@ -13,7 +13,7 @@ IN_FASTX=hifi.fastq
 N_THREAD=128
 TMP_DIR=tmp
 
-ml pbipa
+ml Other/pbipa
 
 mkdir -p ${TMP_DIR}
 ipa local --input-fn ${IN_FASTX} --nthreads ${N_THREAD} --tmp-dir ${TMP_DIR} --verbose

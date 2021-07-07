@@ -18,7 +18,7 @@ OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_PREFIX=${OUT_PREFIX%.*}
 OUT_DIR=${OUT_PREFIX}.busco
 
-ml BUSCO
+ml Other/BUSCO/5.1.3
 
 ## Case 1. Using Metaeuk for gene annotation
 #busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}

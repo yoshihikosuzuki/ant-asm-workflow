@@ -25,7 +25,7 @@ _READS=$(basename ${READS} .gz)
 _CONTIGS=$(basename ${CONTIGS} .gz)
 OUT_PREFIX=${_CONTIGS%.*}.${_READS%.*}.merqury
 
-ml merqury
+ml Other/merqury
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
 merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}

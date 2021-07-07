@@ -24,7 +24,7 @@ PB_PAF=${PB_BAM/.bam/.paf}
 BED_PB=${OUT_PREFIX}.pb.bed
 BED_PB_OK=${OUT_PREFIX}.pb.reliable.bed
 
-ml asset bedtools samtools
+ml Other/asset
 
 # Contiguous regions and gaps
 #samtools faix ${SCAF}

@@ -16,7 +16,7 @@ N_THREADS=128
 
 OUT_PREFIX=${CONTIGS%.*}.
 
-ml bwa 3d-dna
+ml Other/3d-dna
 
 # Make ./scripts/
 juicer_copy_scripts_dir

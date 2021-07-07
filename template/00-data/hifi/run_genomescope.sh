@@ -22,14 +22,14 @@ OUT_PREFIX=${IN_FASTX%.gz}
 OUT_PREFIX=${OUT_PREFIX%.*}.genomescope
 OUT_HIST=${OUT_PREFIX}.hist
 
-ml genomescope
+ml Other/genomescope
 
 mkdir -p ${TMP_DIR}
 kmc -k${K} -m${GB_MEMORY} -ci1 -cs${HIST_MAX} -t${N_THREADS} -fm ${IN_FASTX} ${OUT_PREFIX} ${TMP_DIR}
 kmc_tools transform ${OUT_PREFIX} -cx${HIST_MAX} histogram ${OUT_HIST}
 genomescope.R -i ${OUT_HIST} -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}
 
-ml smudgeplot
+ml Other/smudgeplot
 
 L=$(smudgeplot.py cutoff ${OUT_HIST} L)
 U=$(smudgeplot.py cutoff ${OUT_HIST} U)

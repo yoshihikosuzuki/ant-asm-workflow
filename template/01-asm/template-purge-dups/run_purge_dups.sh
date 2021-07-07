@@ -21,9 +21,9 @@ CONTIGS=contigs.fasta
 PAF_CONTIGS=contigs.paf
 CUTOFFS=cutoffs
 
-ml purge_dups
+ml Other/purge_dups
 
 calcuts -l ${L} -m ${M} -u ${U} PB.stat > ${CUTOFFS}
 purge_dups -2 -T ${CUTOFFS} -c PB.base.cov ${PAF_CONTIGS} > dups.bed
 get_seqs dups.bed ${CONTIGS}
-info echo "Finished purge_dups"
+echo "Finished purge_dups"

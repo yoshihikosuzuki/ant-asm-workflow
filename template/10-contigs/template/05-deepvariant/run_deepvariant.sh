@@ -21,6 +21,6 @@ OUT_VCF=${OUT_PREFIX}.vcf
 #samtools faidx ${REF}
 #samtools index -@${N_THREADS} ${IN_SORTED_BAM}
 
-ml deepvariant
+ml Other/deepvariant
 
 run_deepvariant --num_shards ${N_THREADS} --model_type PACBIO --ref ${REF} --reads ${IN_SORTED_BAM} --output_vcf ${OUT_VCF}

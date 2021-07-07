@@ -17,7 +17,7 @@ TMP_DIR=tmp
 
 OUT_PREFIX=${IN_FNAME%.*}.fastk
 
-ml FASTK
+ml Other/FASTK
 mkdir -p ${TMP_DIR}
 
 FastK -k${K} -T${N_THREAD} -M${N_MEMORY} -v -t1 -p -P${TMP_DIR} -N${OUT_PREFIX} ${IN_FNAME}

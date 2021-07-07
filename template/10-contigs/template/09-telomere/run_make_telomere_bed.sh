@@ -11,7 +11,7 @@
 IN_FASTA=contigs.fasta
 TELOMERE_MOTIF="TTAGG"
 
-ml TRF #make_telomere_bed
+ml Other/make_telomere_bed
 
 make_telomere_bed ${IN_FASTA} ${TELOMERE_MOTIF}
 

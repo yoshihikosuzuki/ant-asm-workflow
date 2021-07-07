@@ -17,7 +17,7 @@ CONTIGS_PREFIX=${CONTIGS%.gz}
 CONTIGS_PREFIX=${CONTIGS_PREFIX%.*}
 CONTIGS_SPLIT=${CONTIGS_PREFIX}.split.fa
 
-ml minimap2 purge_dups
+ml Other/minimap2 Other/purge_dups
 
 minimap2 -t${N_THREADS} -xmap-pb ${CONTIGS} ${READS} > reads.paf
 split_fa ${CONTIGS} > ${CONTIGS_SPLIT}
@@ -25,5 +25,5 @@ minimap2 -t${N_THREADS} -xasm5 -DP ${CONTIGS_SPLIT} ${CONTIGS_SPLIT} > contigs.p
 pbcstat reads.paf
 hist_plot.py PB.stat PB.hist.png
 calcuts PB.stat > cutoffs
-info echo -n "Automatically estimated cutoff values: "
+echo -n "Automatically estimated cutoff values: "
 cat cutoffs

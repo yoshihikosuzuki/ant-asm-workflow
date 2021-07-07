@@ -345,3 +345,8 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 ### 3. Scafold assembly evaluation
 
 ![](assets/dependency-eval-scaf-light.png)
+
+
+## TODO
+
+- use 3d-dna pipeline to generate .hic for salsa scaffolds?

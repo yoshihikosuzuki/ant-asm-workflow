@@ -15,6 +15,6 @@ GENOME_SIZE=300000000
 OUT_PREFIX=${IN_FASTX%.gz}
 OUT_PREFIX=${OUT_PREFIX%.*}.hicanu
 
-ml canu
+ml Other/canu
 
 canu -d . -p ${OUT_PREFIX} genomeSize=${GENOME_SIZE} useGrid=false -pacbio-hifi ${IN_FASTX}

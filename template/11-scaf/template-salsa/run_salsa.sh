@@ -23,7 +23,7 @@ OUT_BAM=${OUT_PREFIX}.dedup.sorted.bam
 OUT_BED=${OUT_BAM/.bam/.bed}
 OUT_SALSA=${OUT_PREFIX}_salsa
 
-ml samtools bwa picard SALSA
+ml samtools bwa picard Other/SALSA/2.3
 
 #samtools faidx ${CONTIGS}
 #bwa index ${CONTIGS}
@@ -31,7 +31,7 @@ ml samtools bwa picard SALSA
 ### Read mapping
 
 # 1. VGP method
-ml arima_pipeline
+ml Other/arima_pipeline
 
 for READS in ${READS_1} ${READS_2}; do
     _OUT_PREFIX=${READS%.gz}
@@ -58,6 +58,11 @@ bedtools bamtobed -i ${OUT_BAM} |
 run_pipeline.py -a ${CONTIGS} -l ${CONTIGS}.fai -b ${OUT_BED} -e DNASE -o ${OUT_SALSA} -m yes -p yes -i ${N_ITERATION}
 
 ### Generate .assembly and .hic
-ml 3d-dna
+ml Other/3d-dna
+
 3d-dna-fasta2assembly ${OUT_SALSA}/scaffolds_FINAL.fasta >${OUT_SALSA}/scaffolds_FINAL.assembly
 convert.sh ${OUT_SALSA}
+cd ${OUT_SALSA} &&
+    ln -sf chromosome_sizes.tsv scaffolds_FINAL.chrom_sizes;
+    ln -sf salsa_scaffolds.hic scaffolds_FINAL.hic;
+    cd ..

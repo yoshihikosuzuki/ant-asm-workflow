@@ -15,11 +15,12 @@ N_THREADS=128
 OUT_PREFIX=${IN_FASTX%.gz}
 OUT_PREFIX=${OUT_PREFIX%.*}.hifiasm
 
-ml hifiasm
+ml Other/hifiasm
 
 hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} ${IN_FASTX}
 
-ml gfatools
+ml Other/gfatools
+
 for DATA in *tg.gfa; do
     gfatools gfa2fa ${DATA} > ${DATA%.gfa}.fasta
 done

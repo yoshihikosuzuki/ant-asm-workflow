@@ -30,7 +30,7 @@ BIN_SIZE=1000
 N_THREADS=4
 OUT_PREFIX=${OUT_BAM}
 
-ml mosdepth
+ml Other/mosdepth
 
 mosdepth -t${N_THREADS} -b ${BIN_SIZE} -n -x ${OUT_PREFIX} ${OUT_BAM}
 zcat ${OUT_PREFIX}.regions.bed.gz > ${OUT_PREFIX}.regions.bedgraph
