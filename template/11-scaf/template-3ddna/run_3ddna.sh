@@ -46,3 +46,12 @@ rm -rf scaffolding && mkdir -p scaffolding && cd scaffolding &&
     ln -sf ../${CONTIGS} ../aligned/merged_nodups.txt . &&
     3d-dna ${CONTIGS##*/} merged_nodups.txt
 cd ..
+
+# Generate .mcool file
+# NOTE: HiGlass is not editable, so `.FINAL.assembly` should be preferable for `.chrom_sizes`.
+ml Other/hic2cool
+
+cd scaffolding &&
+    hic2cool convert contigs.final.hic contigs.final.cool -p ${N_THREADS} &&
+    awk 'NF == 3 {print substr($1,2) "\t" $3}' contigs.FINAL.assembly >contigs.final.chrom_sizes &&
+    cd ..

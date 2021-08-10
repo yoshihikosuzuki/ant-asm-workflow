@@ -70,6 +70,7 @@ ml Other/3d-dna
 
 # 2. Use 3D-DNA (that requires remapping of Omni-C reads but can be editable by Juicebox)
 cd ${OUT_SALSA}
+
 # Make ./scripts/
 juicer_copy_scripts_dir
 # Remove ./aligned/ that already exists
@@ -94,3 +95,8 @@ mkdir -p hic &&
 ln -sf ${SCAFS%.*}.assembly .
 ln -sf ${SCAFS%.*}.chrom_sizes .
 ln -sf hic/scaffolds_FINAL.hic .
+
+# Generate .mcool
+ml Other/hic2cool
+
+hic2cool convert scaffolds_FINAL.hic scaffolds_FINAL.cool -p ${N_THREADS}

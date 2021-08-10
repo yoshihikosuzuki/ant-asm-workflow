@@ -279,6 +279,8 @@ cd ..
   1. SALSA: `11-scaf/<scaf-name>/contigs.omnic_salsa/scaffolds_FINAL.fasta`
   2. 3D-DNA: `11-scaf/<scaf-name>/scaffolding/contigs.FINAL.fasta`
 
+- Contact matrix file (and its associated index file) for each of Juicebox and HiGlass is also generated. See below ("Important output files for manual curation") for details.
+
 ### 5. Evaluate scaffolds
 
 **WARNING: Only one scaffold FASTA per subdirectory, just like above.**
@@ -309,10 +311,14 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
       - `contigs.omnic_salsa/`
         - `scaffolds_FINAL.hic`: Omni-C contact matrix for Juicebox
         - `scaffolds_FINAL.assembly`: Index file for Juicebox
+        - `scaffolds_FINAL.mcool`: Omni-C contact matrix for HiGlass
+        - `scaffolds_FINAL.chrom_sizes`: Index file for HiGlass
     - If the scaffolding tool is **3D-DNA**:
       - `scaffolding/`
         - `contigs.final.hic`: Omni-C contact matrix for Juicebox
         - `contigs.final.assembly`: Index file for Juicebox
+        - `contigs.final.mcool`: Omni-C contact matrix for HiGlass
+        - `contigs.final.chrom_sizes`: Index file for HiGlass
   - `20-scaffolds/<scaf-name>/`
     - `scaffolds.fasta.fai`: Index file for e.g. IGV
     - `02-merqury/scaffolds_only.bed`: K-mers that appear only in scaffolds (potential misassemblies)
