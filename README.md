@@ -306,13 +306,10 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 - Important output files for manual curation:
   - `11-scaf/<scaf-name>/`
     - If the scaffolding tool is **SALSA**:
-      - `contigs.omnic.dedup.sorted.bam`: Omni-C read mappings used for scaffolding
       - `contigs.omnic_salsa/`
         - `scaffolds_FINAL.hic`: Omni-C contact matrix for Juicebox
         - `scaffolds_FINAL.assembly`: Index file for Juicebox
     - If the scaffolding tool is **3D-DNA**:
-      - `hic/contigs.hic`: Initial Omni-C contact matrix using the contigs, not scaffolds
-      - `references/contigs.assembly`: For Juicebox with the initial contact matrix
       - `scaffolding/`
         - `contigs.final.hic`: Omni-C contact matrix for Juicebox
         - `contigs.final.assembly`: Index file for Juicebox
@@ -328,8 +325,6 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
     - `07-asset`: Asset result
       - `scaffolds.gaps.bed`: Gaps (= N bases) between contigs
       - `scaffolds.unreliable.bed`: Unreliable regions (= not supported by at least one of HiFi and Omni-C; unreliable regions that are not gaps are potential misassemblies)
-      - `scaffolds.hic.unreliable.bed`: Regions not supported by Omni-C reads
-      - `scaffolds.pb.unreliable.bed`: Regions not supported by HiFi reads
     - `09-telomere/scaffolds.telomere.bed`: Long tandem arrays of telomeric motifs
 
 ## Visual dependencies among the files and commands in the workflow
@@ -345,8 +340,3 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 ### 3. Scafold assembly evaluation
 
 ![](assets/dependency-eval-scaf-light.png)
-
-
-## TODO
-
-- use 3d-dna pipeline to generate .hic for salsa scaffolds?

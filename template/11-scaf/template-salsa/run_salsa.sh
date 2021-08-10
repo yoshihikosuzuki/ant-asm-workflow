@@ -60,9 +60,37 @@ run_pipeline.py -a ${CONTIGS} -l ${CONTIGS}.fai -b ${OUT_BED} -e DNASE -o ${OUT_
 ### Generate .assembly and .hic
 ml Other/3d-dna
 
-3d-dna-fasta2assembly ${OUT_SALSA}/scaffolds_FINAL.fasta >${OUT_SALSA}/scaffolds_FINAL.assembly
-convert.sh ${OUT_SALSA}
-cd ${OUT_SALSA} &&
-    ln -sf chromosome_sizes.tsv scaffolds_FINAL.chrom_sizes;
-    ln -sf salsa_scaffolds.hic scaffolds_FINAL.hic;
+# 1. Use SALSA's script (that cannot be editable by Juicebox)
+# 3d-dna-fasta2assembly ${OUT_SALSA}/scaffolds_FINAL.fasta >${OUT_SALSA}/scaffolds_FINAL.assembly
+# convert.sh ${OUT_SALSA}
+# cd ${OUT_SALSA} &&
+#     ln -sf chromosome_sizes.tsv scaffolds_FINAL.chrom_sizes;
+#     ln -sf salsa_scaffolds.hic scaffolds_FINAL.hic;
+#     cd ..
+
+# 2. Use 3D-DNA (that requires remapping of Omni-C reads but can be editable by Juicebox)
+cd ${OUT_SALSA}
+# Make ./scripts/
+juicer_copy_scripts_dir
+# Remove ./aligned/ that already exists
+rm -rf aligned
+# Make ./fastq/
+mkdir -p fastq && cd fastq && ln -sf ../../${READS_1} ../../${READS_2} . && cd ..
+# Make ./references/
+mkdir -p references && cd references && ln -sf ../scaffolds_FINAL.fasta . && cd ..
+
+SCAFS=references/scaffolds_FINAL.fasta
+bwa index ${SCAFS}
+
+3d-dna-fasta2assembly ${SCAFS} >${SCAFS%.*}.assembly
+awk 'NF == 3 {print substr($1,2) "\t" $3}' ${SCAFS%.*}.assembly >${SCAFS%.*}.chrom_sizes
+
+./scripts/juicer.sh -t ${N_THREADS} -S early -z ${SCAFS} -p ${SCAFS%.*}.chrom_sizes -g ${OUT_PREFIX}
+mkdir -p hic &&
+    cd hic &&
+    3d-dna-run-assembly-visualizer ../${SCAFS%.*}.assembly ../aligned/merged_nodups.txt &&
     cd ..
+
+ln -sf ${SCAFS%.*}.assembly .
+ln -sf ${SCAFS%.*}.chrom_sizes .
+ln -sf hic/scaffolds_FINAL.hic .
