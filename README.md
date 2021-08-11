@@ -350,3 +350,4 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 # TODO
 
 - [ ] Is it better to keep only HiFi reads mapped to purged contigs (rather than discarded haplotigs), before proceeding to assembly evaluation?
+## gaurav test 
