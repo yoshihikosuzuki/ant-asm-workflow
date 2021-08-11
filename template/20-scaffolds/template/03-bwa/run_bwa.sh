@@ -7,6 +7,7 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 SCAF=scaffolds.fasta
 HIC_READS_1=omnic_R1_001.fastq

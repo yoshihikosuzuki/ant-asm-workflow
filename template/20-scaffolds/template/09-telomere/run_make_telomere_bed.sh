@@ -7,6 +7,7 @@
 #SBATCH -c 1
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 IN_FASTA=scaffolds.fasta
 TELOMERE_MOTIF="TTAGG"

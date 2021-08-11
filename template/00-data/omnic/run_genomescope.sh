@@ -7,6 +7,7 @@
 #SBATCH -c 16
 #SBATCH --mem=100G
 #SBATCH -t 10:00:00
+shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 IN_FNAMES="omnic_R1_001.fastq omnic_R2_001.fastq"
 IN_FOFN=omnic.fofn
