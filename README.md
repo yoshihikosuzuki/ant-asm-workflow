@@ -346,3 +346,7 @@ For each scaffold assembly, after `run_all.sh` finishes, check assembly stats (s
 ### 3. Scafold assembly evaluation
 
 ![](assets/dependency-eval-scaf-light.png)
+
+# TODO
+
+- [ ] Is it better to keep only HiFi reads mapped to purged contigs (rather than discarded haplotigs), before proceeding to assembly evaluation?
