@@ -281,7 +281,7 @@ cd 10-contigs/ &&
 cd ..
 ```
 
-After submitting `run_all.sh`, you can **immediately** proceed to the next step 4 (i.e. You do not have to wait for it to finish).
+After index files (`contigs.fasta.fai`, `contigs.fasta.bwt`, etc.) are created right under the `<assembly-name>` directory (i.e. after the SLURM job named `make_index` finishes), you can proceed to the next step 4 (i.e. You do not have to wait for the remainings to finish).
 However, if you have many assembly candidates, then you should probably just wait for them to finish and choose only a few of them based on the quality metrics.
 
 For each contig assembly, after `run_all.sh` finishes, check i) assembly stats such as contig N50 length, ii) BUSCO score, iii) Merqury QV, iv) mapping QV, and v) reliable block N50:
