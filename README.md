@@ -372,10 +372,10 @@ Along with these qualty metrics, we generate several files used for manual asses
 >      - `scaffolds.hifi.winnowmap.sorted.bam`: HiFi read mappings
 >      - `scaffolds.hifi.winnowmap.sorted.bam.regions.bedgraph`: Mapping depth (per 1 kb by default)
 >    - `07-asset/`:
->      - `scaffolds.gaps.bed`: Sequence gaps (= `N` bases) between contigs
->      - `scaffolds.unreliable.bed`: Unreliable regions (= regions where read coverage is very low, meaning potential misassemblies)
+>      - `scaffolds.gaps.bed`: Locations of sequence gaps (= `N` bases) between contigs
+>      - `scaffolds.unreliable.bed`: Locations of unreliable regions (where read coverage is very low, meaning potential misassemblies)
 >    - `09-telomere/`:
->      - `scaffolds.telomere.bed`: Location of tandem arrays of telomeric motifs
+>      - `scaffolds.telomere.bed`: Locations of tandem arrays of telomeric motifs
 
 ## Visual dependencies among the files and commands in the workflow
 
