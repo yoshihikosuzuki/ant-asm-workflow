@@ -18,6 +18,21 @@ Below we start with an abstract description about the overall structure of the w
 > 
 > Some values hard-coded in scripts are specific to ants (e.g. `hymenoptera_odb10` for BUSCO's lineage and `TTAGG` for telomeric motif sequence whereas human is `TTAGGG`). You need to change them as necessary for different creatures.
 
+## Prerequisites
+
+This workflow is supposed to be run on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST with [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp).
+If you have an account of Deigo, you should be able to run it.
+
+> :information_source: **IMPORTANT:**
+> 
+> To make the Bioinfo User Group module set available from the scripts in this workflow, you MUST add the following lines to your `$HOME/.bashrc` on Deigo:
+> ```
+> module use /apps/.bioinfo-ugrp-modulefiles81
+> module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefilesge
+> ```
+
+If you wish to run outside Deigo, you need to change the lines for loading modules (e.g. `ml samtools`) in the scripts as necessary.
+
 ## Directory structure
 
 For each species, we propose the following directory structure to generate different types of assemblies.
