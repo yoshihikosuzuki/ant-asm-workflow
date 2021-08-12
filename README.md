@@ -213,7 +213,7 @@ That is, you need to run the following commands step-by-step, although most of t
 ### 0. Copy the template and make symlinks to input read datasets
 
 ```bash
-cp -r <path-to>/ant-asm-workflow/template/ <your-working-dir-name> &&
+cp -r <path-to>/ant-asm-workflow/template/* <your-working-dir-name> &&
     cd <your-working-dir-name>
 
 cd 00-data/ &&
