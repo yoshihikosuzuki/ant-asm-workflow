@@ -87,10 +87,9 @@ bwa index ${SCAFS}
 awk 'NF == 3 {print substr($1,2) "\t" $3}' ${SCAFS%.*}.assembly >${SCAFS%.*}.chrom_sizes
 
 ./scripts/juicer.sh -t ${N_THREADS} -S early -z ${SCAFS} -p ${SCAFS%.*}.chrom_sizes -g ${OUT_PREFIX}
-mkdir -p hic &&
-    cd hic &&
-    3d-dna-run-assembly-visualizer ../${SCAFS%.*}.assembly ../aligned/merged_nodups.txt &&
-    cd ..
+mkdir -p hic && cd hic &&
+    3d-dna-run-assembly-visualizer ../${SCAFS%.*}.assembly ../aligned/merged_nodups.txt
+cd ..
 
 ln -sf ${SCAFS%.*}.assembly .
 ln -sf ${SCAFS%.*}.chrom_sizes .
