@@ -231,7 +231,10 @@ cd ..
 > 
 > You can update the scripts in your working directory while keeping the other files as they are (which is useful when the workflow itself is updated) by:
 > ```bash
-> $ rsync -auv <path-to>/ant-asm-workflow/template/ <your-working-dir-name>/   # <your-working-dir-name> needs to exist
+> rsync -auv <path-to>/ant-asm-workflow/template/ <your-working-dir-name>/   # <your-working-dir-name> needs to exist
+> # For example, to update scripts in `10-contigs/<assembly-name>`:
+> cd <your-working-dir-name>/10-contigs/
+> rsync -auv template/ <assembly-name>/
 > ```
 > :warning: **WARNING**: Do NOT forget `/` after `template` in the command above.
 
