@@ -227,6 +227,14 @@ cd 00-data/ &&
 cd ..
 ```
 
+> :memo: **NOTE:**
+> 
+> You can update the scripts in your working directory while keeping the other files as they are (which is useful when the workflow itself is updated) by:
+> ```bash
+> $ rsync -auv <path-to>/ant-asm-workflow/template/ <your-working-dir-name>/   # <your-working-dir-name> needs to exist
+> ```
+> :warning: **WARNING**: Do NOT forget `/` after `template` in the command above.
+
 ### 1. Run GenomeScope and GeneScope for each of HiFi reads and Omni-C reads
 
 ```bash
