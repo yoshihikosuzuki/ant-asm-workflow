@@ -417,6 +417,65 @@ Along with these qualty metrics, we generate several files used for manual asses
 
 ![](assets/dependency-eval-scaf-light.png)
 
+# How to do manual curation using Juicebox (JBAT)
+
+**Input files**:
+
+- Hi-C contact matrix
+  - `11-scaf/<scaf-name>/contigs.omnic_salsa/scaffolds_FINAL.hic` (SALSA)
+  - `11-scaf/<scaf-name>/scaffolding/contigs.final.hic` (3D-DNA)
+- Hi-C index file
+  - `11-scaf/<scaf-name>/contigs.omnic_salsa/scaffolds_FINAL.assembly` (SALSA)
+  - `11-scaf/<scaf-name>/scaffolding/contigs.final.assembly` (3D-DNA)
+- Sequence gaps
+  - `20-scaffolds/<scaf-name>/scaffolds.gaps.JBAT.bed`
+- Unreliable regions
+  - `20-scaffolds/<scaf-name>/scaffolds.unreliable.JBAT.bed`
+- Long telomere arrays
+  - `20-scaffolds/<scaf-name>/scaffolds.telomere.filtered.JBAT.bed`
+
+**Steps:**
+
+1. Load the `.hic` and `.assembly` files in JBAT.
+2. Load the `.bed` files of sequence gaps, unreliable regions, and tandem arrays as 1D tracks (via `View` → `Show Annotation Panel` → `Add Local`).
+3. Turn on `Enable straight edge` via Right mouse click.
+4. Fix the assembly if there is a breakpoint of contacts. If the breakpoint is a sequence gap and/or unreliable region, the cutting location should be at that position in most cases.
+5. After modifying the assembly, save the reviewed `.assembly` file and make a curated `.fasta` file with the following command:
+
+```bash
+ml samtools bwa Other/3d-dna
+3d-dna-post-review -r <reviewed-asm>.assembly scaffolds.fasta merged.nodups.txt
+```
+
+where
+
+- `scaffolds.fasta` = `20-scaffolds/<scaf-name>/scaffolds.fasta`
+- `merged.nodups.txt` =
+  - `11-scaf/<scaf-name>/contigs.omnic_salsa/aligned/merged_nodups.txt` (SALSA)
+  - `11-scaf/<scaf-name>/aligned/merged_nodups.txt` (3D-DNA)
+
+**Example:**
+
+<img src="assets/jbat_1.png" width="500">
+
+1. There exist two contact breakpoints at sequence gaps.
+
+<img src="assets/jbat_2.png" width="500">
+
+2. Cut the scaffold at the first breakpoint so that it is exactly at the sequence gap.
+
+<img src="assets/jbat_3.png" width="500">
+
+3. Cut the other location in the same manner.
+
+<img src="assets/jbat_4.png" width="500">
+
+4. Translocate the third block to the second.
+
+<img src="assets/jbat_5.png" width="500">
+
+5. Concatenate the blocks. Telomere motifs are now not located at the chromosome end. Telomere motifs can be found in the middle of a chromosome as well, so this might be no problem, but there also might be a further improvement.
+
 # TODO
 
 - [ ] Is it better to keep only HiFi reads mapped to purged contigs (rather than discarded haplotigs), before proceeding to assembly evaluation?
