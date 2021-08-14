@@ -387,10 +387,10 @@ Along with these qualty metrics, we generate several files used for manual asses
 >      - `scaffolds.hifi.winnowmap.sorted.bam`: HiFi read mappings
 >      - `scaffolds.hifi.winnowmap.sorted.bam.regions.bedgraph`: Mapping depth (per 1 kb by default)
 >    - `07-asset/`:
->      - `scaffolds.gaps.bed`: Locations of sequence gaps (= `N` bases) between contigs
->      - `scaffolds.unreliable.bed`: Locations of unreliable regions (where read coverage is very low, meaning potential misassemblies)
+>      - `scaffolds.gaps[.bed|.JBAT.bed]`: Locations of sequence gaps (= `N` bases) between contigs (`.JBAT.bed` is for Juicebox)
+>      - `scaffolds.unreliable[.bed|.JBAT.bed]`: Locations of unreliable regions (where read coverage is very low, meaning potential misassemblies; `.JBAT.bed` is for Juicebox)
 >    - `09-telomere/`:
->      - `scaffolds.telomere.bed`: Locations of tandem arrays of telomeric motifs
+>      - `scaffolds.telomere.filtered[.bed|.JBAT.bed]`: Locations of long tandem arrays of telomeric motifs (`.JBAT.bed` is for Juicebox)
 
 ## Visual dependencies among the files and commands in the workflow
 
