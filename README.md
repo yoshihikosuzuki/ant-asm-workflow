@@ -28,7 +28,7 @@ If you have an account of Deigo, you should be able to run it.
 > To make the Bioinfo User Group module set available from the scripts in this workflow, you MUST add the following lines to your `$HOME/.bashrc` on Deigo:
 > ```
 > module use /apps/.bioinfo-ugrp-modulefiles81
-> module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefilesge
+> module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
 > ```
 
 If you wish to run outside Deigo, you need to change the lines for loading modules (e.g. `ml samtools`) in the scripts as necessary.
