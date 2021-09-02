@@ -295,6 +295,8 @@ cd 01-asm/ &&
 cd ..
 ```
 
+The assembly stats such as contig N50 length is written at the bottom of the log file, e.g. `hifiasm/hifiasm.log`.
+
 ### 4. Evaluate contigs
 
 > :warning: **WARNING:**
