@@ -482,4 +482,4 @@ where
 
 # TODO
 
-- [ ] Is it better to keep only HiFi reads mapped to purged contigs (rather than discarded haplotigs), before proceeding to assembly evaluation?
+- [ ] Is it better to discard HiFi reads mapped to purged haplotigs, before proceeding to assembly evaluation?
