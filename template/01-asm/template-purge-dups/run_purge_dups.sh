@@ -8,6 +8,7 @@
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../config.sh
 
 # According to `calcuts` command:
 #     -l    INT      lower bound for read depth
@@ -21,9 +22,15 @@ CONTIGS=contigs.fasta
 PAF_CONTIGS=contigs.paf
 CUTOFFS=cutoffs
 
-ml Other/purge_dups
+ml Other/purge_dups Other/seqkit
 
 calcuts -l ${L} -m ${M} -u ${U} PB.stat > ${CUTOFFS}
 purge_dups -2 -T ${CUTOFFS} -c PB.base.cov ${PAF_CONTIGS} > dups.bed
 get_seqs dups.bed ${CONTIGS}
 echo "Finished purge_dups"
+echo "Purged contig stats:"
+seqkit stats -a purged.fa
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

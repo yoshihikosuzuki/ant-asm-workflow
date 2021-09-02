@@ -8,6 +8,7 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 REF=contigs.fasta
 READS=hifi.fastq

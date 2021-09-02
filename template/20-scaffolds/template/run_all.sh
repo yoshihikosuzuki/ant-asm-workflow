@@ -5,7 +5,7 @@
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -c 1
-#SBATCH --mem=40G
+#SBATCH --mem=1G
 #SBATCH -t 72:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
@@ -17,10 +17,6 @@ cd 01-busco/ &&
 
 cd 02-merqury/ &&
     MERQURY=$(sbatch run_merqury.sh | cut -f 4 -d' ') &&
-    cd ..
-
-cd 03-bwa/ &&
-    BWA=$(sbatch -d afterany:${MAKE_INDEX} run_bwa.sh | cut -f 4 -d' ') &&
     cd ..
 
 cd 04-winnowmap/ &&
@@ -43,4 +39,4 @@ cd 09-telomere/ &&
     TELOMERE=$(sbatch run_make_telomere_bed.sh | cut -f 4 -d' ') &&
     cd ..
 
-srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${BUSCO},${MERQURY},${BWA},${MAPQV},${ASSET},${TELOMERE} --wait=0 sleep 1s
+srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${BUSCO},${MERQURY},${MAPQV},${ASSET},${TELOMERE} --wait=0 sleep 1s

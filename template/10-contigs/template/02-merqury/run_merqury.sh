@@ -8,15 +8,11 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 READS=hifi.fastq
 CONTIGS=contigs.fasta
-
-# NOTE: The value of `K` should be determined by the following command:
-#GENOME_SIZE=300000000
-#best_k.sh ${GENOME_SIZE}
-K=19
-
+K=${MERQURY_K}
 N_THREADS=128
 N_MEMORY=500
 

@@ -8,15 +8,16 @@
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 ASM=scaffolds.fasta
-LINEAGE="hymenoptera_odb10"
+LINEAGE=$BUSCO_DB
 DOWNLOAD_PATH="$HOME/busco_downloads"
 N_THREADS=128
 
 OUT_PREFIX=$(basename ${ASM} .gz)
-OUT_PREFIX=${OUT_PREFIX%.*}
-OUT_DIR=${OUT_PREFIX}.busco
+OUT_DIR=${OUT_PREFIX%.*}.busco
+AUGUSTUS_PATH=${OUT_DIR}_augustus
 
 ml Other/BUSCO/5.1.3
 
@@ -24,4 +25,8 @@ ml Other/BUSCO/5.1.3
 #busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}
 
 ## Case 2. Using Augustus for gene annotation
-busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${OUT_DIR}_augustus
+busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${AUGUSTUS_PATH}
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

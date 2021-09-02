@@ -8,24 +8,20 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 READS=hifi.fastq
-CONTIGS=scaffolds.fasta
-
-# NOTE: The value of `K` should be determined by the following command:
-#GENOME_SIZE=300000000
-#best_k.sh ${GENOME_SIZE}
-K=19
-
+SCAFS=cscaffolds.fasta
+K=${MERQURY_K}
 N_THREADS=128
 N_MEMORY=500
 
 READS_MERYL=${READS}.meryl
 _READS=$(basename ${READS} .gz)
-_CONTIGS=$(basename ${CONTIGS} .gz)
-OUT_PREFIX=${_CONTIGS%.*}.${_READS%.*}.merqury
+_SCAFS=$(basename ${SCAFS} .gz)
+OUT_PREFIX=${_SCAFS%.*}.${_READS%.*}.merqury
 
 ml Other/merqury
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
-merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}
+merqury.sh ${READS_MERYL} ${SCAFS} ${OUT_PREFIX}

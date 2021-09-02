@@ -8,9 +8,9 @@
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 IN_FASTA=scaffolds.fasta
-TELOMERE_MOTIF="TTAGG"
 MIN_NCOPY=100
 
 OUT_BED=${IN_FASTA/.fasta/.telomere.bed}

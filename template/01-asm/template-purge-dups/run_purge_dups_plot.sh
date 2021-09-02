@@ -8,14 +8,14 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../config.sh
 
 CONTIGS=contigs.fasta
 READS=hifi.fastq
 N_THREADS=128
 
 CONTIGS_PREFIX=${CONTIGS%.gz}
-CONTIGS_PREFIX=${CONTIGS_PREFIX%.*}
-CONTIGS_SPLIT=${CONTIGS_PREFIX}.split.fa
+CONTIGS_SPLIT=${CONTIGS_PREFIX%.*}.split.fa
 
 ml Other/minimap2 Other/purge_dups
 

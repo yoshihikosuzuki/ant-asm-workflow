@@ -8,13 +8,14 @@
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 REF=scaffolds.fasta
 READS=hifi.fastq
 N_THREADS=128
 
 # NOTE: Do not overload `meryl` after this
-ml samtools Other/winnowmap
+ml samtools Other/winnowmap Other/mosdepth
 
 TYPE="map-pb"
 K=15
@@ -41,7 +42,9 @@ BIN_SIZE=1000
 N_THREADS=4
 OUT_PREFIX=${OUT_BAM}
 
-ml Other/mosdepth
-
 mosdepth -t${N_THREADS} -b ${BIN_SIZE} -n -x ${OUT_PREFIX} ${OUT_BAM}
 zcat ${OUT_PREFIX}.regions.bed.gz > ${OUT_PREFIX}.regions.bedgraph
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

@@ -5,9 +5,10 @@
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -c 128
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 #SBATCH -t 24:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../../config.sh
 
 SCAF=scaffolds.fasta
 READS=hifi.fastq
@@ -91,3 +92,7 @@ bed_to_jbat() {
 
 bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_GAP} > ${BED_SCAF_GAP/.bed/.JBAT.bed}
 bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_NG} > ${BED_SCAF_NG/.bed/.JBAT.bed}
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

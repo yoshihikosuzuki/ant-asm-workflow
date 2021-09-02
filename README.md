@@ -1,12 +1,8 @@
 # ant-asm-workflow
 
-A template working directory (`template/` of this repository) containing scripts that can be used for semi-automated genome assembly and quality assessment with HiFi + Omni-C reads.
-Currently, our goal is **haplotype-merged** assembly.
-(We will offer another template for haplotype-phased assembly in the near future.)
-
-- [Workflow doc](https://docs.google.com/document/d/12-pf9O7lHs2xxj6XQZjtEVPWICHrmc37GXqrOut-2AI/edit)
-- [Stats spreadsheet](https://docs.google.com/spreadsheets/d/1d9j-m88aHG6rK9bzatN4KyjZq6pDtYoDzsfgAdjD3Uk/edit)
-- [Figures and tables doc](https://docs.google.com/document/d/1RwdPGJw9Yg86xsIoVGdsSVKAvT0edEfBFF1_wNOHt7A/edit)
+- A template working directory (`template/` of this repository) containing scripts that can be used for semi-automated genome assembly and quality assessment with **HiFi + Omni-C** reads (or only HiFi reads).
+- The evaluation criteria are basically based on the [VGP](https://github.com/VGP/vgp-assembly)'s method.
+- Currently, this workflow supports only **haplotype-merged** assembly of a diploid genome. However, we are planning to support haplotype-phased assembly as well in the near future.
 
 Below we start with an abstract description about the overall structure of the working directory. Then, we provide practical information and commands on how to work with it.
 
@@ -14,24 +10,17 @@ Below we start with an abstract description about the overall structure of the w
 > 
 > The structure of the directories and the names of the files MUST be exactly the same as described below **except** those surrounded by `<` `>`. DO NOT change them unless you know how everything works.
 
-> :warning: **WARNING if you wish to apply this workflow to species other than ants:**
-> 
-> Some values hard-coded in scripts are specific to ants (e.g. `hymenoptera_odb10` for BUSCO's lineage and `TTAGG` for telomeric motif sequence whereas human is `TTAGGG`). You need to change them as necessary for different creatures.
+## How to install
 
-## Prerequisites
+There is no need for any "installation" procedure because this workflow is merely a collection of bash scripts. All you need to do is clone this repository:
 
-This workflow is supposed to be run on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST with [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp).
-If you have an account of Deigo, you should be able to run it.
+```bash
+git clone https://github.com/yoshihikosuzuki/ant-asm-workflow
+```
 
-> :information_source: **IMPORTANT:**
-> 
-> To make the Bioinfo User Group module set available from the scripts in this workflow, you MUST add the following lines to your `$HOME/.bashrc` on Deigo:
-> ```
-> module use /apps/.bioinfo-ugrp-modulefiles81
-> module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
-> ```
+To run the workflow, you will copy the `template/` directory in this repository to somewhere and run scripts under the copied directory, as described in detail below.
 
-If you wish to run outside Deigo, you need to change the lines for loading modules (e.g. `ml samtools`) in the scripts as necessary.
+This workflow depends on [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp) on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST. You cannot use this workflow as it is outside Deigo.
 
 ## Directory structure
 
@@ -238,7 +227,22 @@ cd ..
 > ```
 > :warning: **WARNING**: Do NOT forget `/` after `template` in the command above.
 
-### 1. Run GenomeScope and GeneScope for each of HiFi reads and Omni-C reads
+### 1. Edit the global config file
+
+Some species-dependent settings are written in `<your-working-dir-name>/config.sh`, where the default values are for ants.
+If you wish to apply this workflow to species other than ants, you need to change them, especially BUSCO's lineage (`hymenoptera_odb10` by default) and telomeric motif sequence (`TTAGG` by default whereas human is `TTAGGG`), as necessary.
+
+
+|Variable Name|Default Value|Description|
+|-|-|-|
+|`AUTO_DEL`|`true`|If `true`, intermediate files are deleted after each job|
+|`GENOME_SIZE`|`300000000`|Parameter for HiCanu|
+|`HIC_ENZYME_NAME`||Parameter for 3D-DNA. Empty for Omni-C|
+|`BUSCO_DB`|`hymenoptera_odb10`|BUSCO's lineage database name|
+|`MERQURY_K`|`19`|Parameter for Merqury depending on genome size|
+|`TELOMERE_MOTIF`|`TTAGGG`|For finding telomeres from scaffolds|
+
+### 2. Run GenomeScope and GeneScope for each of HiFi reads and Omni-C reads
 
 ```bash
 cd 00-data/ &&
@@ -268,7 +272,7 @@ After these jobs (and their child jobs) finish, check the GeneScope plot and the
 >      - `transformed_linear_plot.png`: k-mer (k=21 by default) count histogram with the fitting
 >    - `omnic.genomescope_L*_U*_smudgeplot.png`: Smudgeplot for Omni-C reads
 
-### 2. Run assemblers (and purge_dups if necessary)
+### 3. Run assemblers (and purge_dups if necessary)
 
 > :warning: **WARNING about purge_dups:**
 > 
@@ -291,7 +295,7 @@ cd 01-asm/ &&
 cd ..
 ```
 
-### 3. Evaluate contigs
+### 4. Evaluate contigs
 
 > :warning: **WARNING:**
 > 
@@ -322,7 +326,7 @@ For each contig assembly, after `run_all.sh` finishes, check i) assembly stats s
 >    - `06-mapqv/mapping.qv`: Mapping based QV
 >    - `07-asset/reliable_blocks.n50`: Reliable block N50 length
 
-### 4. Run scaffolding tools
+### 5. Run scaffolding tools
 
 > :warning: **WARNING:**
 > 
@@ -358,7 +362,7 @@ cd ..
 >   - `contigs.final.chrom_sizes`: Index file for HiGlass
 > - Be careful with the difference between `*.FINAL.*` and `*.final.*`.
 
-### 5. Evaluate scaffolds
+### 6. Evaluate scaffolds
 
 > :warning: **WARNING:**
 > 

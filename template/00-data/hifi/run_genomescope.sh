@@ -5,9 +5,10 @@
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -c 16
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 #SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../config.sh
 
 IN_FASTX=hifi.fastq
 
@@ -22,14 +23,12 @@ OUT_PREFIX=${IN_FASTX%.gz}
 OUT_PREFIX=${OUT_PREFIX%.*}.genomescope
 OUT_HIST=${OUT_PREFIX}.hist
 
-ml Other/genomescope
+ml Other/genomescope Other/smudgeplot
 
 mkdir -p ${TMP_DIR}
 kmc -k${K} -m${GB_MEMORY} -ci1 -cs${HIST_MAX} -t${N_THREADS} -fm ${IN_FASTX} ${OUT_PREFIX} ${TMP_DIR}
 kmc_tools transform ${OUT_PREFIX} -cx${HIST_MAX} histogram ${OUT_HIST}
 genomescope.R -i ${OUT_HIST} -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}
-
-ml Other/smudgeplot
 
 L=$(smudgeplot.py cutoff ${OUT_HIST} L)
 U=$(smudgeplot.py cutoff ${OUT_HIST} U)
