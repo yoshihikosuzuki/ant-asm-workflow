@@ -40,5 +40,5 @@ MERQURY_K=19
 
 ### -------- Telomere (`20-scaffolds/`) -------- ###
 
-TELOMERE_MOTIF="TTAGGG"
+TELOMERE_MOTIF="TTAGG"
 

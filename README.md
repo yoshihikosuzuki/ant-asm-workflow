@@ -240,7 +240,7 @@ If you wish to apply this workflow to species other than ants, you need to chang
 |`HIC_ENZYME_NAME`||Parameter for 3D-DNA. Empty for Omni-C|
 |`BUSCO_DB`|`hymenoptera_odb10`|BUSCO's lineage database name|
 |`MERQURY_K`|`19`|Parameter for Merqury depending on genome size|
-|`TELOMERE_MOTIF`|`TTAGGG`|For finding telomeres from scaffolds|
+|`TELOMERE_MOTIF`|`TTAGG`|For finding telomeres from scaffolds|
 
 ### 2. Run GenomeScope and GeneScope for each of HiFi reads and Omni-C reads
 
