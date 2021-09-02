@@ -42,9 +42,9 @@ detgaps ${SCAF} >${BED_SCAF_GAP}
 
 bed_to_support() {
     IN_BED=$1
-    PREFIX=${IN_BED%.bed}
-    BED_NG=${PREFIX}.unreliable.bed
-    BED_OK=${PREFIX}.reliable.bed
+    _PREFIX=${IN_BED%.bed}
+    BED_NG=${_PREFIX}.unreliable.bed
+    BED_OK=${_PREFIX}.reliable.bed
     bedtools subtract -a ${BED_SCAF} -b ${IN_BED} |
         bedtools merge -d 100 -i - >${BED_NG}
     bedtools subtract -a ${BED_SCAF} -b ${BED_NG} >${BED_OK}

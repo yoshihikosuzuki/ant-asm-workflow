@@ -27,3 +27,7 @@ hist_plot.py PB.stat PB.hist.png
 calcuts PB.stat > cutoffs
 echo -n "Automatically estimated cutoff values: "
 cat cutoffs
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

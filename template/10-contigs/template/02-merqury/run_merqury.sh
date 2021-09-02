@@ -25,3 +25,7 @@ ml Other/merqury
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
 merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

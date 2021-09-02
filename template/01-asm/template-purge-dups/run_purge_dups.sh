@@ -30,7 +30,3 @@ get_seqs dups.bed ${CONTIGS}
 echo "Finished purge_dups"
 echo "Purged contig stats:"
 seqkit stats -a purged.fa
-
-if [ "$AUTO_DEL" = "true" ]; then
-    source ./remove_tmp_files.sh
-fi

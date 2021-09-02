@@ -10,4 +10,6 @@
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
 rm -rf tmp/
-find RUN/ -maxdepth 1 -name "[0-1][0-8]*" | while read DIR; do rm -rf $DIR; done
+find RUN/ -maxdepth 1 -name "0[0-9]*" | while read DIR; do rm -rf $DIR; done
+find RUN/ -maxdepth 1 -name "1[0-8]*" | while read DIR; do rm -rf $DIR; done
+

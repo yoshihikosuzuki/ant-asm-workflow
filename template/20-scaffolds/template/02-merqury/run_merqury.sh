@@ -11,7 +11,7 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
 
 READS=hifi.fastq
-SCAFS=cscaffolds.fasta
+SCAFS=scaffolds.fasta
 K=${MERQURY_K}
 N_THREADS=128
 N_MEMORY=500
@@ -25,3 +25,7 @@ ml Other/merqury
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
 merqury.sh ${READS_MERYL} ${SCAFS} ${OUT_PREFIX}
+
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi
