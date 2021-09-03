@@ -1,7 +1,8 @@
 #!/bin/bash
 
-### -------- Load modules -------- ###
+### -------- Clean up and Load modules -------- ###
 
+module purge
 module use /apps/.bioinfo-ugrp-modulefiles81
 module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
 
