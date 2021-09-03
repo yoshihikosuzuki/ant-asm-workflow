@@ -4,7 +4,7 @@
 #SBATCH -p compute
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 128
+#SBATCH -c 16
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
@@ -13,7 +13,7 @@ source ../../../config.sh
 ASM=scaffolds.fasta
 LINEAGE=$BUSCO_DB
 DOWNLOAD_PATH="$HOME/busco_downloads"
-N_THREADS=128
+N_THREADS=16
 
 OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_DIR=${OUT_PREFIX%.*}.busco
