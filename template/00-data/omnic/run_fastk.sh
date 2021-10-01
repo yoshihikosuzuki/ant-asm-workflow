@@ -11,7 +11,7 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
 
 IN_FNAMES="omnic_R1_001.fastq omnic_R2_001.fastq"
-K=21
+K=${OMNIC_K}
 N_THREAD=16
 N_MEMORY=16
 TMP_DIR=tmp

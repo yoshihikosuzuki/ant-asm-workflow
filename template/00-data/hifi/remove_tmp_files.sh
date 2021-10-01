@@ -16,4 +16,3 @@ ml Other/FASTK
 
 Fastrm ${FASTK_PREFIX}
 rm -rf tmp/
-rm *.kmc_*

@@ -11,7 +11,7 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
 
 IN_FNAME=hifi.fastq
-K=40
+K=${HIFI_K}
 N_THREAD=16
 N_MEMORY=16
 TMP_DIR=tmp
