@@ -11,6 +11,8 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
 
 IN_FASTX=hifi.fastq
+HIC_READS_1=omnic_R1_001.fastq
+HIC_READS_2=omnic_R2_001.fastq
 N_THREADS=128
 
 OUT_PREFIX=$(basename ${IN_FASTX} .gz)
