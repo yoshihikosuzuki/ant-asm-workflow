@@ -18,7 +18,7 @@ OUT_PREFIX=${OUT_PREFIX%.*}.hifiasm
 
 ml Other/hifiasm Other/gfatools Other/seqkit
 
-hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} ${IN_FASTX}
+hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} --h1 ${HIC_READS_1} --h2 ${HIC_READS_2} ${IN_FASTX}
 for DATA in *tg.gfa; do
     gfatools gfa2fa ${DATA} > ${DATA%.gfa}.fasta
 done
