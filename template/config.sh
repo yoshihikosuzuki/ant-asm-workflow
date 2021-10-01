@@ -23,8 +23,8 @@ PLOIDY=2
 HIFI_K=40
 OMNIC_K=21
 # NOTE: K-mer counts below the threshold below are deemed as erroneous and excluded
-#       from PloidyPlot analysis. This should hopefully be determined based on the 
-#       k-mer count histogram (i.e. Gen(om)escope plot).
+#       from PloidyPlot analysis. This does not have to be very accurate but should
+#       hopefully be determined based on the k-mer count histogram (i.e. Gen(om)escope).
 HIFI_THRES_ERROR=4
 OMNIC_THRES_ERROR=4
 
