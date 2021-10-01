@@ -24,4 +24,4 @@ ml Other/genescope Other/MerquryFK
 Histex -G ${FASTK_PREFIX} -h${HIST_MAX} |
     GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}
 KatGC -pdf -T${N_THREAD} -o${FASTK_PREFIX}.katgc ${FASTK_PREFIX}
-PloidyPlot -v -pdf -T${N_THREAD} -e${ERROR_THRES} -o${FASTK_PREFIX}.ploidyplot ${FASTK_PREFIX}
+PloidyPlot -v -pdf -T${N_THREAD} -e${THRES_ERROR} -o${FASTK_PREFIX}.ploidyplot ${FASTK_PREFIX}
