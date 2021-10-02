@@ -14,7 +14,7 @@ IN_REF=scaffolds.fasta
 OUT_ASSEMBLY=${IN_REF%.*}.assembly
 OUT_CHROM_SIZES=${IN_REF%.*}.chrom_sizes
 
-ml samtools bwa Other/3d-dna
+ml ${_SAMTOOLS} ${_BWA} ${_3DDNA}
 
 samtools faidx ${IN_REF}
 bwa index -p ${IN_REF} ${IN_REF}

@@ -12,7 +12,7 @@ source ../../config.sh
 
 FASTK_PREFIX=hifi.fastk
 
-ml Other/FASTK
+ml ${_FASTK}
 
 Fastrm ${FASTK_PREFIX}
 rm -rf tmp/

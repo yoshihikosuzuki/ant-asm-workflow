@@ -33,7 +33,7 @@ HIC_LINKS=${OUT_PREFIX}.hic.links.mat
 BED_HIC=${OUT_PREFIX}.hic.bed
 BED_HIC_OK=${OUT_PREFIX}.hic.reliable.bed
 
-ml Other/asset
+ml ${_ASSET}
 
 # Contiguous regions and gaps
 #samtools faix ${SCAF}

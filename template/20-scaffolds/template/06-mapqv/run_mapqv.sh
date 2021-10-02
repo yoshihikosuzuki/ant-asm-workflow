@@ -23,7 +23,7 @@ OUT_NORM_VCF=${OUT_PREFIX}.norm.vcf
 OUT_VCF=${OUT_PREFIX}.norm.filtered.vcf
 OUT_SNV_VCF=${OUT_PREFIX}.norm.filtered.snv.vcf
 
-ml bcftools bedtools samtools
+ml ${_BCFTOOLS} ${_BEDTOOLS} ${_SAMTOOLS}
 
 # Count the total number of bases
 samtools view -F 0x100 -u ${IN_BAM} |

@@ -19,13 +19,13 @@ OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_DIR=${OUT_PREFIX%.*}.busco
 AUGUSTUS_PATH=${OUT_DIR}_augustus
 
-ml Other/BUSCO/5.1.3
+ml ${_BUSCO}
 
 ## Case 1. Using Metaeuk for gene annotation
-#busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}
+#busco -f --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}
 
 ## Case 2. Using Augustus for gene annotation
-busco --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${AUGUSTUS_PATH}
+busco -f --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${AUGUSTUS_PATH}
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh

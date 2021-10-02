@@ -18,7 +18,7 @@ TMP_DIR=tmp
 
 OUT_PREFIX=omnic.fastk
 
-ml Other/FASTK
+ml ${_FASTK}
 
 mkdir -p ${TMP_DIR}
 FastK -k${K} -T${N_THREAD} -M${N_MEMORY} -v -t1 -p -P${TMP_DIR} -N${OUT_PREFIX} ${IN_FNAMES}

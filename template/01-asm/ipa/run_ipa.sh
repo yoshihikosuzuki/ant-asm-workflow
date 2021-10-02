@@ -14,7 +14,7 @@ IN_FASTX=hifi.fastq
 N_THREAD=128
 TMP_DIR=$(readlink -f tmp/)
 
-ml Other/pbipa Other/seqkit
+ml ${_IPA} ${_SEQKIT}
 
 mkdir -p ${TMP_DIR}
 ipa local --input-fn ${IN_FASTX} --nthreads ${N_THREAD} --tmp-dir ${TMP_DIR} --verbose

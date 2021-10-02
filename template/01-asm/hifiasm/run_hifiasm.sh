@@ -16,7 +16,7 @@ N_THREADS=128
 OUT_PREFIX=$(basename ${IN_FASTX} .gz)
 OUT_PREFIX=${OUT_PREFIX%.*}.hifiasm
 
-ml Other/hifiasm Other/gfatools Other/seqkit
+ml ${_HIFIASM} ${_GFATOOLS} ${_SEQKIT}
 
 hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} ${IN_FASTX}
 for DATA in *tg.gfa; do

@@ -15,7 +15,7 @@ READS=hifi.fastq
 N_THREADS=128
 
 # NOTE: Do not overload `meryl` after this
-ml samtools Other/winnowmap Other/mosdepth
+ml ${_SAMTOOLS} ${_WINNOWMAP} ${_MOSDEPTH}
 
 TYPE="map-pb"
 K=15

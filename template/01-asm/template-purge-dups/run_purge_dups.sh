@@ -22,7 +22,7 @@ CONTIGS=contigs.fasta
 PAF_CONTIGS=contigs.paf
 CUTOFFS=cutoffs
 
-ml Other/purge_dups Other/seqkit
+ml ${_PURGE_DUPS} ${_SEQKIT}
 
 calcuts -l ${L} -m ${M} -u ${U} PB.stat > ${CUTOFFS}
 purge_dups -2 -T ${CUTOFFS} -c PB.base.cov ${PAF_CONTIGS} > dups.bed

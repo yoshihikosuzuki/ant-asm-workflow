@@ -18,10 +18,6 @@ N_THREADS=128
 OUT_PREFIX=${REF%.*}.${READS%.*}.deepvariant
 OUT_VCF=${OUT_PREFIX}.vcf
 
-#ml samtools
-#samtools faidx ${REF}
-#samtools index -@${N_THREADS} ${IN_SORTED_BAM}
-
-ml Other/deepvariant
+ml ${_DEEPVARIANT}
 
 run_deepvariant --num_shards ${N_THREADS} --model_type PACBIO --ref ${REF} --reads ${IN_SORTED_BAM} --output_vcf ${OUT_VCF}

@@ -17,7 +17,7 @@ N_THREADS=128
 CONTIGS_PREFIX=${CONTIGS%.gz}
 CONTIGS_SPLIT=${CONTIGS_PREFIX%.*}.split.fa
 
-ml Other/minimap2 Other/purge_dups
+ml ${_MINIMAP2} ${_PURGE_DUPS}
 
 minimap2 -t${N_THREADS} -xmap-pb ${CONTIGS} ${READS} > reads.paf
 split_fa ${CONTIGS} > ${CONTIGS_SPLIT}

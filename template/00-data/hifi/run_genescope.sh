@@ -19,7 +19,7 @@ N_THREAD=16
 
 OUT_PREFIX=${FASTK_PREFIX/.fastk/.genescope}
 
-ml Other/genescope Other/MerquryFK
+ml ${_GENESCOPE} ${_MERQURYFK}
 
 Histex -G ${FASTK_PREFIX} -h${HIST_MAX} |
     GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}

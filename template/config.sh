@@ -37,6 +37,12 @@ GENOME_SIZE=300000000
 
 ### -------- 3D-DNA (`11-scaf/template-3ddna`) -------- ###
 
+SALSA_MIN_MAPQ=10
+SALSA_N_ITERATION=10
+
+
+### -------- SALSA (`11-scaf/template-salsa`) -------- ###
+
 # NOTE: Leave this empty for Omni-C.
 HIC_ENZYME_NAME=
 
@@ -56,3 +62,35 @@ MERQURY_K=19
 ### -------- Telomere (`20-scaffolds/`) -------- ###
 
 TELOMERE_MOTIF="TTAGG"
+# NOTE: Min copy numer of the motif sequence to be reported
+TELOMERE_MIN_NCOPY=100
+
+
+### -------- NAMES OF ENVIRONMENT MODULES -------- ###
+
+_SEQKIT=Other/seqkit/2.0.0
+_SAMTOOLS=samtools/1.12
+_BCFTOOLS=bcftools/1.9-1
+_BEDTOOLS=bedtools/v2.29.2
+_GFATOOLS=Other/gfatools/0.5
+_PICARD=picard/2.7.0
+_BWA=bwa/0.7.17-3
+_MINIMAP2=Other/minimap2/2.20
+_WINNOWMAP=Other/winnowmap/2.03
+_HIFIASM=Other/hifiasm/0.15.4
+_CANU=Other/canu/2.1.1
+_IPA=Other/pbipa/1.3.2
+_PEREGRINE=Other/peregrine/1.6.3
+_PURGE_DUPS=Other/purge_dups/1.2.5
+_ARIMA_PIPELINE=Other/arima_pipeline/2019.02.08
+_SALSA=Other/SALSA/2.3
+_3DDNA=Other/3d-dna/180922
+_HIC2COOL=Other/hic2cool/0.8.3
+_BUSCO=Other/BUSCO/5.1.3
+_FASTK=Other/FASTK/2021.05.27
+_GENESCOPE=Other/genescope/2021.03.26
+_MERQURYFK=Other/MerquryFK/2021.09.14
+_DEEPVARIANT=Other/deepvariant/1.1.0
+_ASSET=Other/asset/1.0.3
+_MAKE_TELOMERE_BED=Other/make_telomere_bed/2021.05.20
+_MOSDEPTH=Other/mosdepth/0.3.1

@@ -11,15 +11,14 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
 
 IN_FASTA=scaffolds.fasta
-MIN_NCOPY=100
+MIN_NCOPY=${TELOMERE_MIN_NCOPY}
 
 OUT_BED=${IN_FASTA/.fasta/.telomere.bed}
 OUT_FILT_BED=${OUT_BED/.bed/.filtered.bed}
 
-ml Other/make_telomere_bed
+ml ${_MAKE_TELOMERE_BED}
 
 make_telomere_bed ${IN_FASTA} ${TELOMERE_MOTIF}
-
 # NOTE: If TRF freezes, run the followings instead:
 #rm -f *.trf
 #make_telomere_bed -s ${IN_FASTA} ${TELOMERE_MOTIF}

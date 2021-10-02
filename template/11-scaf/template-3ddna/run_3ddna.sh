@@ -18,7 +18,7 @@ N_THREADS=128
 
 OUT_PREFIX=${CONTIGS%.*}
 
-ml Other/3d-dna Other/seqkit
+ml ${_3DDNA} ${_SEQKIT}
 
 # Make ./scripts/
 juicer_copy_scripts_dir
@@ -70,7 +70,7 @@ OUT_CHROM_SIZES=contigs.final.chrom_sizes
 IN_HIC=contigs.final.hic
 OUT_COOL=contigs.final.cool
 
-ml Other/hic2cool
+ml ${_HIC2COOL}
 
 cd scaffolding
 hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}

@@ -16,7 +16,7 @@ OUT_DIR=asm
 
 N_THREAD_SETTING="${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD} ${N_THREAD}"
 
-ml Other/peregrine Other/seqkit
+ml ${_PEREGRINE} ${_SEQKIT}
 
 find $PWD -name "${IN_FASTX}" > reads.fofn
 peregrine reads.fofn ${N_THREAD_SETTING} --with-consensus --shimmer-r 3 --best_n_ovlp 8 --output ${OUT_DIR}

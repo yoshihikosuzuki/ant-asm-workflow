@@ -15,7 +15,7 @@ IN_FASTX=hifi.fastq
 OUT_PREFIX=$(basename ${IN_FASTX} .gz)
 OUT_PREFIX=${OUT_PREFIX%.*}.hicanu
 
-ml Other/canu Other/seqkit
+ml ${_CANU} ${_SEQKIT}
 
 canu -d . -p ${OUT_PREFIX} genomeSize=${GENOME_SIZE} useGrid=false -pacbio-hifi ${IN_FASTX}
 echo "Contig stats (${OUT_PREFIX}.contigs.fasta):"

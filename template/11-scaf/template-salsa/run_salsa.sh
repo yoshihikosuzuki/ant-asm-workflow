@@ -13,8 +13,8 @@ source ../../config.sh
 CONTIGS=contigs.fasta
 READS_1=omnic_R1_001.fastq
 READS_2=omnic_R2_001.fastq
-MIN_MAPQ=10
-N_ITERATION=10
+MIN_MAPQ=${SALSA_MIN_MAPQ}
+N_ITERATION=${SALSA_N_ITERATION}
 ENZYME_NAME=${HIC_ENZYME_NAME}
 N_THREADS=128
 
@@ -25,10 +25,7 @@ OUT_BAM=${OUT_PREFIX}.dedup.sorted.bam
 OUT_BED=${OUT_BAM/.bam/.bed}
 OUT_SALSA=${OUT_PREFIX}_salsa
 
-ml samtools bwa picard Other/arima_pipeline Other/SALSA/2.3 Other/seqkit
-
-#samtools faidx ${CONTIGS}
-#bwa index ${CONTIGS}
+ml ${_SAMTOOLS} ${_BWA} ${_PICARD} ${_ARIMA_PIPELINE} ${_SALSA} ${_SEQKIT}
 
 # Read mapping
 for READS in ${READS_1} ${READS_2}; do
@@ -49,7 +46,7 @@ bedtools bamtobed -i ${OUT_BAM} | sort -k 4 >${OUT_BED}
 run_pipeline.py -a ${CONTIGS} -l ${CONTIGS}.fai -b ${OUT_BED} -e DNASE -o ${OUT_SALSA} -m yes -p yes -i ${N_ITERATION}
 
 # Generate .assembly and .hic
-ml Other/3d-dna
+ml ${_3DDNA}
 
 cd ${OUT_SALSA}
 
@@ -96,7 +93,7 @@ ln -sf hic/scaffolds_FINAL.hic .
 IN_HIC=scaffolds_FINAL.hic
 OUT_COOL=scaffolds_FINAL.cool
 
-ml Other/hic2cool
+ml ${_HIC2COOL}
 
 hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
 
