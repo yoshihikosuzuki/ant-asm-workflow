@@ -11,21 +11,18 @@ shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
 
 ASM=contigs.hap2.fasta
-LINEAGE=$BUSCO_DB
-DOWNLOAD_PATH="$HOME/busco_downloads"
 N_THREADS=16
 
 OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_DIR=${OUT_PREFIX%.*}.busco
-AUGUSTUS_PATH=${OUT_DIR}_augustus
 
 ml ${_BUSCO}
 
+SHARED_ARGS="-f --update-data -c ${N_THREADS} -m genome -l ${BUSCO_DB} -i ${ASM}"
 ## Case 1. Using Metaeuk for gene annotation
-#busco -f --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} -i ${ASM} -o ${OUT_DIR}
-
+#busco ${SHARED_ARGS} -o ${OUT_DIR}
 ## Case 2. Using Augustus for gene annotation
-busco -f --download_path ${DOWNLOAD_PATH} -c ${N_THREADS} -m genome -l ${LINEAGE} --augustus -i ${ASM} -o ${AUGUSTUS_PATH}
+busco ${SHARED_ARGS} -o ${OUT_DIR}_augustus --augustus
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh

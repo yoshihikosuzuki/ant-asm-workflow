@@ -9,4 +9,4 @@
 #SBATCH -t 1:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-rm -rf contigs.busco*/*/
+rm -rf contigs.busco*/*/ busco_downloads/
