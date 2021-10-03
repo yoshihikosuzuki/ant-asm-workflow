@@ -35,13 +35,13 @@ OMNIC_THRES_ERROR=4
 GENOME_SIZE=300000000
 
 
-### -------- 3D-DNA (`11-scaf/template-3ddna`) -------- ###
+### -------- SALSA (`11-scaf/template-salsa`) -------- ###
 
 SALSA_MIN_MAPQ=10
 SALSA_N_ITERATION=10
 
 
-### -------- SALSA (`11-scaf/template-salsa`) -------- ###
+### -------- 3D-DNA (`11-scaf/template-3ddna`) -------- ###
 
 # NOTE: Leave this empty for Omni-C.
 HIC_ENZYME_NAME=

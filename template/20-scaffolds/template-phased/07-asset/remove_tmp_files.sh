@@ -9,4 +9,4 @@
 #SBATCH -t 1:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 
-rm -rf *.meryl/
+rm -f *.paf *.sam *.bam *.mat scaffolds.split.fasta*

@@ -14,8 +14,8 @@ MAKE_INDEX=$(sbatch 00-make_index.sh | cut -f 4 -d' ')
 cd 01-busco/ &&
     BUSCO=$(sbatch run_busco.sh | cut -f 4 -d' ') &&
     cd ..
-cd 02-merqury/ &&
-    MERQURY=$(sbatch run_merqury.sh | cut -f 4 -d' ') &&
+cd 02-merquryfk/ &&
+    MERQURYFK=$(sbatch run_merquryfk.sh | cut -f 4 -d' ') &&
     cd ..
 cd 04-winnowmap/ &&
     WINNOWMAP=$(sbatch -d afterany:${MAKE_INDEX} run_winnowmap.sh | cut -f 4 -d' ') &&
@@ -29,6 +29,6 @@ cd 06-mapqv/ &&
 cd 07-asset/ &&
     ASSET=$(sbatch -d afterany:${WINNOWMAP} run_asset.sh | cut -f 4 -d' ') &&
     cd ..
-WAIT_JOBS=${BUSCO},${MERQURY},${MAPQV},${ASSET}
+WAIT_JOBS=${BUSCO},${MERQURYFK},${MAPQV},${ASSET}
 
 srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${WAIT_JOBS} --wait=0 sleep 1s
