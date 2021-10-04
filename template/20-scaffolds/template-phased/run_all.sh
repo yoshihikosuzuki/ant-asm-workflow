@@ -8,12 +8,15 @@
 #SBATCH --mem=1G
 #SBATCH -t 72:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+source ../../config.sh
+
+ml ${_SEQKIT}
 
 HAP1=scaffolds.hap1.fasta
 HAP2=scaffolds.hap2.fasta
 MERGED=scaffolds.fasta
 
-cat ${HAP1} ${HAP2} >${MERGED}
+seqkit rename -w 80 -n <(cat ${HAP1} ${HAP2}) >${MERGED}
 
 MAKE_INDEX=$(sbatch 00-make_index.sh | cut -f 4 -d' ')
 

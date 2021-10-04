@@ -89,6 +89,7 @@ _HIC2COOL=Other/hic2cool/0.8.3
 _BUSCO=Other/BUSCO/5.1.3
 _FASTK=Other/FASTK/2021.05.27
 _GENESCOPE=Other/genescope/2021.03.26
+_MERQURY=Other/merqury/1.3
 _MERQURYFK=Other/MerquryFK/2021.09.14
 _DEEPVARIANT=Other/deepvariant/1.1.0
 _ASSET=Other/asset/1.0.3
