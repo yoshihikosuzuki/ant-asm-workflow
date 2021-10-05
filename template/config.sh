@@ -52,14 +52,21 @@ HIC_ENZYME_NAME=
 BUSCO_DB="hymenoptera_odb10"
 
 
-### -------- Merqury (`10-contigs/` and `20-scaffolds/`) -------- ###
+### -------- Merqury[FK] (`[10-contigs|20-scaffolds]/02-merqury[fk]`) -------- ###
 
 # NOTE: K ~ 20 should work for most genomes. The script `best_k.sh` provided by
 #       Merqury (e.g. `$ best_k.sh <GENOME_SIZE>`) will tell the appropiate value.
 MERQURY_K=19
 
 
-### -------- Telomere (`20-scaffolds/`) -------- ###
+### -------- Mapping-based QV (`[10-contigs|20-scaffolds]/06-mapqv`) -------- ###
+
+MAPQ_MIN_QUAL=30
+MAPQ_MIN_DEPTH=5
+MAPQ_MAX_DEPTH=200
+
+
+### -------- Telomere (`20-scaffolds/09-telomere`) -------- ###
 
 TELOMERE_MOTIF="TTAGG"
 # NOTE: Min copy numer of the motif sequence to be reported

@@ -14,9 +14,9 @@ REF=contigs.fasta
 READS=hifi.fastq
 IN_BAM=contigs.hifi.winnowmap.sorted.bam
 IN_VCF=contigs.hifi.deepvariant.vcf
-MIN_QUAL=30
-MIN_DEPTH=5
-MAX_DEPTH=200
+MIN_QUAL=${MAPQ_MIN_QUAL}
+MIN_DEPTH=${MAPQ_MIN_DEPTH}
+MAX_DEPTH=${MAPQ_MAX_DEPTH}
 
 OUT_PREFIX=${IN_VCF%.vcf}
 OUT_NORM_VCF=${OUT_PREFIX}.norm.vcf

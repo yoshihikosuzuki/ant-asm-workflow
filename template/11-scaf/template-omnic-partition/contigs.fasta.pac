@@ -1,0 +1,1 @@
+path/to/contigs.fasta.pac
