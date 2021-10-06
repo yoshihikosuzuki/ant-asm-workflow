@@ -1,0 +1,1 @@
+path/to/scaffolds.hic
