@@ -4,6 +4,7 @@
 ### -------- Clean up and Load modules -------- ###
 
 module purge
+module use --append /apps/.modulefiles72
 module use /apps/.bioinfo-ugrp-modulefiles81
 module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
 
@@ -102,3 +103,4 @@ _DEEPVARIANT=Other/deepvariant/1.1.0
 _ASSET=Other/asset/1.0.3
 _MAKE_TELOMERE_BED=Other/make_telomere_bed/2021.05.20
 _MOSDEPTH=Other/mosdepth/0.3.1
+_MUMMER=Other/mummer/4.0.0rc1
