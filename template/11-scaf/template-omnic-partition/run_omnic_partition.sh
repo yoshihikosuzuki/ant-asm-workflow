@@ -20,7 +20,7 @@ N_THREADS=128
 _CONTIGS=$(basename ${CONTIGS} .gz)
 _CONTIGS=${_CONTIGS%.*}
 
-ml samtools bwa Other/arima_pipeline Other/seqkit
+ml ${_SAMTOOLS} ${_BWA} ${_ARIMA_PIPELINE} ${_SEQKIT}
 
 #samtools faidx ${CONTIGS}
 #bwa index ${CONTIGS}
@@ -36,16 +36,33 @@ for READS in ${READS_1} ${READS_2}; do
         samtools view -@${N_THREADS} -b - |
         samtools sort -@${N_THREADS} -o ${_OUT_BAM}
     samtools index -@${N_THREADS} ${_OUT_BAM}
+done
 
-    # Extract reads for each haplotype
-    for HAP in ${HAP1} ${HAP2}; do
-        _HAP=$(basename ${HAP} .gz)
-        _HAP=${_HAP%.*}
-        _HAP=${_HAP#contigs.}
+# Extract reads for each haplotype
+for HAP in ${HAP1} ${HAP2}; do
+    _HAP=$(basename ${HAP} .gz)
+    _HAP=${_HAP%.*}
+    _HAP=${_HAP#contigs.}
+    for READS in ${READS_1} ${READS_2}; do
+        _READS=$(basename ${READS} .gz)
+        _READS=${_READS%.*}
+        _OUT_PREFIX=${_CONTIGS}.${_READS}
+        _OUT_BAM=${_OUT_PREFIX}.filtered.sorted.bam
+        _OUT_RNAMES=${_OUT_PREFIX}.${_HAP}.rnames
+        samtools view -@${N_THREADS} ${_OUT_BAM} $(seqkit fx2tab -n ${HAP} | tr '\r\n' ' ') |
+            cut -f1 |
+            sort >${_OUT_RNAMES}
+    done
+    # Take union
+    sort *.${_HAP}.rnames |
+        uniq >${READS_PREFIX}.${_HAP}.rnames
+
+    for READS in ${READS_1} ${READS_2}; do
+        _READS=$(basename ${READS} .gz)
+        _READS=${_READS%.*}
+        _OUT_PREFIX=${_CONTIGS}.${_READS}
         _OUT_RNAMES=${_OUT_PREFIX}.${_HAP}.rnames
         _OUT_READS=${_READS}.${_HAP}.fastq
-        samtools view -@${N_THREADS} ${_OUT_BAM} $(seqkit fx2tab -n ${HAP} | tr '\r\n' ' ') |
-            cut -f1 > ${_OUT_RNAMES}
         seqkit -j ${N_THREADS} grep -f ${_OUT_RNAMES} ${READS} >${_OUT_READS}
     done
 done

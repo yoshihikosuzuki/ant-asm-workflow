@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J make_curated_scaffolds
-#SBATCH -o make_curated_scaffolds.log
+#SBATCH -J curation
+#SBATCH -o curation.log
 #SBATCH -p compute
 #SBATCH -n 1
 #SBATCH -N 1

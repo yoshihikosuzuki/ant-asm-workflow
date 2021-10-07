@@ -1,3 +1,10 @@
+## TODO:
+
+- Test haplotype-phased mode
+- Make a small test dataset
+
+---
+
 # ant-asm-workflow
 
 - This is a template working directory (`template/` of this repository) containing shell scripts that can be used for semi-automated genome assembly, quality assessment, and manual curation with **HiFi + Omni-C** reads (or only HiFi reads).
