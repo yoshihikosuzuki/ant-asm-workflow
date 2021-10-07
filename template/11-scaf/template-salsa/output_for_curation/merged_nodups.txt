@@ -1,0 +1,1 @@
+../contigs.omnic_salsa/aligned/merged_nodups.txt
