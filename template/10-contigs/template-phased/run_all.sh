@@ -44,6 +44,9 @@ cd 06-mapqv/ &&
 cd 07-asset/ &&
     ASSET=$(sbatch -d afterany:${WINNOWMAP} run_asset.sh | cut -f 4 -d' ') &&
     cd ..
-WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURYFK},${MAPQV},${ASSET}
+cd 10-mummer/ &&
+    MUMMER=$(sbatch run_mummer.sh | cut -f 4 -d' ') &&
+    cd ..
+WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURYFK},${MAPQV},${ASSET},${MUMMER}
 
 srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${WAIT_JOBS} --wait=0 sleep 1s

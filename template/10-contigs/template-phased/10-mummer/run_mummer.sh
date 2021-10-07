@@ -24,12 +24,18 @@ OUT_GP=${OUT_PREFIX}.gp
 ml ${_MUMMER}
 
 set term eps
+
 nucmer -t ${N_THREADS} -p ${OUT_PREFIX} ${REF} ${QUERY}
+
 ## Only 1-to-1 alignments
 delta-filter -1 -i 90 -l 1000 ${OUT_DELTA} >${OUT_FILT_DELTA}
 ## Keep secondary alignments
 #delta-filter -i 90 -l 1000 ${OUT_DELTA} >${OUT_FILT_DELTA}
+
+## Reorder input sequences so that the alignments are (somewhat) on diagonal
 mummerplot -R ${REF} -Q ${QUERY} -p ${OUT_PREFIX} --postscript --layout --fat ${OUT_FILT_DELTA}
+## Keep the original order of the input sequences
+#mummerplot -R ${REF} -Q ${QUERY} -p ${OUT_PREFIX} --postscript ${OUT_FILT_DELTA}
 
 # Change font and font size
 sed -i 's/"Courier" 8/"Helvetica" 5/' ${OUT_GP}
