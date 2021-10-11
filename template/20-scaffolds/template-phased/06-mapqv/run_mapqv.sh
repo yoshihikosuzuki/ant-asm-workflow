@@ -32,9 +32,9 @@ awk -v l=${MIN_DEPTH} -v h=${MAX_DEPTH} '{if ($1=="genome" && $2>l && $2<h) {num
 NUM_BP=$(cat ${IN_BAM}.numbp)
 #echo "Total num. bases in mappable regions = $NUM_BP"
 
-# Extract only homozygous variants (which are deemed misassemblies)
+# Extract variants (which are deemed misassemblies)
 bcftools norm -f ${REF} ${IN_VCF} -Ov > ${OUT_NORM_VCF}
-bcftools view -i "QUAL>${MIN_QUAL} && ${MIN_DEPTH}<DP && DP<${MAX_DEPTH} && (GT=\"AA\")" -Ov ${OUT_NORM_VCF} >${OUT_VCF}
+bcftools view -i "QUAL>${MIN_QUAL} && ${MIN_DEPTH}<DP && DP<${MAX_DEPTH} && (GT=\"AA\" || GT=\"Aa\")" -Ov ${OUT_NORM_VCF} >${OUT_VCF}
 bcftools view -v snps -Ov ${OUT_VCF} >${OUT_SNV_VCF}
 
 calc_stats() {

@@ -20,4 +20,6 @@ OUT_VCF=${OUT_PREFIX}.vcf
 
 ml ${_DEEPVARIANT}
 
-run_deepvariant --num_shards ${N_THREADS} --model_type PACBIO --ref ${REF} --reads ${IN_SORTED_BAM} --output_vcf ${OUT_VCF}
+mkdir -p tmp
+run_deepvariant --num_shards ${N_THREADS} --model_type PACBIO --ref ${REF} --reads ${IN_SORTED_BAM} --output_vcf ${OUT_VCF} --intermediate_results_dir tmp/
+rm -rf tmp
