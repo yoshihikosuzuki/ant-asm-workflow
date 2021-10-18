@@ -39,9 +39,8 @@ mummerplot -R ${REF} -Q ${QUERY} -p ${OUT_PREFIX} --postscript --layout --fat ${
 
 # Change font and font size
 sed -i 's/"Courier" 8/"Helvetica" 5/' ${OUT_GP}
-# Write characters of labels as they are
-# TODO: Change `1,1` to e.g. `0.7,1` if aspect ratio is wrong
-sed -i 's/set size 1,1/set termoption noenhanced\nset size 1,1/' ${OUT_GP}
+# Change aspect from `1,1` to `0.7,1` and write characters of labels as they are
+sed -i 's/set size 1,1/set termoption noenhanced\nset size 0.7,1/' ${OUT_GP}
 # Use solid lines for contig boundaries
 sed -i 's/set grid/set grid linetype 1 linewidth 0.1 linecolor "light-gray"/' ${OUT_GP}
 # Remove contig boundaries

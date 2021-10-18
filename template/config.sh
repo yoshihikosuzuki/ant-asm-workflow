@@ -74,7 +74,7 @@ TELOMERE_MOTIF="TTAGG"
 TELOMERE_MIN_NCOPY=100
 
 
-### -------- NAMES OF ENVIRONMENT MODULES -------- ###
+### -------- NAMES (AND VERSIONS) OF ENVIRONMENT MODULES -------- ###
 
 _SEQKIT=Other/seqkit/2.0.0
 _SAMTOOLS=samtools/1.12
@@ -95,7 +95,7 @@ _SALSA=Other/SALSA/2.3
 _3DDNA=Other/3d-dna/180922
 _HIC2COOL=Other/hic2cool/0.8.3
 _BUSCO=Other/BUSCO/5.1.3
-_FASTK=Other/FASTK/2021.05.27
+_FASTK=Other/FASTK/2021.09.29
 _GENESCOPE=Other/genescope/2021.03.26
 _MERQURY=Other/merqury/1.3
 _MERQURYFK=Other/MerquryFK/2021.09.14
