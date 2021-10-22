@@ -23,10 +23,12 @@ for DATA in *tg.gfa; do
     gfatools gfa2fa ${DATA} > ${DATA%.gfa}.fasta
 done
 
-echo "Contig stats (${OUT_PREFIX}.bp.p_utg.fasta):"
-seqkit stats -a ${OUT_PREFIX}.bp.p_utg.fasta
-echo "Contig stats (${OUT_PREFIX}.bp.p_ctg.fasta):"
-seqkit stats -a ${OUT_PREFIX}.bp.p_ctg.fasta
+P_UTG=${OUT_PREFIX}.bp.p_utg.fasta
+P_CTG=${OUT_PREFIX}.bp.p_ctg.fasta
+for DATA in ${P_UTG} ${P_CTG}; do
+    echo "Contig stats (${DATA}):"
+    seqkit stats -a ${DATA}
+done
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh
