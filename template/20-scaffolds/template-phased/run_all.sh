@@ -50,6 +50,9 @@ cd 09-telomere/ &&
 cd 10-mummer/ &&
     MUMMER=$(sbatch run_mummer.sh | cut -f 4 -d' ') &&
     cd ..
-WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURYFK},${MAPQV},${ASSET},${TELOMERE},${MUMMER}
+cd 11-hic/ &&
+    HIC=$(sbatch -d afterany:${MAKE_INDEX} run_hic.sh | cut -f 4 -d' ') &&
+    cd ..
+WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURYFK},${MAPQV},${ASSET},${TELOMERE},${MUMMER},${HIC}
 
 srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${WAIT_JOBS} --wait=0 sleep 1s
