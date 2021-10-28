@@ -26,8 +26,8 @@ for DATA in *tg.gfa; do
 done
 
 P_UTG=${OUT_PREFIX}.hic.p_utg.fasta
-P_CTG1=${OUT_PREFIX}.hic.hap1.p_utg.fasta
-P_CTG2=${OUT_PREFIX}.hic.hap2.p_utg.fasta
+P_CTG1=${OUT_PREFIX}.hic.hap1.p_ctg.fasta
+P_CTG2=${OUT_PREFIX}.hic.hap2.p_ctg.fasta
 for DATA in ${P_UTG} ${P_CTG1} ${P_CTG2}; do
     echo "Contig stats (${DATA}):"
     seqkit stats -a ${DATA}
