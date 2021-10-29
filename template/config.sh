@@ -62,7 +62,7 @@ MERQURY_K=19
 
 ### -------- Mapping-based QV (`[10-contigs|20-scaffolds]/06-mapqv`) -------- ###
 
-MAPQ_MIN_QUAL=30
+MAPQ_MIN_QUAL=1
 MAPQ_MIN_DEPTH=5
 MAPQ_MAX_DEPTH=200
 

@@ -47,7 +47,7 @@ calc_stats() {
     #echo "Total num. bases subject to change: $NUM_VAR"
     # Calculate QV
     QV=$(echo "$NUM_VAR $NUM_BP" | awk '{print (-10*log($1/$2)/log(10))}')
-    echo -e "mapping QV (${VCF}) = $QV" >> mapping.qv
+    echo -e "mapping QV (${VCF}, minQV=${MIN_QUAL}, minDepth=${MIN_DEPTH}, maxDepth=${MAX_DEPTH}) = $QV" >> mapping.qv
 }
 
 # Calculate QV
