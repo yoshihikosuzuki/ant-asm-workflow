@@ -44,6 +44,10 @@ java -jar -Xmx500G -Djava.io.tmpdir=tmp/ $PICARD MarkDuplicates REMOVE_DUPLICATE
 # Scaffolding
 bedtools bamtobed -i ${OUT_BAM} | sort -k 4 >${OUT_BED}
 run_pipeline.py -a ${CONTIGS} -l ${CONTIGS}.fai -b ${OUT_BED} -e DNASE -o ${OUT_SALSA} -m yes -p yes -i ${N_ITERATION}
+cd output/ && ln -sf ../${OUT_SALSA}/scaffolds_FINAL.fasta ./scaffolds.fasta && cd ..
+
+echo "Scaffold stats (${OUT_SALSA}/scaffolds_FINAL.fasta):"
+seqkit stats -a ${OUT_SALSA}/scaffolds_FINAL.fasta
 
 # Generate .assembly and .hic
 ml ${_3DDNA}
@@ -90,17 +94,21 @@ ln -sf ${CHROM_SIZES} .
 ln -sf hic/scaffolds_FINAL.hic .
 
 # Generate .mcool file
-IN_HIC=scaffolds_FINAL.hic
-OUT_COOL=scaffolds_FINAL.cool
+# IN_HIC=scaffolds_FINAL.hic
+# OUT_COOL=scaffolds_FINAL.cool
 
-ml ${_HIC2COOL}
+# ml ${_HIC2COOL}
 
-hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
+# hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
 
 cd ..
 
-echo "Scaffold stats (${OUT_SALSA}/scaffolds_FINAL.fasta):"
-seqkit stats -a ${OUT_SALSA}/scaffolds_FINAL.fasta
+cd output_for_curation/
+ln -sf ../${OUT_SALSA}/scaffolds_FINAL.fasta ./draft.fasta
+ln -sf ../${OUT_SALSA}/scaffolds_FINAL.assembly ./scaffolds.assembly
+ln -sf ../${OUT_SALSA}/scaffolds_FINAL.hic ./scaffolds.hic
+ln -sf ../${OUT_SALSA}/aligned/merged_nodups.txt .
+cd ..
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh

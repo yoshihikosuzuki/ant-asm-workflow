@@ -19,6 +19,7 @@ N_THREADS=128
 
 _CONTIGS=$(basename ${CONTIGS} .gz)
 _CONTIGS=${_CONTIGS%.*}
+READS_PREFIX=${READS_1%%_R*}
 
 ml ${_SAMTOOLS} ${_BWA} ${_ARIMA_PIPELINE} ${_SEQKIT}
 
@@ -54,17 +55,17 @@ for HAP in ${HAP1} ${HAP2}; do
             sort >${_OUT_RNAMES}
     done
     # Take union
-    sort *.${_HAP}.rnames |
-        uniq >${READS_PREFIX}.${_HAP}.rnames
+    _HAP_RNAMES=${READS_PREFIX}.${_HAP}.rnames
+    sort *.${_HAP}.rnames | uniq >${_HAP_RNAMES}
 
     for READS in ${READS_1} ${READS_2}; do
         _READS=$(basename ${READS} .gz)
         _READS=${_READS%.*}
-        _OUT_PREFIX=${_CONTIGS}.${_READS}
-        _OUT_RNAMES=${_OUT_PREFIX}.${_HAP}.rnames
         _OUT_READS=${_READS}.${_HAP}.fastq
-        seqkit -j ${N_THREADS} grep -f ${_OUT_RNAMES} ${READS} >${_OUT_READS}
+        seqkit -j ${N_THREADS} grep -f ${_HAP_RNAMES} ${READS} >${_OUT_READS}
     done
 done
 
-
+if [ "$AUTO_DEL" = "true" ]; then
+    source ./remove_tmp_files.sh
+fi

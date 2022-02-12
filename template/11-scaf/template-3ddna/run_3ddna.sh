@@ -65,16 +65,24 @@ cd ..
 # Generate .mcool file
 # NOTE: HiGlass is not editable, so `.FINAL.assembly` should be preferable for `.chrom_sizes`.
 
-IN_ASSEMBLY=contigs.FINAL.assembly
-OUT_CHROM_SIZES=contigs.final.chrom_sizes
-IN_HIC=contigs.final.hic
-OUT_COOL=contigs.final.cool
+# IN_ASSEMBLY=contigs.FINAL.assembly
+# OUT_CHROM_SIZES=contigs.final.chrom_sizes
+# IN_HIC=contigs.final.hic
+# OUT_COOL=contigs.final.cool
 
-ml ${_HIC2COOL}
+# ml ${_HIC2COOL}
 
-cd scaffolding
-hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
-awk 'NF == 3 {print substr($1,2) "\t" $3}' ${IN_ASSEMBLY} >${OUT_CHROM_SIZES}
+# cd scaffolding
+# hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
+# awk 'NF == 3 {print substr($1,2) "\t" $3}' ${IN_ASSEMBLY} >${OUT_CHROM_SIZES}
+# cd ..
+
+cd output/ && ln -sf ../scaffolding/${OUT_PREFIX}.FINAL.fasta ./scaffolds.fasta && cd ..
+cd output_for_curation/
+ln -sf ../reference/scaffolds_FINAL.fasta ./draft.fasta
+ln -sf ../scaffolding/${OUT_PREFIX}.final.assembly ./scaffolds.assembly
+ln -sf ../scaffolding/${OUT_PREFIX}.final.hic ./scaffolds.hic
+ln -sf ../aligned/merged_nodups.txt .
 cd ..
 
 echo "Scaffold stats (scaffolding/contigs.FINAL.fasta):"

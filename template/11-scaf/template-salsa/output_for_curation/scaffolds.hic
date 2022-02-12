@@ -1,1 +1,0 @@
-../contigs.omnic_salsa/scaffolds_FINAL.hic
