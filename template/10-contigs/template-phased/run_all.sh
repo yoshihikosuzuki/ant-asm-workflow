@@ -5,7 +5,7 @@
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH -c 1
-#SBATCH --mem=1G
+#SBATCH --mem=40G
 #SBATCH -t 72:00:00
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
@@ -29,9 +29,12 @@ cd 01-busco-hap1/ &&
 cd 01-busco-hap2/ &&
     BUSCO2=$(sbatch run_busco.sh | cut -f 4 -d' ') &&
     cd ..
-cd 02-merquryfk/ &&
-    MERQURYFK=$(sbatch run_merquryfk.sh | cut -f 4 -d' ') &&
+cd 02-merqury/ &&
+    MERQURY=$(sbatch run_merqury.sh | cut -f 4 -d' ') &&
     cd ..
+# cd 02-merquryfk/ &&
+#     MERQURY=$(sbatch run_merquryfk.sh | cut -f 4 -d' ') &&
+#     cd ..
 cd 04-winnowmap/ &&
     WINNOWMAP=$(sbatch -d afterany:${MAKE_INDEX} run_winnowmap.sh | cut -f 4 -d' ') &&
     cd ..
@@ -50,6 +53,6 @@ cd 10-mummer/ &&
 cd 11-hic/ &&
     HIC=$(sbatch -d afterany:${MAKE_INDEX} run_hic.sh | cut -f 4 -d' ') &&
     cd ..
-WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURYFK},${MAPQV},${ASSET},${MUMMER},${HIC}
+WAIT_JOBS=${BUSCO_ALL},${BUSCO1},${BUSCO2},${MERQURY},${MAPQV},${ASSET},${MUMMER},${HIC}
 
 srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${WAIT_JOBS} --wait=0 sleep 1s
