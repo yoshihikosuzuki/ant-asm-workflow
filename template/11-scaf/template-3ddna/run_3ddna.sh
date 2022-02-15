@@ -79,7 +79,7 @@ cd ..
 
 cd output/ && ln -sf ../scaffolding/${OUT_PREFIX}.FINAL.fasta ./scaffolds.fasta && cd ..
 cd output_for_curation/
-ln -sf ../reference/scaffolds_FINAL.fasta ./draft.fasta
+ln -sf ../reference/scaffolds_FINAL.fasta ./scaffolds.fasta
 ln -sf ../scaffolding/${OUT_PREFIX}.final.assembly ./scaffolds.assembly
 ln -sf ../scaffolding/${OUT_PREFIX}.final.hic ./scaffolds.hic
 ln -sf ../aligned/merged_nodups.txt .

@@ -10,7 +10,7 @@
 shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
 
-SCAFS=draft.fasta
+SCAFS=scaffolds.fasta
 REVIEW_ASSEMBLY=scaffolds.review.assembly
 MERGED_NODUPS=merged_nodups.txt
 

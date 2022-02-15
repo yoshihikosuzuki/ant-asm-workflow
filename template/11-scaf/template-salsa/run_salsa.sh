@@ -104,7 +104,7 @@ ln -sf hic/scaffolds_FINAL.hic .
 cd ..
 
 cd output_for_curation/
-ln -sf ../${OUT_SALSA}/scaffolds_FINAL.fasta ./draft.fasta
+ln -sf ../${OUT_SALSA}/scaffolds_FINAL.fasta ./scaffolds.fasta
 ln -sf ../${OUT_SALSA}/scaffolds_FINAL.assembly ./scaffolds.assembly
 ln -sf ../${OUT_SALSA}/scaffolds_FINAL.hic ./scaffolds.hic
 ln -sf ../${OUT_SALSA}/aligned/merged_nodups.txt .
