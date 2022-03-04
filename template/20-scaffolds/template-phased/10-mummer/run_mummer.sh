@@ -20,6 +20,8 @@ OUT_PREFIX=${_REF%.*}.${_QUERY%.*}.mummer
 OUT_DELTA=${OUT_PREFIX}.delta
 OUT_FILT_DELTA=${OUT_PREFIX}.filtered.delta
 OUT_GP=${OUT_PREFIX}.gp
+OUT_PS=${OUT_PREFIX}.ps
+OUT_PDF=${OUT_PREFIX}.pdf
 
 ml ${_MUMMER}
 
@@ -53,3 +55,4 @@ sed -i "s/set ylabel \"QRY\"/set ylabel \"${QUERY}\"/" ${OUT_GP}
 # Use thinner dots and lines for alignments (lw: linewidth，pt: pointtype，ps: pointsize)
 sed -i 's/lw 2 pt 6 ps 0.5/lw 0.5 pt 7 ps 0.05/g' ${OUT_GP}
 gnuplot ${OUT_GP}
+ps2pdf ${OUT_PS} ${OUT_PDF}
