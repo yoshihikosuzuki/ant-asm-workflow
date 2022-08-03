@@ -34,6 +34,7 @@ _PURGE_DUPS=Other/purge_dups/1.2.5
 _ARIMA_PIPELINE=Other/arima_pipeline/2019.02.08
 _SALSA=Other/SALSA/2.3
 _3DDNA=Other/3d-dna/180922
+_YAHS=Other/yahs/1.1
 _HIC2COOL=Other/hic2cool/0.8.3
 _BUSCO=Other/BUSCO/5.1.3
 _FASTK=Other/FASTK/2021.09.29
