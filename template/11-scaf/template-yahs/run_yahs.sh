@@ -75,8 +75,6 @@ cd ..
 
 # hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
 
-cd ..
-
 cd output_for_curation/
 ln -sf ../references/scaffolds.fasta .
 ln -sf ../references/scaffolds.assembly .
