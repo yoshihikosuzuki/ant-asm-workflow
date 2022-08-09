@@ -11,6 +11,8 @@ shopt -s expand_aliases && source ~/.bashrc || exit 1
 source ../../config.sh
 ml ${_SAMTOOLS} ${_BWA} ${_3DDNA} ${_YAHS} ${_SEQKIT}
 
+mkdir output && mkdir output_for_curation
+
 CONTIGS=contigs.fasta
 BAM=contigs.omnic.dedup.sorted.bam
 READS_1=omnic_R1_001.fastq
