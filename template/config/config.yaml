@@ -1,0 +1,27 @@
+# Environment-specific Snakemake settings
+
+# General settings
+cores: 128
+keep-going: True
+rerun-incomplete: True
+printshellcmds: True
+show-failed-logs: True
+
+# Job schedulers
+# NOTE: Comment-out to run without job schedulers
+local-cores: 1
+jobs: 100
+latency-wait: 60
+cluster: >-
+  sbatch
+  -p {resources.partition}
+  -J {rule}
+  -o {log}.cluster
+  -c {threads}
+  --mem={resources.mem_gb}G
+  -t {resources.time_h}:00:00
+default-resources:
+  - partition="compute"
+  - mem_gb=1
+  - time_h=1
+  - tmpdir="tmp"

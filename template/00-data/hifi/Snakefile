@@ -1,0 +1,47 @@
+rule hifi_fastk:
+    input:
+        f"00-data/hifi/{config['input']['hifi']}"
+    output:
+        "00-data/hifi/run_fastk.done"
+    log:
+        "00-data/hifi/run_fastk.log"
+    threads: config["fastk"]["threads"]
+    resources:
+        mem_gb = config["fastk"]["mem_gb"],
+        time_h = config["fastk"]["time_h"]
+    shell:
+        f"""
+        cd 00-data/hifi/
+        ./run_fastk.sh
+        cd ../..
+        touch {{output}}
+        """
+
+rule hifi_genescope:
+    input:
+        rules.hifi_fastk.output
+    output:
+        "00-data/hifi/run_genescope.done"
+    log:
+        "00-data/hifi/run_genescope.log"
+    threads: config["genescope"]["threads"]
+    resources:
+        mem_gb = config["genescope"]["mem_gb"],
+        time_h = config["genescope"]["time_h"]
+    shell:
+        f"""
+        cd 00-data/hifi/
+        ./run_genescope.sh
+        cd ../..
+        touch {{output}}
+        """
+
+rule hifi_all:
+    input:
+        rules.hifi_genescope.output
+    output:
+        "00-data/hifi/done"
+    shell:
+        f"""
+        touch {{output}}
+        """

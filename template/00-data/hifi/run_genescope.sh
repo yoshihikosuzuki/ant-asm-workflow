@@ -1,25 +1,20 @@
 #!/bin/bash
-#SBATCH -J genescope
-#SBATCH -o genescope.log
-#SBATCH -p compute
-#SBATCH -n 1
-#SBATCH -N 1
-#SBATCH -c 16
-#SBATCH --mem=100G
-#SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
-source ../../config.sh
+source ../../config/aux.sh
+eval $(parse_yaml ../../config/workflow.yaml)
+eval ${shell_prefix}
+set -eu
+eval ${activate_genescope}
+eval ${activate_merquryfk}
+set -x
 
 FASTK_PREFIX=hifi.fastk
-K=${HIFI_K}
-PLOIDY=${PLOIDY}
+K=${genescope_hifi_k}
+PLOIDY=${genescope_ploidy}
 HIST_MAX=1000
-THRES_ERROR=${HIFI_THRES_ERROR}
-N_THREAD=16
+THRES_ERROR=${genescope_hifi_thres_error}
+N_THREAD=${genescope_threads}
 
 OUT_PREFIX=${FASTK_PREFIX/.fastk/.genescope}
-
-ml ${_GENESCOPE} ${_MERQURYFK}
 
 Histex -G ${FASTK_PREFIX} -h${HIST_MAX} |
     GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}

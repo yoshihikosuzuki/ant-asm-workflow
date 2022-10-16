@@ -1,11 +1,4 @@
-## TODO:
-
-- Test haplotype-phased mode
-- Make a small test dataset
-
----
-
-# ant-asm-workflow
+# ant-asm-workflow (Snakemake version branch)
 
 - This is a template working directory (`template/` of this repository) containing shell scripts that can be used for semi-automated genome assembly, quality assessment, and manual curation with **HiFi + Omni-C** reads (or only HiFi reads).
 - This workflow depends on [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp) on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST. You cannot use this workflow as it is outside Deigo, although the commands other than environment settings are universal.

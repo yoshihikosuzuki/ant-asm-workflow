@@ -1,0 +1,44 @@
+# Environment-specific workflow settings
+
+# Commands executed at the beginning of each task
+shell_prefix: "hostname; date; . /etc/bashrc; source /apps/free/lmod/lmod/init/bash; module purge; module use --append /apps/.modulefiles72; module use /apps/.bioinfo-ugrp-modulefiles81; module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles;"
+
+# Commands to activate the command
+activate:
+  fastk: "module load Other/FASTK/2021.09.29"
+  genescope: "module load Other/genescope/2021.03.26"
+  merquryfk: "module load Other/MerquryFK/2021.09.14"
+  seqkit: "module load Other/seqkit/2.0.0"
+  hifiasm: "module load Other/hifiasm/0.16.1"
+  gfatools: "module load Other/gfatools/0.5"
+
+# Automatic deletion of intermediate/temporary files
+auto_del: true
+
+# Input files
+input:
+  hifi: "hifi.fastq.gz"
+
+# Parameters
+genescope:
+  ploidy: 2
+  hifi_k: 40
+  hic_k: 21
+  hifi_thres_error: 4
+  hic_thres_error: 4
+
+# Resources
+fastk:
+  threads: 16
+  mem_gb: 40
+  time_h: 12
+
+genescope:
+  threads: 16
+  mem_gb: 100
+  time_h: 24
+
+hifiasm:
+  threads: 128
+  mem_gb: 100
+  time_h: 48
