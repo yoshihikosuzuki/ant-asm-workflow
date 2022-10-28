@@ -1,4 +1,4 @@
-module data_hifi:
-    snakefile: "00-data/hifi/Snakefile"
+module data:
+    snakefile: "00-data/Snakefile"
     config: config
-use rule * from data_hifi
+use rule * from data

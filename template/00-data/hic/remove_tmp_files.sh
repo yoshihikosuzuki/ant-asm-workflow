@@ -6,5 +6,5 @@ set -eu
 eval ${activate_fastk}
 set -x
 
-Fastrm hifi.fastk
+Fastrm hic.fastk
 rm -rf tmp

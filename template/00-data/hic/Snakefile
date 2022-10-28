@@ -1,9 +1,10 @@
 import os
 root = os.path.dirname(workflow.snakefile)
 
-rule hifi_fastk:
+rule hic_fastk:
     input:
-        f"{root}/{config['input']['hifi']}"
+        f"{root}/{config['input']['hic'].split()[0]}",
+        f"{root}/{config['input']['hic'].split()[1]}"
     output:
         f"{root}/run_fastk.done"
     log:
@@ -17,9 +18,9 @@ rule hifi_fastk:
         (cd {root} && ./run_fastk.sh && touch {{output}})
         """
 
-rule hifi_genescope:
+rule hic_genescope:
     input:
-        rules.hifi_fastk.output
+        rules.hic_fastk.output
     output:
         f"{root}/run_genescope.done"
     log:
@@ -33,10 +34,10 @@ rule hifi_genescope:
         (cd {root} && ./run_genescope.sh && touch {{output}})
         """
 
-localrules: hifi_all
-rule hifi_all:
+localrules: hic_all
+rule hic_all:
     input:
-        rules.hifi_genescope.output
+        rules.hic_genescope.output
     output:
         f"{root}/done"
     shell:

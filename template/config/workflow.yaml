@@ -18,6 +18,7 @@ auto_del: true
 # Input files
 input:
   hifi: "hifi.fastq.gz"
+  hic: "hic_R1_001.fastq.gz hic_R2_001.fastq.gz"
 
 # Parameters
 genescope:

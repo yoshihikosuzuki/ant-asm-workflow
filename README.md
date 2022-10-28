@@ -1,4 +1,10 @@
-# ant-asm-workflow (Snakemake version branch)
+# ant-asm-workflow Snakemake version branch (deprecated)
+
+This branch was an experimental branch that tried to use Snakemake for managing the flow of the tasks in the workflow and for abstracting the environment-specific settings.
+However, I realized that Snakemake is too inflexible to achieve all the modularizations and abstractions in the original workflow, such as purge_dups and contig/scaffolding evalations.
+Simply using shell scripts is much easier to use and manage the workflow (though separation of configs and workflow tasks is a nice practice).
+
+---
 
 - This is a template working directory (`template/` of this repository) containing shell scripts that can be used for semi-automated genome assembly, quality assessment, and manual curation with **HiFi + Omni-C** reads (or only HiFi reads).
 - This workflow depends on [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp) on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST. You cannot use this workflow as it is outside Deigo, although the commands other than environment settings are universal.

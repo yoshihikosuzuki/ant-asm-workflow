@@ -1,0 +1,24 @@
+import os
+root = os.path.dirname(workflow.snakefile)
+
+module data_hifi:
+    snakefile: "hifi/Snakefile"
+    config: config
+use rule * from data_hifi
+
+module data_hic:
+    snakefile: "hic/Snakefile"
+    config: config
+use rule * from data_hic
+
+localrules: data_all
+rule data_all:
+    input:
+        rules.hifi_all.output,
+        rules.hic_all.output
+    output:
+        f"{root}/done"
+    shell:
+        f"""
+        (cd {root} && touch {{output}})
+        """
