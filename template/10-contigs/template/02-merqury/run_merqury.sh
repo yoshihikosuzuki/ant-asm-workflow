@@ -23,7 +23,7 @@ _READS=${_READS%.*}
 _CONTIGS=${_CONTIGS%.*}
 OUT_PREFIX=${_CONTIGS}.${_READS}.merqury
 
-ml ${MERQURY}
+ml ${_MERQURY}
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
 merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}
