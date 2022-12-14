@@ -41,6 +41,7 @@ _FASTK=Other/FASTK/2021.09.29
 _GENESCOPE=Other/genescope/2021.03.26
 _MERQURY=Other/merqury/1.3
 _MERQURYFK=Other/MerquryFK/2021.09.14
+_MERYL=Other/meryl/1.3
 _DEEPVARIANT=Other/deepvariant/1.1.0
 _ASSET=Other/asset/1.0.3
 _MAKE_TELOMERE_BED=Other/make_telomere_bed/2021.05.20
