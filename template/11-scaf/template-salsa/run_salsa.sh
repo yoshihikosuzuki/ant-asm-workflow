@@ -10,6 +10,8 @@
 shopt -s expand_aliases && source ~/.bashrc || exit 1
 source ../../config.sh
 
+mkdir output && mkdir output_for_curation
+
 CONTIGS=contigs.fasta
 READS_1=omnic_R1_001.fastq
 READS_2=omnic_R2_001.fastq
