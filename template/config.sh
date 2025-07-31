@@ -7,9 +7,12 @@
 # ----------------------------------------------------------------------------------------------- #
 
 module purge
-module use --append /apps/.modulefiles72
-module use /apps/.bioinfo-ugrp-modulefiles81
-module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
+module use bioinfo-ugrp-modules DebianMed/12.0
+
+## Temporary directory; specify a large and preferably fast disk space.
+## On Deigo, /scratch sometimes does not have enough space left. Specifying ./tmp is safer.
+export TMPDIR=tmp
+mkdir -p $TMPDIR
 
 # ----------------------------------------------------------------------------------------------- #
 # List of the names and versions of the dependent modules
@@ -17,35 +20,44 @@ module use /apps/unit/BioinfoUgrp/DebianMed/10.7/modulefiles
 #       Right-hand side depends on your environment.
 # ----------------------------------------------------------------------------------------------- #
 
-_SEQKIT=Other/seqkit/2.0.0
+## General tools
+_SEQKIT=Other/seqkit/2.10.0
 _SAMTOOLS=samtools/1.12
-_BCFTOOLS=bcftools/1.9-1
+_BCFTOOLS=bcftools/1.14
 _BEDTOOLS=bedtools/v2.29.2
-_GFATOOLS=Other/gfatools/0.5
 _PICARD=picard/2.7.0
+_HIC2COOL=Other/hic2cool/0.8.3
+
+## For mapping; could influence results of any downstream analysis using them.
 _BWA=bwa/0.7.17-3
-_MINIMAP2=Other/minimap2/2.20
+_MINIMAP2=Other/minimap2/2.30
+_GFATOOLS=Other/gfatools/0.5
 _WINNOWMAP=Other/winnowmap/2.03
-_HIFIASM=Other/hifiasm/0.16.1
-_CANU=Other/canu/2.1.1
-_IPA=Other/pbipa/1.3.2
-_PEREGRINE=Other/peregrine/1.6.3
+
+## For contig assembly
+_HIFIASM=Other/hifiasm/0.25.0
 _PURGE_DUPS=Other/purge_dups/1.2.5
+
+## For scaffolding
 _ARIMA_PIPELINE=Other/arima_pipeline/2019.02.08
 _SALSA=Other/SALSA/2.3
 _3DDNA=Other/3d-dna/180922
-_YAHS=Other/yahs/1.1
-_HIC2COOL=Other/hic2cool/0.8.3
+_YAHS=Other/yahs/1.2.2
+
+## For annotation and other analyses
+_MAKE_TELOMERE_BED=Other/make_telomere_bed/2021.05.20
+_MOSDEPTH=Other/mosdepth/0.3.11
+_MUMMER=Other/mummer/4.0.0rc1
+
+## For evaluation; could influence the quality values.
 _BUSCO=Other/BUSCO/5.1.3
 _FASTK=Other/FASTK/2021.09.29
 _GENESCOPE=Other/genescope/2021.03.26
 _MERQURY=Other/merqury/1.3
 _MERQURYFK=Other/MerquryFK/2021.09.14
-_DEEPVARIANT=Other/deepvariant/1.1.0
+_DEEPVARIANT=Other/deepvariant/1.9.0
 _ASSET=Other/asset/1.0.3
-_MAKE_TELOMERE_BED=Other/make_telomere_bed/2021.05.20
-_MOSDEPTH=Other/mosdepth/0.3.1
-_MUMMER=Other/mummer/4.0.0rc1
+
 
 # ----------------------------------------------------------------------------------------------- #
 # Automatic deletion of intermediate/temporary files
