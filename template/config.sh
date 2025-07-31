@@ -6,6 +6,9 @@
 # NOTE: Write any commands necessary to load the modules listed just below
 # ----------------------------------------------------------------------------------------------- #
 
+hostname
+date
+source /apps/free/lmod/lmod/init/bash
 module purge
 module use bioinfo-ugrp-modules DebianMed/12.0
 
