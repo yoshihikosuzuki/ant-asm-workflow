@@ -1,6 +1,5 @@
 ## TODO:
 
-- Test haplotype-phased mode
 - Make a small test dataset
 
 ---
