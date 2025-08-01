@@ -7,12 +7,12 @@
 #SBATCH -c 1
 #SBATCH --mem=1G
 #SBATCH -t 1:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+ml ${_FASTK}
+set -x
 
 FASTK_PREFIX=hifi.fastk
-
-ml ${_FASTK}
 
 Fastrm ${FASTK_PREFIX}
 rm -rf tmp/

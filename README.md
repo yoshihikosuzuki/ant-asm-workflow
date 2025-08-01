@@ -1,9 +1,3 @@
-## TODO:
-
-- Make a small test dataset
-
----
-
 # ant-asm-workflow
 
 - This is a template working directory (`template/` of this repository) containing shell scripts that can be used for semi-automated genome assembly, quality assessment, and manual curation with **HiFi + Omni-C** reads (or only HiFi reads).
@@ -11,6 +5,17 @@
 - This workflow supports both **haplotype-merged** assembly and **haplotype-phased** assembly (of a diploid genome).
 - The evaluation criteria are basically based on the [VGP](https://github.com/VGP/vgp-assembly)'s method.
 - This workflow was originally developed for ants, but it is now applicable to other (diploid) species with a config file (`template/config.sh`) that stores species-specific parameters.
+
+## Updated points from v1 in v2
+
+- Config (`config.sh`)
+  - Updated Lmod modules
+  - Now independent from `$HOME/.bashrc`
+  - Always set `$TMPDIR` to `./tmp` (or other directory specified by user) to avoid "no-space-left" errors
+- Test data and script
+  - `$ bash test.sh` does a test run.
+- Input data
+  - Accept gzipped files of HiFi and Omni-C reads.
 
 ## How to install
 

@@ -7,16 +7,16 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+ml ${_HIFIASM} ${_GFATOOLS} ${_SEQKIT}
+set -x
 
 IN_FASTX=hifi.fastq
 N_THREADS=128
 
 OUT_PREFIX=$(basename ${IN_FASTX} .gz)
 OUT_PREFIX=${OUT_PREFIX%.*}.hifiasm
-
-ml ${_HIFIASM} ${_GFATOOLS} ${_SEQKIT}
 
 hifiasm -o ${OUT_PREFIX} -t ${N_THREADS} ${IN_FASTX}
 for DATA in *tg.gfa; do

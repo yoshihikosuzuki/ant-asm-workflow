@@ -10,7 +10,7 @@ hostname
 date
 source /apps/free/lmod/lmod/init/bash
 module purge
-module use bioinfo-ugrp-modules DebianMed/12.0
+module load bioinfo-ugrp-modules DebianMed/12.0
 
 ## Temporary directory; specify a large and preferably fast disk space.
 ## On Deigo, /scratch sometimes does not have enough space left. Specifying ./tmp is safer.
@@ -29,7 +29,6 @@ _SAMTOOLS=samtools/1.12
 _BCFTOOLS=bcftools/1.14
 _BEDTOOLS=bedtools/v2.29.2
 _PICARD=picard/2.7.0
-_HIC2COOL=Other/hic2cool/0.8.3
 
 ## For mapping; could influence results of any downstream analysis using them.
 _BWA=bwa/0.7.17-3
@@ -43,8 +42,6 @@ _PURGE_DUPS=Other/purge_dups/1.2.5
 
 ## For scaffolding
 _ARIMA_PIPELINE=Other/arima_pipeline/2019.02.08
-_SALSA=Other/SALSA/2.3
-_3DDNA=Other/3d-dna/180922
 _YAHS=Other/yahs/1.2.2
 
 ## For annotation and other analyses
@@ -73,6 +70,17 @@ _ASSET=Other/asset/1.0.3
 AUTO_DEL=true
 
 # ----------------------------------------------------------------------------------------------- #
+# Whether or not input read files are gzipped or not.
+# - HIFI_GZ, OMNIC_GZ: Set "" (empty string) if the HiFi/Omni-C read files are plain fastq files.
+#                      Set ".gz" if gzipped.
+# ----------------------------------------------------------------------------------------------- #
+
+HIFI_GZ=".gz"
+# HIFI_GZ=""
+OMNIC_GZ=".gz"
+# OMNIC_GZ=""
+
+# ----------------------------------------------------------------------------------------------- #
 # GeneScope/PloidyPlot (`00-data/hifi/` and `00-data/omnic/`) settings
 # - PLOIDY: Ploidy of the genome.
 # - HIFI_K: Length of k-mers used for HiFi reads by GeneScope/PoidyPlot.
@@ -91,27 +99,13 @@ HIFI_THRES_ERROR=4
 OMNIC_THRES_ERROR=4
 
 # ----------------------------------------------------------------------------------------------- #
-# HiCanu (`01-asm/hicanu/`) settings
-# - GENOME_SIZE: Genome size in bp. This does not have to be very accurate.
-# ----------------------------------------------------------------------------------------------- #
-
-GENOME_SIZE=300000000
-
-# ----------------------------------------------------------------------------------------------- #
-# SALSA (`11-scaf/template-salsa`) settings
-# - SALSA_MIN_MAPQ: Minimum required MAPQ value (of BAM) for Omni-C read mappings used for SALSA.
-# - SALSA_N_ITERATION: Maximum number of iterartions of SALSA procedure.
-# ----------------------------------------------------------------------------------------------- #
-
-SALSA_MIN_MAPQ=10
-SALSA_N_ITERATION=10
-
-# ----------------------------------------------------------------------------------------------- #
-# 3D-DNA (`11-scaf/template-3ddna`) settings
+# Scaffolding (`11-scaf/template-yahs`) settings
+# - SCAF_MIN_MAPQ: Minimum required MAPQ value (of BAM) for Omni-C read mappings used for scaffolding.
 # - HIC_ENZYME_NAME: Name of the restriction enzyme used in the Hi-C experiment.
 #                    Leave this empty for Omni-C.
 # ----------------------------------------------------------------------------------------------- #
 
+SCAF_MIN_MAPQ=10
 HIC_ENZYME_NAME=
 
 # ----------------------------------------------------------------------------------------------- #

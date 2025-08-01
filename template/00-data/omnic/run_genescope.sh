@@ -7,8 +7,10 @@
 #SBATCH -c 16
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+ml ${_GENESCOPE} ${_MERQURYFK}
+set -x
 
 FASTK_PREFIX=omnic.fastk
 K=${OMNIC_K}
@@ -18,8 +20,6 @@ THRES_ERROR=${OMNIC_THRES_ERROR}
 N_THREAD=16
 
 OUT_PREFIX=${FASTK_PREFIX/.fastk/.genescope}
-
-ml ${_GENESCOPE} ${_MERQURYFK}
 
 Histex -G ${FASTK_PREFIX} -h${HIST_MAX} |
     GeneScopeFK.R -o ${OUT_PREFIX} -p${PLOIDY} -k ${K}

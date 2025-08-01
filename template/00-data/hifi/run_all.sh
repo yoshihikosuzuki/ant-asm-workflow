@@ -7,8 +7,9 @@
 #SBATCH -c 1
 #SBATCH --mem=1G
 #SBATCH -t 72:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+set -x
 
 FASTK=$(sbatch run_fastk.sh | cut -f 4 -d' ')
 GENESCOPE=$(sbatch -d afterany:${FASTK} run_genescope.sh | cut -f 4 -d' ')

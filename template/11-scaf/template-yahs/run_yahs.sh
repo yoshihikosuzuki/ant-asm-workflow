@@ -7,20 +7,44 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
-shopt -s expand_aliases && source ~/.bashrc || exit 1
 source ../../config.sh
-ml ${_SAMTOOLS} ${_BWA} ${_3DDNA} ${_YAHS} ${_SEQKIT}
-
-mkdir output && mkdir output_for_curation
+set -eu
+ml ${_SAMTOOLS} ${_BWA} ${_PICARD} ${_ARIMA_PIPELINE} ${_3DDNA} ${_YAHS} ${_SEQKIT}
+set -x
 
 CONTIGS=contigs.fasta
-BAM=contigs.omnic.dedup.sorted.bam
 READS_1=omnic_R1_001.fastq
 READS_2=omnic_R2_001.fastq
+
+MIN_MAPQ=${SCAF_MIN_MAPQ}
 ENZYME_NAME=${HIC_ENZYME_NAME}
+N_THREADS=128
+
+CONTIGS_BWA_PREFIX=${CONTIGS}
+OUT_PREFIX=${CONTIGS%.*}.${READS_1%%_R*}
+SORTED_BAM=${OUT_PREFIX}.sorted.bam
+OUT_BAM=${OUT_PREFIX}.dedup.sorted.bam
 OUT_SCAF=yahs.out_scaffolds_final.fa
 
-yahs ${CONTIGS} ${BAM}
+# Read mapping
+for READS in ${READS_1} ${READS_2}; do
+    _OUT_PREFIX=${READS%.gz}
+    _OUT_BAM=${CONTIGS%.*}.${_OUT_PREFIX%.*}.filtered.bam
+    bwa mem -t${N_THREADS} -B8 ${CONTIGS_BWA_PREFIX} ${READS} |
+        filter_five_end.pl |
+        samtools view -@${N_THREADS} -b -o ${_OUT_BAM}
+done
+two_read_bam_combiner.pl *.filtered.bam $(which samtools) ${MIN_MAPQ} |
+    samtools view -@${N_THREADS} -b - |
+    samtools sort -@${N_THREADS} -o ${SORTED_BAM}
+# Deduplication
+java -jar -Xmx500G -Djava.io.tmpdir=${TMPDIR} ${PICARD} MarkDuplicates REMOVE_DUPLICATES=true I=${SORTED_BAM} O=${OUT_BAM} M=${OUT_BAM}.metrics ASSUME_SORT_ORDER=coordinate
+
+
+# YaHS scaffolding
+mkdir output && mkdir output_for_curation
+
+yahs ${CONTIGS} ${OUT_BAM}
 cd output/ && ln -sf ../${OUT_SCAF} scaffolds.fasta && cd ..
 
 echo "Scaffold stats (output/scaffolds.fasta):"
@@ -68,14 +92,6 @@ cd ..
 # ln -sf ${ASSEMBLY} .
 # ln -sf ${CHROM_SIZES} .
 # ln -sf hic/scaffolds_FINAL.hic .
-
-# Generate .mcool file
-# IN_HIC=scaffolds_FINAL.hic
-# OUT_COOL=scaffolds_FINAL.cool
-
-# ml ${_HIC2COOL}
-
-# hic2cool convert ${IN_HIC} ${OUT_COOL} -p ${N_THREADS}
 
 cd output_for_curation/
 ln -sf ../references/scaffolds.fasta .
