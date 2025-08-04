@@ -49,3 +49,52 @@ PD=$(sbatch -d afterany:${PD_PLOT} run_purge_dups.sh | cut -f 4 -d' ')
 cd ..
 
 cd ..
+
+## Wait for the completion of the jobs
+srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${PD} --wait=0 sleep 1s
+
+###################################################################################################
+## `10-contigs`: contig assembly evaluation
+###################################################################################################
+cd 10-contigs
+
+cp -r template hifiasm-pd
+cd hifiasm-pd
+ln -sf ../../01-asm/hifiasm-pd/purged.fa contigs.fasta
+bash run_all.sh
+cd ..
+
+cd ..
+
+###################################################################################################
+## `11-scaf`: scaffold assembly
+###################################################################################################
+cd 11-scaf
+
+cp -r template-yahs hifiasm-pd-yahs
+cd hifiasm-pd-yahs
+ln -sf ../../10-contigs/hifiasm-pd/contigs.fasta* .
+YAHS=$(sbatch run_yahs.sh | cut -f 4 -d' ')
+cd ..
+
+cd ..
+
+## Wait for the completion of the jobs
+srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${YAHS} --wait=0 sleep 1s
+
+###################################################################################################
+## `20-scaffolds`: scaffold assembly evaluation
+###################################################################################################
+cd 20-scaffolds
+
+cp -r template hifiasm-pd-yahs
+cd hifiasm-pd-yahs
+ln -sf ../../11-scaf/hifiasm-pd-yahs/output/scaffolds.fasta scaffolds.fasta
+bash run_all.sh
+cd ..
+
+cd ..
+
+###################################################################################################
+
+cd ..   # test

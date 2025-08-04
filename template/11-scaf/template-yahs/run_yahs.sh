@@ -86,8 +86,10 @@ fi
 ./scripts/juicer.sh -t ${N_THREADS} -S early -z ${SCAFS} -p ${CHROM_SIZES} -g ${OUT_PREFIX} ${JUICER_S_OPT}
 
 # Generate .hic file
-mkdir -p hic && cd hic
-3d-dna-run-assembly-visualizer ../${ASSEMBLY} ../aligned/merged_nodups.txt
+mkdir -p hic
+cd hic
+mkdir -p ${TMPDIR}
+3d-dna-run-assembly-visualizer ../${ASSEMBLY} ../aligned/merged_nodups.txt || true
 cd ..
 
 cd output_for_curation/

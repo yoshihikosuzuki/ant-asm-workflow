@@ -13,12 +13,10 @@ module load ${_DEEPVARIANT}
 set -x
 
 REF=contigs.fasta
-READS=hifi.fastq${HIFI_GZ}
 IN_SORTED_BAM=contigs.hifi.winnowmap.sorted.bam
 N_THREADS=128
 
-_READS=$(basename ${READS} .gz | sed 's/\.[^.]*$//')
-OUT_PREFIX=${REF%.*}.${_READS%.*}.deepvariant
+OUT_PREFIX=${IN_SORTED_BAM%.winnowmap.sorted.bam}.deepvariant
 OUT_VCF=${OUT_PREFIX}.vcf
 
 run_deepvariant --num_shards ${N_THREADS} --model_type PACBIO --ref ${REF} --reads ${IN_SORTED_BAM} --output_vcf ${OUT_VCF} --intermediate_results_dir ${TMPDIR}

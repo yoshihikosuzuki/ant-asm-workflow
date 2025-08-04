@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eux
 
-rm -r $TMPDIR
+rm -rf tmp

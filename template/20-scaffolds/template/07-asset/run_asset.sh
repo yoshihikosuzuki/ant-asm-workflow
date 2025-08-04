@@ -6,7 +6,7 @@
 #SBATCH -N 1
 #SBATCH -c 128
 #SBATCH --mem=100G
-#SBATCH -t 24:00:
+#SBATCH -t 24:00:00
 source ../../../config.sh
 set -eu
 module load ${_ASSET}

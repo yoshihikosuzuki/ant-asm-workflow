@@ -15,7 +15,7 @@ set -x
 ASM=scaffolds.fasta
 BUSCO_DB=${BUSCO_DB}
 USE_AUGUSTUS=${USE_AUGUSTUS}
-N_CORE=${SLURM_CPUS_PER_TASK}
+N_CORE=128
 
 OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_DIR=${OUT_PREFIX%.*}.busco

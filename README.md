@@ -16,6 +16,9 @@
   - `$ bash test.sh` does a test run.
 - Input data
   - Accept gzipped files of HiFi and Omni-C reads.
+- Modules
+  - BUSCO → compleasm
+  - compleasm(/BUSCO) lineage database `hymenoptera_odb10` → `hymenoptera_odb12`
 
 ## How to install
 

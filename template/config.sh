@@ -12,8 +12,8 @@ source /apps/free/lmod/lmod/init/bash
 module purge
 module load bioinfo-ugrp-modules DebianMed/12.0
 
-## Temporary directory; specify a large and preferably fast disk space.
-## On Deigo, /scratch sometimes does not have enough space left. Specifying ./tmp is safer.
+## Specifying ./tmp as the temporary directory, since /scratch sometimes does not have enough
+## space left on Deigo.
 export TMPDIR=tmp
 mkdir -p $TMPDIR
 
@@ -51,14 +51,15 @@ _MOSDEPTH=Other/mosdepth/0.3.11
 _MUMMER=Other/mummer/4.0.0rc1
 
 ## For evaluation; could influence the quality values.
-_BUSCO=Other/BUSCO/5.1.3
+_BUSCO=Other/BUSCO/5.8.2
+_COMPLEASM=Other/compleasm/0.2.7
 _FASTK=Other/FASTK/2021.09.29
 _GENESCOPE=Other/genescope/2021.03.26
 _MERQURY=Other/merqury/1.3
 _MERQURYFK=Other/MerquryFK/2021.09.14
 _DEEPVARIANT=Other/deepvariant/1.9.0
 _ASSET=Other/asset/1.0.3
-
+_3DDNA=Other/3d-dna/180922
 
 # ----------------------------------------------------------------------------------------------- #
 # Automatic deletion of intermediate/temporary files
@@ -110,13 +111,13 @@ SCAF_MIN_MAPQ=10
 HIC_ENZYME_NAME=
 
 # ----------------------------------------------------------------------------------------------- #
-# BUSCO (`10-contigs/` and `20-scaffolds/`) settings
+# BUSCO/compleasm (`10-contigs/` and `20-scaffolds/`) settings
 # - BUSCO_DB: Name of the BUSCO database. Depends on the species.
-# - USE_AUGUSTUS: Must be "true" or "false". If "true", use Augustus (instead of Metaeuk) for
-#                 gene prediction.
+# - USE_AUGUSTUS: Only for BUSCO. Must be "true" or "false". If "true", use Augustus (instead of
+#                 Metaeuk) for gene prediction.
 # ----------------------------------------------------------------------------------------------- #
 
-BUSCO_DB="hymenoptera_odb10"
+BUSCO_DB="hymenoptera_odb12"
 USE_AUGUSTUS=true
 
 # ----------------------------------------------------------------------------------------------- #

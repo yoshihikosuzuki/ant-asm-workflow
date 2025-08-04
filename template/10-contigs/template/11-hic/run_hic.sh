@@ -48,8 +48,11 @@ else
     JUICER_S_OPT="-s ${ENZYME_NAME}"
 fi
 ./scripts/juicer.sh -t ${N_THREADS} -S early -z ${SCAFS} -p ${CHROM_SIZES} -g ${OUT_PREFIX} ${JUICER_S_OPT}
-mkdir -p hic && cd hic &&
-    3d-dna-run-assembly-visualizer ../${ASSEMBLY} ../aligned/merged_nodups.txt
+
+mkdir -p hic
+cd hic
+mkdir -p ${TMPDIR}
+3d-dna-run-assembly-visualizer ../${ASSEMBLY} ../aligned/merged_nodups.txt || true
 cd ..
 
 if [ "$AUTO_DEL" = "true" ]; then
