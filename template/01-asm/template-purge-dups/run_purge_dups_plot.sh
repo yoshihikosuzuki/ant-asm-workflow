@@ -7,24 +7,24 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+module load ${_MINIMAP2} ${_PURGE_DUPS}
+set -x
 
 CONTIGS=contigs.fasta
-READS=hifi.fastq
+READS=hifi.fastq${HIFI_GZ}
 N_THREADS=128
 
 CONTIGS_PREFIX=${CONTIGS%.gz}
 CONTIGS_SPLIT=${CONTIGS_PREFIX%.*}.split.fa
 
-ml ${_MINIMAP2} ${_PURGE_DUPS}
-
-minimap2 -t${N_THREADS} -xmap-pb ${CONTIGS} ${READS} > reads.paf
-split_fa ${CONTIGS} > ${CONTIGS_SPLIT}
-minimap2 -t${N_THREADS} -xasm5 -DP ${CONTIGS_SPLIT} ${CONTIGS_SPLIT} > contigs.paf
+minimap2 -t${N_THREADS} -xmap-pb ${CONTIGS} ${READS} >reads.paf
+split_fa ${CONTIGS} >${CONTIGS_SPLIT}
+minimap2 -t${N_THREADS} -xasm5 -DP ${CONTIGS_SPLIT} ${CONTIGS_SPLIT} >contigs.paf
 pbcstat reads.paf
 hist_plot.py PB.stat PB.hist.png
-calcuts PB.stat > cutoffs
+calcuts PB.stat >cutoffs
 echo -n "Automatically estimated cutoff values: "
 cat cutoffs
 

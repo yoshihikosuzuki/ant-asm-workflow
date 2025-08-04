@@ -9,12 +9,12 @@
 #SBATCH -t 48:00:00
 source ../../config.sh
 set -eu
-ml ${_SAMTOOLS} ${_BWA} ${_PICARD} ${_ARIMA_PIPELINE} ${_3DDNA} ${_YAHS} ${_SEQKIT}
+module load ${_SAMTOOLS} ${_BWA} ${_PICARD} ${_ARIMA_PIPELINE} ${_3DDNA} ${_YAHS} ${_SEQKIT}
 set -x
 
 CONTIGS=contigs.fasta
-READS_1=omnic_R1_001.fastq
-READS_2=omnic_R2_001.fastq
+READS_1=omnic_R1_001.fastq${OMNIC_GZ}
+READS_2=omnic_R2_001.fastq${OMNIC_GZ}
 
 MIN_MAPQ=${SCAF_MIN_MAPQ}
 ENZYME_NAME=${HIC_ENZYME_NAME}
@@ -28,8 +28,8 @@ OUT_SCAF=yahs.out_scaffolds_final.fa
 
 # Read mapping
 for READS in ${READS_1} ${READS_2}; do
-    _OUT_PREFIX=${READS%.gz}
-    _OUT_BAM=${CONTIGS%.*}.${_OUT_PREFIX%.*}.filtered.bam
+    _READS=$(basename ${READS} .gz | sed 's/\.[^.]*$//')
+    _OUT_BAM=${CONTIGS%.*}.${_READS}.filtered.bam
     bwa mem -t${N_THREADS} -B8 ${CONTIGS_BWA_PREFIX} ${READS} |
         filter_five_end.pl |
         samtools view -@${N_THREADS} -b -o ${_OUT_BAM}
@@ -37,18 +37,19 @@ done
 two_read_bam_combiner.pl *.filtered.bam $(which samtools) ${MIN_MAPQ} |
     samtools view -@${N_THREADS} -b - |
     samtools sort -@${N_THREADS} -o ${SORTED_BAM}
+
 # Deduplication
 java -jar -Xmx500G -Djava.io.tmpdir=${TMPDIR} ${PICARD} MarkDuplicates REMOVE_DUPLICATES=true I=${SORTED_BAM} O=${OUT_BAM} M=${OUT_BAM}.metrics ASSUME_SORT_ORDER=coordinate
 
-
 # YaHS scaffolding
 mkdir output && mkdir output_for_curation
-
 yahs ${CONTIGS} ${OUT_BAM}
-cd output/ && ln -sf ../${OUT_SCAF} scaffolds.fasta && cd ..
-
-echo "Scaffold stats (output/scaffolds.fasta):"
-seqkit stats -a output/scaffolds.fasta
+cd output/
+ln -sf ../${OUT_SCAF} scaffolds.fasta
+seqkit stats -a scaffolds.fasta >scaffolds.fasta.stats
+echo "Scaffold stats (output/scaffolds.fasta.stats):"
+cat scaffolds.fasta.stats
+cd ..
 
 # Generate .assembly and .hic
 # Make ./scripts/
@@ -88,10 +89,6 @@ fi
 mkdir -p hic && cd hic
 3d-dna-run-assembly-visualizer ../${ASSEMBLY} ../aligned/merged_nodups.txt
 cd ..
-
-# ln -sf ${ASSEMBLY} .
-# ln -sf ${CHROM_SIZES} .
-# ln -sf hic/scaffolds_FINAL.hic .
 
 cd output_for_curation/
 ln -sf ../references/scaffolds.fasta .

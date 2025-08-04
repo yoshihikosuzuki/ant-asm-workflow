@@ -7,19 +7,18 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
-shopt -s expand_aliases && source ~/.bashrc || exit 1
 source ../../../config.sh
+set -eu
+module load ${_SAMTOOLS} ${_BWA} ${_3DDNA}
+set -x
 
 SCAFS=scaffolds.fasta
-READS_1=omnic_R1_001.fastq
-READS_2=omnic_R2_001.fastq
+READS_1=omnic_R1_001.fastq${OMNIC_GZ}
+READS_2=omnic_R2_001.fastq${OMNIC_GZ}
 ENZYME_NAME=${HIC_ENZYME_NAME}
 N_THREADS=128
 
 OUT_PREFIX=${SCAFS%.*}
-
-# Generate .assembly and .hic
-ml ${_SAMTOOLS} ${_BWA} ${_3DDNA}
 
 # Make ./scripts/
 juicer_copy_scripts_dir
@@ -36,7 +35,6 @@ CHROM_SIZES=${SCAFS%.*}.chrom_sizes
 
 # 3d-dna-fasta2assembly ${SCAFS} >${ASSEMBLY}
 # awk 'NF == 3 {print substr($1,2) "\t" $3}' ${ASSEMBLY} >${CHROM_SIZES}
-
 # samtools faidx ${SCAFS}
 # bwa index ${SCAFS}
 

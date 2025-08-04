@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eux
 
-rm -f *.bin
+rm -r $TMPDIR

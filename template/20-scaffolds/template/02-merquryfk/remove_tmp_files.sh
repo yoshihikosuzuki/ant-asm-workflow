@@ -1,8 +1,8 @@
 #!/bin/bash
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
-
+set -eu
 ml ${_FASTK}
+set -x
 
 Fastrm hifi.fastk scaffolds.fastk scaffolds.fastk.hifi.fastk
-rm -rf tmp/
+rm -r $TMPDIR

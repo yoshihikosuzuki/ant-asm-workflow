@@ -7,14 +7,14 @@
 #SBATCH -c 1
 #SBATCH --mem=100G
 #SBATCH -t 10:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+module load ${_SAMTOOLS} ${_BWA} ${_3DDNA}
+set -x
 
 IN_REF=contigs.fasta
 OUT_ASSEMBLY=${IN_REF%.*}.assembly
 OUT_CHROM_SIZES=${IN_REF%.*}.chrom_sizes
-
-ml ${_SAMTOOLS} ${_BWA} ${_3DDNA}
 
 samtools faidx ${IN_REF}
 bwa index -p ${IN_REF} ${IN_REF}

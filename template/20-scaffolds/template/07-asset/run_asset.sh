@@ -6,14 +6,16 @@
 #SBATCH -N 1
 #SBATCH -c 128
 #SBATCH --mem=100G
-#SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+#SBATCH -t 24:00:
 source ../../../config.sh
+set -eu
+module load ${_ASSET}
+set -x
 
 SCAF=scaffolds.fasta
-READS=hifi.fastq
-HIC_READS_1=omnic_R1_001.fastq
-HIC_READS_2=omnic_R2_001.fastq
+READS=hifi.fastq${HIFI_GZ}
+HIC_READS_1=omnic_R1_001.fastq${OMNIC_GZ}
+HIC_READS_2=omnic_R2_001.fastq${OMNIC_GZ}
 PB_BAM=scaffolds.hifi.winnowmap.sorted.bam
 N_THREADS=128
 
@@ -33,10 +35,8 @@ HIC_LINKS=${OUT_PREFIX}.hic.links.mat
 BED_HIC=${OUT_PREFIX}.hic.bed
 BED_HIC_OK=${OUT_PREFIX}.hic.reliable.bed
 
-ml ${_ASSET}
-
 # Contiguous regions and gaps
-#samtools faix ${SCAF}
+# samtools faix ${SCAF}
 awk '{print $1"\t0\t"$2}' ${SCAF}.fai >${BED_SCAF}
 detgaps ${SCAF} >${BED_SCAF_GAP}
 
@@ -83,15 +83,13 @@ awk '{print $3 - $2}' ${BED_SCAF_OK} |
     awk 'NR==1 { halftot=$2/2 } lastsize>halftot && $2<halftot { print $1 } { lastsize=$2 }' >>reliable_blocks.n50
 
 # Generate .bed files for JBAT
-
 bed_to_jbat() {
     CHROM_SIZES=$1
     BED_FILE=$2
     awk 'BEGIN {l=0} FNR == NR {offset[$1]=l; l+=$2; next} {printf "assembly\t" offset[$1]+$2 "\t" offset[$1]+$3; for(i=4;i<=NF;i++) printf "\t" $i; print ""}' ${CHROM_SIZES} ${BED_FILE}
 }
-
-bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_GAP} > ${BED_SCAF_GAP/.bed/.JBAT.bed}
-bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_NG} > ${BED_SCAF_NG/.bed/.JBAT.bed}
+bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_GAP} >${BED_SCAF_GAP/.bed/.JBAT.bed}
+bed_to_jbat ../${SCAF/.fasta/.chrom_sizes} ${BED_SCAF_NG} >${BED_SCAF_NG/.bed/.JBAT.bed}
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh

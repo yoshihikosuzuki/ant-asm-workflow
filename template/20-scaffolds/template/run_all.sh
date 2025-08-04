@@ -7,7 +7,7 @@
 #SBATCH -c 1
 #SBATCH --mem=1G
 #SBATCH -t 72:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+set -eux
 
 MAKE_INDEX=$(sbatch 00-make_index.sh | cut -f 4 -d' ')
 

@@ -7,10 +7,10 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 48:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
-
-ml ${_BUSCO}
+set -eu
+module load ${_BUSCO}
+set -x
 
 ASM=scaffolds.fasta
 BUSCO_DB=${BUSCO_DB}

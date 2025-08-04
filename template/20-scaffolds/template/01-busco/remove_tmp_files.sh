@@ -1,4 +1,4 @@
 #!/bin/bash
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
+set -eux
 
 rm -rf scaffolds.busco/*/ busco_downloads/ augustus_config/

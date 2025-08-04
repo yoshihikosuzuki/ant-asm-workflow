@@ -25,6 +25,7 @@ mkdir -p $TMPDIR
 
 ## General tools
 _SEQKIT=Other/seqkit/2.10.0
+_PIGZ=pigz/2.6
 _SAMTOOLS=samtools/1.12
 _BCFTOOLS=bcftools/1.14
 _BEDTOOLS=bedtools/v2.29.2

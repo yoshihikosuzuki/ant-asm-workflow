@@ -9,7 +9,7 @@
 #SBATCH -t 72:00:00
 source ../../config.sh
 set -eu
-ml ${_FASTK}
+module load ${_FASTK}
 set -x
 
 FASTK=$(sbatch run_fastk.sh | cut -f 4 -d' ')

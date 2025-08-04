@@ -9,7 +9,7 @@
 #SBATCH -t 24:00:00
 source ../../config.sh
 set -eu
-ml ${_GENESCOPE} ${_MERQURYFK}
+module load ${_GENESCOPE} ${_MERQURYFK}
 set -x
 
 FASTK_PREFIX=omnic.fastk

@@ -7,28 +7,24 @@
 #SBATCH -c 16
 #SBATCH --mem=40G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
+set -eu
+module load ${_MERQURYFK}
+set -x
 
-READS=hifi.fastq
 CONTIGS=contigs.fasta
+READS=hifi.fastq${HIFI_GZ}
 K=${MERQURY_K}
 N_THREADS=16
-TMP_DIR=tmp
 
-_READS=$(basename ${READS} .gz)
-_CONTIGS=$(basename ${CONTIGS} .gz)
-_READS=${_READS%.*}
-_CONTIGS=${_CONTIGS%.*}
+_READS=$(basename ${READS} .gz | sed 's/\.[^.]*$//')
+_CONTIGS=$(basename ${CONTIGS} .gz | sed 's/\.[^.]*$//')
 READS_FASTK=${_READS}.fastk
 CONTIGS_FASTK=${_CONTIGS}.fastk
 OUT_PREFIX=${_CONTIGS}.${_READS}.merqury
 
-ml ${_MERQURYFK}
-
-mkdir -p ${TMP_DIR}
-FastK -k${K} -T${N_THREADS} -v -t1 -P${TMP_DIR} -N${READS_FASTK} ${READS}
-FastK -k${K} -T${N_THREADS} -v -t1 -p -P${TMP_DIR} -N${CONTIGS_FASTK} ${CONTIGS}
+FastK -k${K} -T${N_THREADS} -v -t1 -P${TMPDIR} -N${READS_FASTK} ${READS}
+FastK -k${K} -T${N_THREADS} -v -t1 -p -P${TMPDIR} -N${CONTIGS_FASTK} ${CONTIGS}
 FastK -k${K} -T${N_THREADS} -v -p:${READS_FASTK} -N${CONTIGS_FASTK}.${READS_FASTK} ${CONTIGS}
 
 CNspectra -v -pdf -T${N_THREADS} ${READS_FASTK} ${CONTIGS_FASTK} ${OUT_PREFIX}

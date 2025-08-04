@@ -1,8 +1,8 @@
 #!/bin/bash
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
-
-ml ${_FASTK}
+set -eu
+module load ${_FASTK}
+set -x
 
 Fastrm hifi.fastk contigs.fastk contigs.fastk.hifi.fastk
-rm -rf tmp/
+rm -r $TMPDIR

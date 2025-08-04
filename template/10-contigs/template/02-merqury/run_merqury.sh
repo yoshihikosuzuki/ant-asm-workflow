@@ -7,23 +7,21 @@
 #SBATCH -c 128
 #SBATCH --mem=500G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../../config.sh
+set -eu
+module load ${_MERQURY}
+set -x
 
-READS=hifi.fastq
 CONTIGS=contigs.fasta
+READS=hifi.fastq${HIFI_GZ}
 K=${MERQURY_K}
 N_THREADS=128
 N_MEMORY=500
 
 READS_MERYL=${READS}.meryl
-_READS=$(basename ${READS} .gz)
-_CONTIGS=$(basename ${CONTIGS} .gz)
-_READS=${_READS%.*}
-_CONTIGS=${_CONTIGS%.*}
+_READS=$(basename ${READS} .gz | sed 's/\.[^.]*$//')
+_CONTIGS=$(basename ${CONTIGS} .gz | sed 's/\.[^.]*$//')
 OUT_PREFIX=${_CONTIGS}.${_READS}.merqury
-
-ml ${_MERQURY}
 
 meryl count k=${K} memory=${N_MEMORY} threads=${N_THREADS} output ${READS_MERYL} ${READS}
 merqury.sh ${READS_MERYL} ${CONTIGS} ${OUT_PREFIX}

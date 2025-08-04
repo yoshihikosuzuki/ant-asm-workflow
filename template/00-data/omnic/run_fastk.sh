@@ -9,7 +9,7 @@
 #SBATCH -t 24:00:00
 source ../../config.sh
 set -eu
-ml ${_FASTK}
+module load ${_FASTK}
 set -x
 
 IN_FNAMES="omnic_R1_001.fastq${OMNIC_GZ} omnic_R2_001.fastq${OMNIC_GZ}"

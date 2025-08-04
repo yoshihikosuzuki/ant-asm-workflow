@@ -7,8 +7,10 @@
 #SBATCH -c 1
 #SBATCH --mem=100G
 #SBATCH -t 24:00:00
-shopt -s expand_aliases && source ~/.bashrc && set -e || exit 1
 source ../../config.sh
+set -eu
+module load ${_PURGE_DUPS} ${_SEQKIT}
+set -x
 
 # According to `calcuts` command:
 #     -l    INT      lower bound for read depth
@@ -18,15 +20,24 @@ L=
 M=
 U=
 
+if [ -z "${L}" ]; then
+    L=$(cut -f1,1 cutoffs)
+fi
+if [ -z "${M}" ]; then
+    M=$(cut -f4,4 cutoffs)
+fi
+if [ -z "${U}" ]; then
+    U=$(cut -f6,6 cutoffs)
+fi
+
 CONTIGS=contigs.fasta
 PAF_CONTIGS=contigs.paf
 CUTOFFS=cutoffs
 
-ml ${_PURGE_DUPS} ${_SEQKIT}
-
-calcuts -l ${L} -m ${M} -u ${U} PB.stat > ${CUTOFFS}
-purge_dups -2 -T ${CUTOFFS} -c PB.base.cov ${PAF_CONTIGS} > dups.bed
+calcuts -l ${L} -m ${M} -u ${U} PB.stat >${CUTOFFS}
+purge_dups -2 -T ${CUTOFFS} -c PB.base.cov ${PAF_CONTIGS} >dups.bed
 get_seqs dups.bed ${CONTIGS}
 echo "Finished purge_dups"
+seqkit stats -a purged.fa >purged.fa.stats
 echo "Purged contig stats:"
-seqkit stats -a purged.fa
+cat purged.fa.stats

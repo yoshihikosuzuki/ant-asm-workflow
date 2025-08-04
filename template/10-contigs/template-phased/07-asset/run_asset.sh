@@ -50,7 +50,7 @@ bed_to_support ${BED_PB}
 
 # Reliable block
 acc ${BED_SCAF_GAP} ${BED_PB_OK} |
-    awk '$4>=1' |
+    awk '$4>=2' |
     bedtools merge -i - >${BED_SCAF_ACC}
 bedtools subtract -a ${BED_SCAF} -b ${BED_SCAF_ACC} |
     bedtools merge -d 100 -i - >${BED_SCAF_NG}
