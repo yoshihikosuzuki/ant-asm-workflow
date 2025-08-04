@@ -1,24 +1,34 @@
-# ant-asm-workflow
+**TODO**:
+
+- v2 haplotype-phased assembly
+
+
+---
+
+# ant-asm-workflow v2
 
 - This is a template working directory (`template/` of this repository) containing shell scripts that can be used for semi-automated genome assembly, quality assessment, and manual curation with **HiFi + Omni-C** reads (or only HiFi reads).
 - This workflow depends on [the Bioinfo User Group module set](https://github.com/oist/BioinfoUgrp) on [the Deigo HPC cluster](https://groups.oist.jp/scs/documentation) at OIST. You cannot use this workflow as it is outside Deigo, although the commands other than environment settings are universal.
-- This workflow supports both **haplotype-merged** assembly and **haplotype-phased** assembly (of a diploid genome).
+- This workflow supports **haplotype-merged** assembly (of a diploid genome).
+  - **haplotype-phased** assembly is TODO.
 - The evaluation criteria are basically based on the [VGP](https://github.com/VGP/vgp-assembly)'s method.
 - This workflow was originally developed for ants, but it is now applicable to other (diploid) species with a config file (`template/config.sh`) that stores species-specific parameters.
 
-## Updated points from v1 in v2
+## Major updated points from v1
 
 - Config (`config.sh`)
   - Updated Lmod modules
   - Now independent from `$HOME/.bashrc`
   - Always set `$TMPDIR` to `./tmp` (or other directory specified by user) to avoid "no-space-left" errors
 - Test data and script
-  - `$ bash test.sh` does a test run.
-- Input data
+  - `$ bash test.sh` does a test run with a small read dataset.
+- Input file type
   - Accept gzipped files of HiFi and Omni-C reads.
 - Modules
-  - BUSCO → compleasm
-  - compleasm(/BUSCO) lineage database `hymenoptera_odb10` → `hymenoptera_odb12`
+  - Replaced BUSCO with compleasm (although script for BUSCO remains)
+  - Changed default compleasm(/BUSCO) lineage database `hymenoptera_odb10` to `hymenoptera_odb12`
+  - Updated several other modules
+  - Removed deprecated modules for contig assembly and scaffolding
 
 ## How to install
 
@@ -37,6 +47,12 @@ cp -r ant-asm-workflow/template <your-working-dir-name>
 
 The copied directory is the place you run the workflow.
 
+We offer a test script with a small HiFi and Omni-C read dataset. The following command runs the test:
+
+```bash
+bash test.sh
+```
+
 Below we start with an abstract description about the overall structure of the working directory. Then, we provide practical information and commands on how to work with it.
 
 ## Directory structure
@@ -54,15 +70,15 @@ For each sample to be assembled, we propose the following directory structure to
 <your-working-dir-name>
 ├── 00-data/
 │   ├── hifi/
-│   │    └── hifi.fastq -> <path-to-your-hifi-reads>.fastq
+│   │    └── hifi.fastq[.gz] -> <path-to-your-hifi-reads>.fastq[.gz]
 │   │
 │   └── omnic/
-│        ├── omnic_R1_001.fastq -> <path-to-your-omnic-reads>_R1_001.fastq
-│        └── omnic_R2_001.fastq -> <path-to-your-omnic-reads>_R2_001.fastq
+│        ├── omnic_R1_001.fastq[.gz] -> <path-to-your-omnic-reads>_R1_001.fastq[.gz]
+│        └── omnic_R2_001.fastq[.gz] -> <path-to-your-omnic-reads>_R2_001.fastq[.gz]
 │
 ├── 01-asm/
 │   ├── <assembler-1>/
-│   │    ├── hifi.fastq -> ../../00-data/hifi/hifi.fastq
+│   │    ├── hifi.fastq[.gz] -> ../../00-data/hifi/hifi.fastq[.gz]
 │   │        ...
 │   │
 │   ├── <assembler-2>/
@@ -78,8 +94,8 @@ For each sample to be assembled, we propose the following directory structure to
 │
 ├── 11-scaf/
 │   ├── <scaf-tool-1>/
-│   │    ├── omnic_R1_001.fastq -> ../../00-data/omnic/omnic_R1_001.fastq
-│   │    ├── omnic_R2_001.fastq -> ../../00-data/omnic/omnic_R2_001.fastq
+│   │    ├── omnic_R1_001.fastq[.gz] -> ../../00-data/omnic/omnic_R1_001.fastq[.gz]
+│   │    ├── omnic_R2_001.fastq[.gz] -> ../../00-data/omnic/omnic_R2_001.fastq[.gz]
 │   │    ├── contigs.fasta* -> ../../10-contigs/<assembly-name-N>/contigs.fasta*
 │   │        ...
 │   │
@@ -110,14 +126,14 @@ A short description about the role of each directory is as follows:
 #### `00-data/`: **Storage and QC of reads**
 
 - Here we store input read datasets (using symlinks as described below), which must consist of the followings:
-  - a single FASTQ file (not gzipped) exactly named `hifi.fastq` for HiFi; and
-  - two FASTQ files (not gzipped) exactly named `omnic_R1_001.fastq` and `omnic_R2_001.fastq` for Omni-C.
-- We also perform QC using GenomeScope+Smudgeplot and FASTK+GeneScope.
+  - a single FASTQ file (which can be either gzipped or not; specify in `config.sh`) exactly named `hifi.fastq[.gz]` for HiFi; and
+  - two FASTQ files (gzipped or not) exactly named `omnic_R1_001.fastq[.gz]` and `omnic_R2_001.fastq[.gz]` for Omni-C.
+- We also perform QC using GeneScope and MerquryFK.
 
 #### `01-asm/`: **Contig assembly**
 
 - In each subdirectory, one of the followings is supposed to be performed:
-  - a single contig assembly task (e.g. hifiasm, HiCanu) using a symlink to HiFi reads at `00-data/`; or
+  - a single contig assembly task (hifiasm) using a symlink to HiFi reads at `00-data/`; or
   - a single purge_dups task using a symlink to an assembled contig FASTA file.
 
 #### `10-contigs/`: **Quality assessment of contigs**
@@ -128,8 +144,8 @@ A short description about the role of each directory is as follows:
 
 #### `11-scaf/`: **Scaffolding**
 
-- In each subdirectory, a single scaffolding task (e.g. SALSA, 3D-DNA) is performed using symlinks to Omni-C reads at `00-data/` and a smylink to a draft contig assembly at `10-contigs/`.
-- Contact matrix files (i.e. .hic & .assembly files for Juicebox and .mcool & .chrom_sizes for HiGlass) are also generated for manual inspection and curation.
+- In each subdirectory, a single scaffolding task (YaHS) is performed using symlinks to Omni-C reads at `00-data/` and a smylink to a draft contig assembly at `10-contigs/`.
+- Contact matrix files (.hic & .assembly files for Juicebox) are also generated for manual inspection and curation.
 
 #### `20-scaffolds/`: **Quality assessment of scaffolds**
 
@@ -159,16 +175,10 @@ template/
 |       |-- run_fastk.sh
 |       `-- run_genescope.sh
 |-- 01-asm
-|   |-- hicanu
-|   |   `-- run_hicanu.sh
 |   |-- hifiasm
 |   |   `-- run_hifiasm.sh
 |   |-- hifiasm-phased
 |   |   `-- run_hifiasm.sh
-|   |-- ipa
-|   |   `-- run_ipa.sh
-|   |-- peregrine
-|   |   `-- run_peregrine.sh
 |   `-- template-purge-dups
 |       |-- run_purge_dups.sh
 |       `-- run_purge_dups_plot.sh
@@ -177,8 +187,10 @@ template/
 |   |   |-- 00-make_index.sh
 |   |   |-- 01-busco
 |   |   |   `-- run_busco.sh
+|   |   |-- 01-compleasm
+|   |   |   `-- run_compleasm.sh
 |   |   |-- 02-merqury
-|   |   |   `-- run_merquryfk.sh
+|   |   |   `-- run_merqury.sh
 |   |   |-- 02-merquryfk
 |   |   |   `-- run_merquryfk.sh
 |   |   |-- 04-winnowmap
@@ -189,6 +201,10 @@ template/
 |   |   |   `-- run_mapqv.sh
 |   |   |-- 07-asset
 |   |   |   `-- run_asset.sh
+|   |   |-- 09-telomere
+|   |   |   `-- run_make_telomere_bed.sh
+|   |   |-- 11-hic
+|   |   |   `-- run_hic.sh
 |   |   |-- output_for_curation
 |   |   |-- output_for_stats
 |   |   `-- run_all.sh
@@ -217,21 +233,19 @@ template/
 |       |-- output_for_stats
 |       `-- run_all.sh
 |-- 11-scaf
-|   |-- template-3ddna
+|   |-- template-yahs
 |   |   |-- output
 |   |   |-- output_for_curation
-|   |   `-- run_3ddna.sh
-|   |-- template-omnic-partition
-|   |   `-- run_omnic_partition.sh
-|   `-- template-salsa
-|       |-- output
-|       |-- output_for_curation
-|       `-- run_salsa.sh
+|   |   `-- run_yahs.sh
+|   `-- template-omnic-partition
+|       `-- run_omnic_partition.sh
 |-- 20-scaffolds
 |   |-- template
 |   |   |-- 00-make_index.sh
 |   |   |-- 01-busco
 |   |   |   `-- run_busco.sh
+|   |   |-- 01-compleasm
+|   |   |   `-- run_compleasm.sh
 |   |   |-- 02-merqury
 |   |   |   `-- run_merqury.sh
 |   |   |-- 02-merquryfk
@@ -246,6 +260,8 @@ template/
 |   |   |   `-- run_asset.sh
 |   |   |-- 09-telomere
 |   |   |   `-- run_make_telomere_bed.sh
+|   |   |-- 11-hic
+|   |   |   `-- run_hic.sh
 |   |   |-- output_for_curation
 |   |   |-- output_for_stats
 |   |   `-- run_all.sh
@@ -289,10 +305,8 @@ That is, you need to run the following commands step-by-step, although most of t
 > :information_source: **IMPORTANT:**
 > 
 > In the commnds below, you need to replace each name surrounded by `<` `>` (e.g. path to an input data file, name of an assembly) with something up to you. On the other hand, however, you must NOT change the names of the other files/directories.
-
-> :memo: **NOTE:**
-> 
-> `&&` at the end of a line below means "execute the next command if the previous command finishes successfully." You do not have to add it if you are running each line interactively in a shell.
+>
+> `[.gz]` means the file can be either gzipped or not.
 
 ### 0. Copy the template and make symlinks to input read datasets
 
@@ -300,14 +314,14 @@ That is, you need to run the following commands step-by-step, although most of t
 # Assuming <your-working-dir-name> does not exist yet
 cp -r <path-to>/ant-asm-workflow/template/ <your-working-dir-name>
 cd <your-working-dir-name>
-cd 00-data/ &&
-    cd hifi/ &&
-        ln -sf <path-to-your-hifi-reads>.fastq ./hifi.fastq &&
-        cd ..
-    cd omnic/ &&
-        ln -sf <path-to-your-omnic-reads>_R1_001.fastq ./omnic_R1_001.fastq &&
-        ln -sf <path-to-your-omnic-reads>_R2_001.fastq ./omnic_R2_001.fastq &&
-        cd ..
+cd 00-data/
+    cd hifi/
+        ln -sf <path-to-your-hifi-reads>.fastq[.gz] ./hifi.fastq[.gz]
+    cd ..
+    cd omnic/
+        ln -sf <path-to-your-omnic-reads>_R1_001.fastq[.gz] ./omnic_R1_001.fastq[.gz]
+        ln -sf <path-to-your-omnic-reads>_R2_001.fastq[.gz] ./omnic_R2_001.fastq[.gz]
+    cd ..
 cd ..
 ```
 
@@ -326,31 +340,31 @@ cd ..
 ### 1. Edit the global config file
 
 Some species-dependent (as well as computer-environment-specific) settings are written in a single file, `<your-working-dir-name>/config.sh`, where the default values are for ants.
-If you wish to apply this workflow to species other than ants, you need to change them, especially BUSCO's lineage (`hymenoptera_odb10` by default) and telomeric motif sequence (`TTAGG` by default whereas human is `TTAGGG`), as necessary. The most significant parameters are as follows:
+If you wish to apply this workflow to species other than ants, you need to change them, especially BUSCO's lineage (`hymenoptera_odb12` by default) and telomeric motif sequence (`TTAGG` by default whereas human is `TTAGGG`), as necessary. The most significant parameters are as follows:
 
 |Variable Name|Default Value|Description|
 |-|-|-|
 |`AUTO_DEL`|`true`|If `true`, intermediate files are deleted after each job|
 |`HIC_ENZYME_NAME`||Parameter for 3D-DNA. Empty for Omni-C|
-|`BUSCO_DB`|`hymenoptera_odb10`|BUSCO's lineage database name|
+|`BUSCO_DB`|`hymenoptera_odb12`|BUSCO's lineage database name|
 |`TELOMERE_MOTIF`|`TTAGG`|For finding telomeres from scaffolds|
 
-### 2. Run GenomeScope and GeneScope for each of HiFi reads and Omni-C reads
+### 2. Run GeneScope and MerquryFK for each of HiFi reads and Omni-C reads
 
 ```bash
-cd 00-data/ &&
-    cd hifi/ &&
-        sbatch run_all.sh &&   # Will submit several child jobs using SLURM
-        cd ..
-    cd omnic/ &&
-        sbatch run_all.sh &&
-        cd ..
+cd 00-data/
+    cd hifi/
+        sbatch run_all.sh   # Will submit several child jobs using SLURM
+    cd ..
+    cd omnic/
+        sbatch run_all.sh
+    cd ..
 cd ..
 ```
 
 After submitting these jobs, you can **immediately** proceed to the next step 2 (i.e. You do not have to wait for them to finish).
 
-After these jobs (and their child jobs) finish, check the GeneScope plot and the Smudgeplot for each of HiFi and Omni-C:
+After these jobs (and their child jobs) finish, check the GeneScope plot and the PloidyPlot for each of HiFi and Omni-C:
 
 > :information_source: **IMPORTANT output files in this step for QC:**
 > 
@@ -358,34 +372,34 @@ After these jobs (and their child jobs) finish, check the GeneScope plot and the
 >    - `hifi.genescope/`: GeneScope for HiFi reads
 >      - `summary.txt`: Fitting result
 >      - `transformed_linear_plot.png`: k-mer (k=40 by default) count histogram with the fitting
->    - `hifi.genomescope_L*_U*_smudgeplot.png`: Smudgeplot for HiFi reads
+>    - `hifi.fastk.ploidyplot.fi.pdf`: PloidyPlot for HiFi reads
 >  - `00-data/omnic/`
 >    - `omnic.genescope/`: GeneScope for Omni-C reads
 >      - `summary.txt`: Fitting result
 >      - `transformed_linear_plot.png`: k-mer (k=21 by default) count histogram with the fitting
->    - `omnic.genomescope_L*_U*_smudgeplot.png`: Smudgeplot for Omni-C reads
+>    - `omnic.fastk.ploidyplot.fi.pdf`: PloidyPlot for Omni-C reads
 
 ### 3. Run assemblers (and purge_dups if necessary)
 
 > :warning: **WARNING about purge_dups:**
 > 
-> You need to run a purge_dups task (not in the directory you ran hifiasm/HiCanu/etc. but) in a separated, new subdirectory right under `01-asm/`, as described just below.
+> You need to run a purge_dups task (not in the directory you ran hifiasm but) in a separated, new subdirectory right under `01-asm/`, as described just below.
 
 ```bash
-cd 01-asm/ &&
-    # NOTE: <assembler> = hifiasm, hicanu, etc. If you wish to try different parameters with the same assembler, then make a new directory.
-    cd <assembler>/ &&
-        sbatch run_<assembler>.sh &&
-        cd ..
+cd 01-asm/
+    # NOTE: <assembler> = hifiasm, hifiasm-phased, etc. If you wish to try different parameters with the same assembler, then make a new directory.
+    cd <assembler>/
+        sbatch run_<assembler>.sh
+    cd ..
     # To run purge_dups, do the followings after the assembly finishes
-    cp -r template-purge-dups/ <assembler>-pd &&
-        cd <assembler>-pd &&
+    cp -r template-purge-dups/ <assembler>-pd
+    cd <assembler>-pd
         # NOTE: <contig-fasta-file> depends on the assembler
-        ln -sf ../<assembler>/<contig-fasta-file> ./contigs.fasta &&
-        sbatch run_purge_dups_plot.sh &&
-        # After run_purge_dups_plot.sh finishes, here write the values of `L`, `M`, `U` in run_purge_dups.sh based on `PB.hist.plot`
-        sbatch run_purge_dups.sh &&
-        cd ..
+        ln -sf ../<assembler>/<contig-fasta-file> ./contigs.fasta
+        sbatch run_purge_dups_plot.sh
+        # After run_purge_dups_plot.sh finishes, here edit the values of `L`, `M`, `U` in run_purge_dups.sh based on `PB.hist.plot` if necessary.
+        sbatch run_purge_dups.sh
+    cd ..
 cd ..
 ```
 
@@ -402,37 +416,37 @@ The assembly stats such as contig N50 length is written at the bottom of the log
 For a haplotype-merged assembly:
 
 ```bash
-cd 10-contigs/ &&
-    # NOTE: <assembly-name> = an arbitrary name representing an assembly generated in 01-asm/ (i.e. hifiasm, hifiasm-p_ctg, hicanu-pd, etc.)
-    cp -r templete/ <assembly-name> &&
-        cd <assembly-name> &&
+cd 10-contigs/
+    # NOTE: <assembly-name> = an arbitrary name representing an assembly generated in 01-asm/ (i.e. hifiasm, hifiasm-p_ctg, etc.)
+    cp -r templete/ <assembly-name>
+    cd <assembly-name>
         # NOTE: <contig-fasta-file> = "purged.fa" for those after purge_dups; otherwise, something specific to an assembler
-        ln -sf ../../01-asm/<assembly-dir>/<contig-fasta-file> ./contigs.fasta &&
-        sbatch run_all.sh &&
-        cd ..
+        ln -sf ../../01-asm/<assembly-dir>/<contig-fasta-file> ./contigs.fasta
+        sbatch run_all.sh
+    cd ..
 cd ..
 ```
 
 For a haplotype-phased assembly:
 
 ```bash
-cd 10-contigs/ &&
-    cp -r templete-phased/ <assembly-name> &&
-        cd <assembly-name> &&
-        ln -sf ../../01-asm/<assembly-dir>/<contig-hap1-fasta-file> ./contigs.hap1.fasta &&
-        ln -sf ../../01-asm/<assembly-dir>/<contig-hap2-fasta-file> ./contigs.hap2.fasta &&
-        sbatch run_all.sh &&
-        cd ..
+cd 10-contigs/
+    cp -r templete-phased/ <assembly-name>
+    cd <assembly-name>
+        ln -sf ../../01-asm/<assembly-dir>/<contig-hap1-fasta-file> ./contigs.hap1.fasta
+        ln -sf ../../01-asm/<assembly-dir>/<contig-hap2-fasta-file> ./contigs.hap2.fasta
+        sbatch run_all.sh
+    cd ..
 cd ..
 ```
 
-For each contig assembly, after `run_all.sh` finishes, check i) assembly stats such as contig N50 length, ii) BUSCO score, iii) Merqury QV, iv) mapping QV, and v) reliable block N50:
+For each contig assembly, after `run_all.sh` finishes, check i) assembly stats such as contig N50 length, ii) Compleasm score, iii) Merqury QV, iv) mapping QV, and v) reliable block N50:
 
 > :information_source: **IMPORTANT output files in this step for quality metrics (Use `$ cat` to see the results):**
 > 
 > Haplotype-merged assembly:
 >  - `10-contigs/<assembly-name>/output_for_stats/`
->    - `busco_score`: BUSCO result
+>    - `compleasm_score`: Compleasm result
 >    - `merqury_qv`: Merqury's K-mer based QV
 >    - `mapping_qv`: Mapping based QV
 >    - `reliable_block_n50`: Reliable block N50 length
@@ -450,43 +464,43 @@ For each contig assembly, after `run_all.sh` finishes, check i) assembly stats s
 
 > :warning: **WARNING:**
 > 
-> A single subdirectory must be only for a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/salsa/` nor `hifiasm/3ddna`. Instead, you need to make `hifiasm-salsa` and `hifiasm-3ddna` right under `11-scaf/`.
+> A single subdirectory must be only for a single scaffolding task. That is, you must NOT make nested directories like `hifiasm/yahs/`. Instead, you need to make `hifiasm-yahs` and `hifiasm-pd-yahs` right under `11-scaf/`.
 > Likewise, if you wish to try different parameters with the same scaffolding tool, then make a new directory.
 
 For a haplotype-merged assembly:
 
 ```bash
-cd 11-scaf/ &&
+cd 11-scaf/
     # NOTE: <scaf-tool> = {3ddna, salsa}, <assembly-name> = a directory name in 10-contigs/.
-    cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool> &&
-        cd <assembly-name>-<scaf-tool> &&
-        ln -sf ../../10-contigs/<assembly-name>/contigs.fasta* . &&   # WARNING: Do not forget * !!!
-        sbatch run_<scaf-tool>.sh &&
-        cd ..
+    cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool>
+    cd <assembly-name>-<scaf-tool>
+        ln -sf ../../10-contigs/<assembly-name>/contigs.fasta* .   # WARNING: Do not forget * !!!
+        sbatch run_<scaf-tool>.sh
+    cd ..
 cd ..
 ```
 
 For a haplotype-phased assembly, you need to first split the Omni-C reads into two sets of haplotype-specific reads, which can be used for both SALSA and 3D-DNA:
 
 ```bash
-cd 11-scaf/ &&
-    cp -r template-omnic-partition/ <assembly-name>-omnic-partition &&
-        cd <assembly-name>-omnic-partition &&
-        ln -sf ../../10-contigs/<assembly-name>/contigs.* . &&   # NOTE: contigs.hap* must exist
-        sbatch run_partition.sh &&
-        cd ..
+cd 11-scaf/
+    cp -r template-omnic-partition/ <assembly-name>-omnic-partition
+    cd <assembly-name>-omnic-partition
+        ln -sf ../../10-contigs/<assembly-name>/contigs.* .   # NOTE: contigs.hap* must exist
+        sbatch run_partition.sh
+    cd ..
 cd ..
 ```
 
 and then do scaffolding for each haplotype just like the haplotype-merged assembly using the partitioned Omni-C reads:
 
 ```bash
-cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool> &&
-    cd <assembly-name>-<scaf-tool> &&
-    ln -sf ../../10-contigs/<assembly-name>/contigs.hap<N>.fasta* . &&   # WARNING: Do not forget * !!!
-    ln -sf ../<assembly-name>-omnic-partition/omnic_R1_001.hap<N>.fastq omnic_R1_001.fastq &&
-    ln -sf ../<assembly-name>-omnic-partition/omnic_R2_001.hap<N>.fastq omnic_R2_001.fastq &&
-    sbatch run_<scaf-tool>.sh &&
+cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool>
+    cd <assembly-name>-<scaf-tool>
+    ln -sf ../../10-contigs/<assembly-name>/contigs.hap<N>.fasta* .   # WARNING: Do not forget * !!!
+    ln -sf ../<assembly-name>-omnic-partition/omnic_R1_001.hap<N>.fastq omnic_R1_001.fastq
+    ln -sf ../<assembly-name>-omnic-partition/omnic_R2_001.hap<N>.fastq omnic_R2_001.fastq
+    sbatch run_<scaf-tool>.sh
     cd ..
 ```
 
@@ -494,7 +508,7 @@ cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool> &&
 > 
 > For scaffold evaluation (in Step 6):
 > - `11-scaf/<scaf-name>/output/`
->   - `scaffolds_FINAL.fasta`: Final scaffolds
+>   - `scaffolds.fasta`: Final scaffolds
 >
 > For manual curation (in Step 7)::
 > - `11-scaf/<scaf-name>/output_for_curation/`
@@ -512,37 +526,37 @@ cp -r template-<scaf-tool>/ <assembly-name>-<scaf-tool> &&
 For a haplotype-merged assembly:
 
 ```bash
-cd 20-scaffolds/ &&
-    # NOTE: <scaf-name> = an arbitrary name representing an assembly generated in 11-scaf/ (i.e. hifiasm-salsa, hifiasm-pd-3ddna, etc.)
-    cp -r templete/ <scaf-name> &&
-        cd <scaf-name> &&
+cd 20-scaffolds/
+    # NOTE: <scaf-name> = an arbitrary name representing an assembly generated in 11-scaf/ (e.g. hifiasm-pd-yahs)
+    cp -r templete/ <scaf-name>
+    cd <scaf-name>
         # NOTE: <scaf-fasta-file> depends on the scaffolding tool
-        ln -sf ../../11-scaf/<scaf-dir>/<scaf-fasta-file> ./scaffolds.fasta &&
-        sbatch run_all.sh &&
-        cd ..
+        ln -sf ../../11-scaf/<scaf-dir>/<scaf-fasta-file> ./scaffolds.fasta
+        sbatch run_all.sh
+    cd ..
 cd ..
 ```
 
 For a haplotype-phased assembly:
 
 ```bash
-cd 20-scaffolds/ &&
-    cp -r templete/ <scaf-name> &&
-        cd <scaf-name> &&
-        ln -sf ../../11-scaf/<scaf-dir>/<scaf-hap1-fasta-file> ./scaffolds.hap1.fasta && 
-        ln -sf ../../11-scaf/<scaf-dir>/<scaf-hap2-fasta-file> ./scaffolds.hap2.fasta && 
-        sbatch run_all.sh &&
-        cd ..
+cd 20-scaffolds/
+    cp -r templete/ <scaf-name>
+    cd <scaf-name>
+        ln -sf ../../11-scaf/<scaf-dir>/<scaf-hap1-fasta-file> ./scaffolds.hap1.fasta
+        ln -sf ../../11-scaf/<scaf-dir>/<scaf-hap2-fasta-file> ./scaffolds.hap2.fasta
+        sbatch run_all.sh
+    cd ..
 cd ..
 ```
 
-For each scaffold assembly, after `run_all.sh` finishes, check i) assembly stats such as scaffold N50 length, ii) BUSCO score, iii) Merqury QV, iv) mapping QV, and v) reliable block N50:
+For each scaffold assembly, after `run_all.sh` finishes, check i) assembly stats such as scaffold N50 length, ii) Compleasm score, iii) Merqury QV, iv) mapping QV, and v) reliable block N50:
 
 > :information_source: **IMPORTANT output files in this step for quality metrics (Use `$ cat` to see the results):**
 >
 > For haplotype-merged assembly:
 > - `20-scaffolds/<scaf-name>/`
->    - `busco_score`: BUSCO result
+>    - `compleasm_score`: Compleasm result
 >    - `merqury_qv`: Merqury's K-mer based QV
 >    - `mapping_qv`: Mapping based QV
 >    - `reliable_block_n50`: Reliable block N50 length
@@ -587,13 +601,13 @@ Along with these qualty metrics, we generate several .bed files compatible (only
 
 
 ```bash
-cd 21-curation/ &&
-    cp -r templete/ <curation-name> &&
-        cd <curation-name> &&
-        ln -sf ../../11-scaf/<scaf-dir>/output_for_curation/* . &&
-        mv <your-reviewed-assembly> scaffolds.review.assembly &&
-        sbatch run_curation.sh &&
-        cd ..
+cd 21-curation/
+    cp -r templete/ <curation-name>
+    cd <curation-name>
+        ln -sf ../../11-scaf/<scaf-dir>/output_for_curation/* .
+        mv <your-reviewed-assembly> scaffolds.review.assembly
+        sbatch run_curation.sh
+    cd ..
 cd ..
 ```
 
@@ -621,7 +635,9 @@ This will generate `scaffolds.FINAL.fasta`, which contains curated scaffolds.
 
 5. Concatenate the blocks. Telomere motifs are now not located at the chromosome end. Telomere motifs can be found in the middle of a chromosome as well, so this might be no problem, but there also might be a further improvement.
 
-## Visual dependencies among the files and commands in the workflow
+## Visual dependencies among the files and commands in the workflow (v1)
+
+NOTE: These images are based on the v1 pipeline, but the overall flow remains unchanged in v2.
 
 ### 1. Assembly and scaffolding
 
