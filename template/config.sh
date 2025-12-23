@@ -113,11 +113,13 @@ HIC_ENZYME_NAME=
 # ----------------------------------------------------------------------------------------------- #
 # BUSCO/compleasm (`10-contigs/` and `20-scaffolds/`) settings
 # - BUSCO_DB: Name of the BUSCO database. Depends on the species.
+# - BUSCO_DB_DIR: Directory where you downloaded the DB with `compleasm download ${BUSCO_DB}`
 # - USE_AUGUSTUS: Only for BUSCO. Must be "true" or "false". If "true", use Augustus (instead of
 #                 Metaeuk) for gene prediction.
 # ----------------------------------------------------------------------------------------------- #
 
 BUSCO_DB="hymenoptera_odb12"
+BUSCO_DB_DIR="/path/to/your/mb_downloads"
 USE_AUGUSTUS=true
 
 # ----------------------------------------------------------------------------------------------- #

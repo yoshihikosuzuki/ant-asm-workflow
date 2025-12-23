@@ -18,8 +18,8 @@ N_CORE=128
 OUT_PREFIX=$(basename ${ASM} .gz)
 OUT_DIR=${OUT_PREFIX%.*}.compleasm
 
-compleasm download ${BUSCO_DB}
-compleasm run -t ${N_CORE} -l ${BUSCO_DB} -a ${ASM} -o ${OUT_DIR}
+# compleasm download ${BUSCO_DB}
+compleasm run -t ${N_CORE} -l ${BUSCO_DB} -L ${BUSCO_DB_DIR} -a ${ASM} -o ${OUT_DIR}
 
 if [ "$AUTO_DEL" = "true" ]; then
     source ./remove_tmp_files.sh
