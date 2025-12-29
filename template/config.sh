@@ -27,7 +27,7 @@ mkdir -p $TMPDIR
 _SEQKIT=Other/seqkit/2.10.0
 _PIGZ=pigz/2.6
 _SAMTOOLS=samtools/1.12
-_BCFTOOLS=_BCFTOOLS=Other/bcftools/1.15.1
+_BCFTOOLS=Other/bcftools/1.15.1
 _BEDTOOLS=bedtools/v2.29.2
 _PICARD=picard/2.7.0
 
