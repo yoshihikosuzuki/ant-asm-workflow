@@ -27,7 +27,7 @@ mkdir -p $TMPDIR
 _SEQKIT=Other/seqkit/2.10.0
 _PIGZ=pigz/2.6
 _SAMTOOLS=samtools/1.12
-_BCFTOOLS=bcftools/1.14
+_BCFTOOLS=_BCFTOOLS=Other/bcftools/1.15.1
 _BEDTOOLS=bedtools/v2.29.2
 _PICARD=picard/2.7.0
 
@@ -119,7 +119,7 @@ HIC_ENZYME_NAME=
 # ----------------------------------------------------------------------------------------------- #
 
 BUSCO_DB="hymenoptera_odb12"
-BUSCO_DB_DIR="/path/to/your/mb_downloads"
+BUSCO_DB_DIR="/flash/EconomoU/gaurav/genome_asm/mb_downloads"
 USE_AUGUSTUS=true
 
 # ----------------------------------------------------------------------------------------------- #
