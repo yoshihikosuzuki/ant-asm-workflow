@@ -7,40 +7,26 @@
 #SBATCH -c 1
 #SBATCH --mem=1G
 #SBATCH -t 72:00:00
-set -eux
+set -euo pipefail
 
-MAKE_INDEX=$(sbatch 00-make_index.sh | cut -f 4 -d' ')
+submit() { sbatch --parsable "$@"; }
 
-cd 01-compleasm/ &&
-    COMPLEASM=$(sbatch run_compleasm.sh | cut -f 4 -d' ') &&
-    cd ..
-# cd 01-busco/ &&
-#     BUSCO=$(sbatch run_busco.sh | cut -f 4 -d' ') &&
-#     cd ..
-cd 02-merqury/ &&
-    MERQURY=$(sbatch run_merqury.sh | cut -f 4 -d' ') &&
-    cd ..
-# cd 02-merquryfk/ &&
-#     MERQURY=$(sbatch run_merquryfk.sh | cut -f 4 -d' ') &&
-#     cd ..
-cd 04-winnowmap/ &&
-    WINNOWMAP=$(sbatch -d afterany:${MAKE_INDEX} run_winnowmap.sh | cut -f 4 -d' ') &&
-    cd ..
-cd 05-deepvariant/ &&
-    DEEPVARIANT=$(sbatch -d afterany:${WINNOWMAP} run_deepvariant.sh | cut -f 4 -d' ') &&
-    cd ..
-cd 06-mapqv/ &&
-    MAPQV=$(sbatch -d afterany:${DEEPVARIANT} run_mapqv.sh | cut -f 4 -d' ') &&
-    cd ..
-cd 07-asset/ &&
-    ASSET=$(sbatch -d afterany:${WINNOWMAP} run_asset.sh | cut -f 4 -d' ') &&
-    cd ..
-cd 09-telomere/ &&
-    TELOMERE=$(sbatch run_make_telomere_bed.sh | cut -f 4 -d' ') &&
-    cd ..
-cd 11-hic/ &&
-    HIC=$(sbatch -d afterany:${MAKE_INDEX} run_hic.sh | cut -f 4 -d' ') &&
-    cd ..
-WAIT_JOBS=${COMPLEASM},${MERQURY},${MAPQV},${ASSET},${TELOMERE},${HIC}
+MAKE_INDEX=$(submit 00-make_index.sh)
 
-srun -p compute -c 1 --mem 1G -t 1:00:00 -d afterany:${WAIT_JOBS} --wait=0 sleep 1s
+COMPLEASM=$( (cd 01-compleasm && submit run_compleasm.sh) )
+MERQURY=$(   (cd 02-merqury   && submit run_merqury.sh) )
+
+WINNOWMAP=$( (cd 04-winnowmap && submit --dependency=afterok:${MAKE_INDEX} run_winnowmap.sh) )
+DEEPVAR=$(   (cd 05-deepvariant && submit --dependency=afterok:${WINNOWMAP} run_deepvariant.sh) )
+MAPQV=$(     (cd 06-mapqv     && submit --dependency=afterok:${DEEPVAR} run_mapqv.sh) )
+
+ASSET=$(     (cd 07-asset    && submit --dependency=afterok:${WINNOWMAP} run_asset.sh) )
+TELOMERE=$(  (cd 09-telomere && submit run_make_telomere_bed.sh) )
+
+# If you don't want Hi-C for contig eval, comment the next 2 lines out.
+HIC=$(       (cd 11-hic      && submit --dependency=afterok:${MAKE_INDEX} run_hic.sh) )
+
+FINAL_DEP="afterok:${COMPLEASM}:${MERQURY}:${MAPQV}:${ASSET}:${TELOMERE}:${HIC}"
+FINAL=$(sbatch --parsable --dependency=${FINAL_DEP} -J contig-eval-done -o done.log --wrap "date; echo DONE")
+
+echo "Submitted contig-eval. Final sentinel job: ${FINAL}"
